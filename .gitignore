@@ -1,0 +1,17 @@
+# Project dir/files
+.env
+lib/sqlite/db/
+!lib/sqlite/db/.gitkeep
+node_modules/
+coverage/
+docker-compose.override.yml
+dist/
+prisma/migrations/
+
+# IDE
+.build
+.vscode
+.idea
+
+# OS related
+.DS_Store
