@@ -6,7 +6,7 @@
     "build": "tsc",
     "start": "node ./dist/app.js",
     "dev": "nodemon app.ts",
-    "seed": "ts-node prisma/seed.ts",
+    "seed": "ts-node prisma/seed/seed.ts",
     "migrate": "prisma migrate dev --name init"
   },
   "dependencies": {

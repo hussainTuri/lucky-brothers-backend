@@ -5,7 +5,7 @@ import { createProductSchema, updateProductSchema } from '../lib/validators/';
 import { Product } from '@prisma/client';
 import { toNumber } from '../lib/utils';
 
-const extractProductData = (payload: Prisma.ProductUpdateInput) => {
+const extractProductData = (payload: Prisma.ProductUncheckedUpdateInput | Prisma.ProductUncheckedCreateInput) => {
   return {
     productName: payload.productName,
     productTypeId: payload.productTypeId,
@@ -32,14 +32,14 @@ const extractProductData = (payload: Prisma.ProductUpdateInput) => {
 
 export const normalizeCreateData = async (req: Request, res: Response, next: NextFunction) => {
   const payload = req.body as Prisma.ProductCreateInput;
-  const product = extractProductData(payload) as Prisma.ProductCreateInput;
+  const product = extractProductData(payload) as Partial<Product>;
   req.body = product;
   next();
 };
 
 export const normalizeUpdateData = async (req: Request, res: Response, next: NextFunction) => {
   const payload = req.body as Prisma.ProductCreateInput;
-  const product = extractProductData(payload) as Product;
+  const product = extractProductData(payload) as Partial<Product>;
   product.id = req.body.id ?? 0;
   req.body = product;
   next();

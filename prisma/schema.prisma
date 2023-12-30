@@ -35,6 +35,15 @@ model Product {
   buyingPrice Int? @db.Int
   sellingPrice Int? @db.Int
   priceHistory PriceHistory[]
+  productType ProductType @relation(fields: [productTypeId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model ProductType {
+  id Int @id @default(autoincrement())
+  typeName String @db.VarChar(255)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  products Product[]
 }
 
 model PriceHistory {
@@ -46,3 +55,59 @@ model PriceHistory {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
+model Customer {
+  id Int @id @default(autoincrement())
+  customerName String @db.VarChar(255)
+  email String? @db.VarChar(255)  @unique
+  phone String @db.VarChar(255) @unique
+  address String? @db.VarChar(255)
+  imagePath String? @db.VarChar(255)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  Invoices Invoice[]
+}
+
+model InvoiceItem {
+  id Int @id @default(autoincrement())
+  invoiceId Int @db.Int
+  productId Int @db.Int
+  quantity Int @db.Int
+  subTotal Int @db.Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  invoice Invoice @relation(fields: [invoiceId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model Invoice {
+  id Int @id @default(autoincrement())
+  customerId Int? @db.Int
+  totalAmount Int @db.Int
+  dueDate DateTime @db.DateTime
+  statusId Int @db.Int
+  comment String? @db.VarChar(255)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  customer Customer? @relation(fields: [customerId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  items InvoiceItem[]
+  payments InvoicePayment[]
+  status InvoiceStatus @relation(fields: [statusId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model InvoiceStatus {
+  id Int @id @default(autoincrement())
+  statusName String @db.VarChar(255)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  invoices Invoice[]
+}
+
+model InvoicePayment {
+  id Int @id @default(autoincrement())
+  invoiceId Int @db.Int
+  amount Int @db.Int
+  comment String? @db.VarChar(255)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  invoice Invoice @relation(fields: [invoiceId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+ }
