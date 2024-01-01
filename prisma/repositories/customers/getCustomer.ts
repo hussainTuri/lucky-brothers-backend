@@ -8,7 +8,11 @@ export const getCustomer = async (id: number | string) => {
         id: Number(id),
       },
       include: {
-        invoices: true,
+        invoices: {
+          include: {
+            items: true,
+          },
+        },
       },
     });
     return customer;
