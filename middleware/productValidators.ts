@@ -5,7 +5,9 @@ import { createProductSchema, updateProductSchema } from '../lib/validators/';
 import { Product } from '@prisma/client';
 import { toNumber } from '../lib/utils';
 
-const extractProductData = (payload: Prisma.ProductUncheckedUpdateInput | Prisma.ProductUncheckedCreateInput) => {
+const extractProductData = (
+  payload: Prisma.ProductUncheckedUpdateInput | Prisma.ProductUncheckedCreateInput,
+) => {
   return {
     productName: payload.productName,
     productTypeId: payload.productTypeId,

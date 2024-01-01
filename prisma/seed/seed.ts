@@ -5,7 +5,6 @@ import { customerData } from './customer';
 
 const prisma = new PrismaClient();
 
-
 async function seedProductTypes() {
   console.log(`Seeding Product Types...`);
   for (const productType of productTypeData) {
@@ -28,7 +27,7 @@ async function main() {
   }
 
   // Invoices
-  for ( const u of invoiceData) {
+  for (const u of invoiceData) {
     const i = await prisma.invoiceStatus.create({
       data: u,
     });
@@ -36,13 +35,12 @@ async function main() {
   }
 
   // Customers
-  for ( const u of customerData) {
+  for (const u of customerData) {
     const i = await prisma.customer.create({
       data: u,
     });
     console.log(`Created customer with id: ${i.id}`);
   }
-
 
   console.log(`Seeding finished.`);
 }

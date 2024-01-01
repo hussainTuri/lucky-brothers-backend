@@ -3,6 +3,7 @@
 
 generator client {
   provider = "prisma-client-js"
+  previewFeatures = ["fullTextSearch", "fullTextIndex"]
 }
 
 datasource db {
@@ -59,13 +60,14 @@ model PriceHistory {
 model Customer {
   id Int @id @default(autoincrement())
   customerName String @db.VarChar(255)
-  email String? @db.VarChar(255)  @unique
+  email String? @db.VarChar(255)
   phone String @db.VarChar(255) @unique
   address String? @db.VarChar(255)
   imagePath String? @db.VarChar(255)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  Invoices Invoice[]
+  invoices Invoice[]
+  @@fulltext([customerName])
 }
 
 model InvoiceItem {

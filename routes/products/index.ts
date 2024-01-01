@@ -31,5 +31,6 @@ router.post('/', normalizeCreateData, validateCreateProduct, createProduct);
 router.post('/image', upload.single('image'), uploadImage);
 router.get('/:productId', getProduct);
 router.put('/:productId', normalizeUpdateData, validateUpdateProduct, updateProduct);
+// router.get('/related-data', getProductRelatedData); // return product types and so for client to cache
 
 export default router;

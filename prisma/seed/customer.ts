@@ -10,7 +10,7 @@ export const customerData: Prisma.CustomerCreateInput[] = [
     address: 'Gulshan-e-Iqbal, Karachi',
     imagePath: 'src/assets/no-image.jpg',
 
-    Invoices: {
+    invoices: {
       create: {
         totalAmount: 1000,
         dueDate: new Date(),
