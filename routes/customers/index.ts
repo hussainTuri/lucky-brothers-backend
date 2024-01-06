@@ -11,8 +11,8 @@ import {
   validateUpdateCustomer,
 } from '../../middleware/customerValidators';
 import { createCustomer } from './createCustomer';
-const router = express.Router();
 
+const router = express.Router();
 router.get('/', getCustomers);
 router.post('/', normalizeCreateData, validateCreateCustomer, createCustomer);
 router.get('/:customerId', getCustomer);

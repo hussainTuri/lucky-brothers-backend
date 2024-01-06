@@ -37,6 +37,7 @@ model Product {
   sellingPrice Int? @db.Int
   priceHistory PriceHistory[]
   productType ProductType @relation(fields: [productTypeId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  invoiceItems InvoiceItem[]
 }
 
 model ProductType {
@@ -69,18 +70,6 @@ model Customer {
   invoices Invoice[]
   @@fulltext([customerName])
 }
-
-model InvoiceItem {
-  id Int @id @default(autoincrement())
-  invoiceId Int @db.Int
-  productId Int @db.Int
-  quantity Int @db.Int
-  subTotal Int @db.Int
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  invoice Invoice @relation(fields: [invoiceId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-}
-
 model Invoice {
   id Int @id @default(autoincrement())
   customerId Int? @db.Int
@@ -94,6 +83,18 @@ model Invoice {
   items InvoiceItem[]
   payments InvoicePayment[]
   status InvoiceStatus @relation(fields: [statusId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model InvoiceItem {
+  id Int @id @default(autoincrement())
+  invoiceId Int @db.Int
+  productId Int @db.Int
+  quantity Int @db.Int
+  subTotal Int @db.Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  invoice Invoice @relation(fields: [invoiceId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  product Product @relation(fields: [productId], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
 
 model InvoiceStatus {

@@ -6,8 +6,8 @@ import { seedInvoices } from './invoice';
 const prisma = new PrismaClient();
 export const maxRecords = {
   products: 50,
-  customers: 500,
-  invoices: 200000,
+  customers: 1000,
+  invoices: 100000,
 };
 
 const seedDatabase = async () => {

@@ -1,22 +1,24 @@
 import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
-export const getCustomer = async (id: number | string) => {
+export const getInvoice = async (id: number | string) => {
   try {
-    const customer = await prisma.customer.findFirstOrThrow({
+    const invoice = await prisma.invoice.findFirstOrThrow({
       where: {
         id: Number(id),
       },
+
       include: {
-        invoices: {
+        items: {
           include: {
-            items: true,
-            payments: true,
+            product: true,
           },
         },
+
+        customer: true,
       },
     });
-    return customer;
+    return invoice;
   } catch (e) {
     console.error(e);
     throw e;
