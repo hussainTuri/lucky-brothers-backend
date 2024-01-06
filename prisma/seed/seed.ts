@@ -1,56 +1,29 @@
-import { PrismaClient, Prisma } from '@prisma/client';
-import { productTypeData } from './products';
-import { invoiceData } from './invoice';
-import { customerData } from './customer';
+import { PrismaClient, Prisma, Product, InvoiceItem } from '@prisma/client';
+import { seedCustomers } from './customer';
+import { seedProducts } from './products';
+import { seedInvoices } from './invoice';
 
 const prisma = new PrismaClient();
+export const maxRecords = {
+  products: 50,
+  customers: 500,
+  invoices: 200000,
+};
 
-async function seedProductTypes() {
-  console.log(`Seeding Product Types...`);
-  for (const productType of productTypeData) {
-    const createdProductType = await prisma.productType.create({
-      data: productType,
-    });
-    console.log(`Created Product Type with id: ${createdProductType.id}`);
-  }
-  console.log(`Product Types seeding finished.`);
-}
+const seedDatabase = async () => {
+  try {
+    console.log('Database seeding started...');
 
-async function main() {
-  console.log(`Start seeding ...`);
-  // Products
-  for (const u of productTypeData) {
-    const i = await prisma.productType.create({
-      data: u,
-    });
-    console.log(`Created product type with id: ${i.id}`);
-  }
+    await seedCustomers();
+    await seedProducts();
+    await seedInvoices();
 
-  // Invoices
-  for (const u of invoiceData) {
-    const i = await prisma.invoiceStatus.create({
-      data: u,
-    });
-    console.log(`Created invoice type with id: ${i.id}`);
-  }
-
-  // Customers
-  for (const u of customerData) {
-    const i = await prisma.customer.create({
-      data: u,
-    });
-    console.log(`Created customer with id: ${i.id}`);
-  }
-
-  console.log(`Seeding finished.`);
-}
-
-main()
-  .then(async () => {
+    console.log('Database seeded successfully!');
+  } catch (error) {
+    console.error('Error seeding database:', error);
+  } finally {
     await prisma.$disconnect();
-  })
-  .catch(async (e) => {
-    console.error(e);
-    await prisma.$disconnect();
-    process.exit(1);
-  });
+  }
+};
+
+seedDatabase();
