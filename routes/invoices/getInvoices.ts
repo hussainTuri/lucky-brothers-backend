@@ -11,7 +11,7 @@ export const getInvoices = async (req: Request, res: Response, next: NextFunctio
     filters.status = req.query.status as QueryInvoiceStatus;
   }
 
-  if (req.query?.status !== undefined) {
+  if (req.query?.today !== undefined) {
     filters.today = true;
   }
 

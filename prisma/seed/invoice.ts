@@ -42,7 +42,8 @@ const generateFakeInvoiceItem = (invoiceId: number, totalAmount: number) => {
     return {
       invoiceId,
       productId: faker.number.int({ min: 1, max: maxRecords.products }),
-      quantity: faker.number.int({ min: 1, max: 2 }),
+      quantity: faker.number.int({ min: 1, max: 1 }),
+      price: subTotal,
       subTotal: subTotal,
     };
   });

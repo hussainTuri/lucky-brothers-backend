@@ -10,7 +10,7 @@ export const createCustomer = async (customer: Customer): Promise<Customer | nul
     });
     return result;
   } catch (e) {
-    console.error(e);
+    console.error('DB error: ', e);
     return null;
   }
 };

@@ -5,7 +5,7 @@ import { createCustomerSchema, updateCustomerSchema } from '../lib/validators/';
 import { Customer } from '@prisma/client';
 import { toNumber } from '../lib/utils';
 
-const extractCustomerData = (
+export const extractCustomerData = (
   payload: Prisma.CustomerUncheckedUpdateInput | Prisma.CustomerUncheckedCreateInput,
 ) => {
   return {

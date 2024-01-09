@@ -90,6 +90,7 @@ model InvoiceItem {
   invoiceId Int @db.Int
   productId Int @db.Int
   quantity Int @db.Int
+  price Int @db.Int
   subTotal Int @db.Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

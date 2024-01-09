@@ -53,7 +53,7 @@ export const getInvoices = async (options: QueryOptions, sort: QuerySort) => {
         ...whereToday,
       },
       orderBy: {
-        ...(sort.id && { createdAt: sort.id }),
+        ...(sort.id && { id: sort.id }),
         ...(sort.createdAt && { createdAt: sort.createdAt }),
       },
       take: options?.take || 1000,

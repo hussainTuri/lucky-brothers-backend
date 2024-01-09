@@ -1,4 +1,4 @@
-import { InvoiceStatus } from '@prisma/client';
+import { Customer, Invoice, InvoiceItem, InvoiceStatus, Prisma } from '@prisma/client';
 
 export interface InvoiceRelatedData {
   statuses: InvoiceStatus[];
@@ -15,4 +15,10 @@ export type SortOrder = 'asc' | 'desc';
 export interface QuerySort {
   id?: SortOrder;
   createdAt?: SortOrder;
+}
+
+export interface InvoicePayload {
+  invoice: Partial<Invoice>;
+  items: Partial<InvoiceItem>[];
+  customer: Partial<Customer>;
 }
