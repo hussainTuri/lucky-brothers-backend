@@ -7,3 +7,8 @@
   - `nvm use 18`
   - rm -rf node_modules/sharp
   - npm install --arch=x64 --platform=darwin sharp
+
+
+## Server
+ - Installed nvm and using node v16.20.2 since it's a old version of ubuntu(14)
+ - nvm is installed as webuser - NOT as root. Nvm is installed user specific 
