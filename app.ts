@@ -31,7 +31,7 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
 app.use((req, res, next) => {
   const resp = response();
   resp.success = false;
-  resp.message = 'Route not found6!';
+  resp.message = 'Route not found7!';
 
   res.status(404).json(resp);
 });
