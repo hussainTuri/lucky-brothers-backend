@@ -1,0 +1,26 @@
+#!/bin/sh
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+
+# Log the start of the script
+echo "Script started."
+
+git --work-tree=/var/www/lucky-brothers-backend --git-dir=/home/webuser/repositories/lucky-brothers-backend.git checkout -f
+cd /var/www/lucky-brothers-backend
+
+echo "Running npm ci..."
+npm ci
+
+echo "Running npm run build..."
+npm run build
+
+echo "Stopping PM2..."
+pm2 stop lucky-brothers-backend
+
+echo "Starting PM2..."
+pm2 start dist/app.js --name lucky-brothers-backend
+
+# Log the end of the script
+echo "Script completed."
