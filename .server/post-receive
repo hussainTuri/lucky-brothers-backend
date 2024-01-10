@@ -23,4 +23,4 @@ echo "Starting PM2..."
 pm2 start dist/app.js --name lucky-brothers-backend
 
 # Log the end of the script
-echo "Script completed."
+echo "Script completed"
