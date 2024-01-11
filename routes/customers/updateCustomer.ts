@@ -8,7 +8,7 @@ export const updateCustomer = async (req: Request, res: Response, next: NextFunc
   const customer = await updateCustomerRepository(req.body);
   if (customer === null) {
     resp.success = false;
-    resp.message = 'Failed to create customer';
+    resp.message = 'Failed to update customer';
     return res.status(400).json(resp);
   }
 
