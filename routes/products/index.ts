@@ -12,6 +12,7 @@ import {
 } from '../../middleware/productValidators';
 import multer from 'multer';
 import path from 'path';
+import { authenticate } from '../../middleware/authenticate';
 
 const storage = multer.diskStorage({
   destination: (req: Request, file: Express.Multer.File, cb) => {
@@ -26,11 +27,11 @@ const upload = multer({ storage: storage });
 
 const router = express.Router();
 
-router.get('/', getProducts);
-router.post('/', normalizeCreateData, validateCreateProduct, createProduct);
-router.post('/image', upload.single('image'), uploadImage);
-router.get('/:productId', getProduct);
-router.put('/:productId', normalizeUpdateData, validateUpdateProduct, updateProduct);
+router.get('/', authenticate, getProducts);
+router.post('/', authenticate, normalizeCreateData, validateCreateProduct, createProduct);
+router.post('/image', authenticate, upload.single('image'), uploadImage);
+router.get('/:productId', authenticate, getProduct);
+router.put('/:productId', authenticate, normalizeUpdateData, validateUpdateProduct, updateProduct);
 // router.get('/related-data', getProductRelatedData); // return product types and so for client to cache
 
 export default router;

@@ -11,12 +11,19 @@ import {
   validateUpdateCustomer,
 } from '../../middleware/customerValidators';
 import { createCustomer } from './createCustomer';
+import { authenticate } from '../../middleware/authenticate';
 
 const router = express.Router();
-router.get('/', getCustomers);
-router.post('/', normalizeCreateData, validateCreateCustomer, createCustomer);
-router.get('/:customerId', getCustomer);
-router.post('/search', cleanSearchInput, searchCustomers);
-router.put('/:customerId', normalizeUpdateData, validateUpdateCustomer, updateCustomer);
+router.get('/', authenticate, getCustomers);
+router.post('/', authenticate, normalizeCreateData, validateCreateCustomer, createCustomer);
+router.get('/:customerId', authenticate, getCustomer);
+router.post('/search', authenticate, cleanSearchInput, searchCustomers);
+router.put(
+  '/:customerId',
+  authenticate,
+  normalizeUpdateData,
+  validateUpdateCustomer,
+  updateCustomer,
+);
 
 export default router;

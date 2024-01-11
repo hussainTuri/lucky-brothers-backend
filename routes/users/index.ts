@@ -15,7 +15,7 @@ import { authenticate } from '../../middleware/authenticate';
 
 // Routes requiring authentication
 const router = express.Router();
-router.get('/:userId',authenticate,  getUser);
+router.get('/:userId', authenticate, getUser);
 router.put('/:userId', authenticate, normalizeUpdateData, validateUpdateUser, updateUser);
 
 // Routes not requiring authentication

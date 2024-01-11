@@ -9,11 +9,12 @@ import {
   validateQueryParams,
 } from '../../middleware/invoiceValidators';
 import { createInvoice } from './createInvoice';
+import { authenticate } from '../../middleware/authenticate';
 
 const router = express.Router();
-router.post('/', normalizeCreateData, validateCreateInvoice, createInvoice);
-router.get('/related-data', getRelatedData);
-router.get('/:invoiceId', getInvoice);
-router.get('/:invoiceId/print', generatePdf);
-router.get('/', validateQueryParams, getInvoices);
+router.post('/', authenticate, normalizeCreateData, validateCreateInvoice, createInvoice);
+router.get('/related-data', authenticate, getRelatedData);
+router.get('/:invoiceId', authenticate, getInvoice);
+router.get('/:invoiceId/print', authenticate, generatePdf);
+router.get('/', authenticate, validateQueryParams, getInvoices);
 export default router;

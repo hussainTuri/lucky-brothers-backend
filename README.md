@@ -45,4 +45,4 @@
   - cd into app root `cd /var/www/lucky-brothers-backend`
   - `pm2 start dist/app.js`
 
-Note: all of the above has been taken care of through [post-receive](.server/post-receive) script. 
+Note: all of the above has been taken care of through [post-receive](.server/post-receive) script.
