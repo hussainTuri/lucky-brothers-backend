@@ -17,9 +17,9 @@ import { authenticate } from '../../middleware/authenticate';
 const router = express.Router();
 router.get('/:userId', authenticate, getUser);
 router.put('/:userId', authenticate, normalizeUpdateData, validateUpdateUser, updateUser);
+router.post('/', authenticate, normalizeRegisterData, validateRegisterUser, registerUser); // only logged in users can create new users
 
 // Routes not requiring authentication
-router.post('/', normalizeRegisterData, validateRegisterUser, registerUser);
 router.post('/login', normalizeLoginData, validateLogin, loginUser);
 
 export default router;
