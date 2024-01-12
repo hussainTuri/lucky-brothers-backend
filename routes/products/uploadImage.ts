@@ -2,6 +2,7 @@ import { NextFunction, Request, RequestHandler, Response } from 'express';
 import { response } from '../../lib/response';
 import path from 'path';
 import sharp from 'sharp';
+import fs from 'fs';
 
 export const uploadImage = async (req: Request, res: Response) => {
   const resp = response();
@@ -31,6 +32,14 @@ export const uploadImage = async (req: Request, res: Response) => {
       return res.status(500).json(resp);
     });
 
+  // copy the files to dist so that it's available in production
+  if (process.env.NODE_ENV === 'production') {
+    const distPath = path.join(process.env.FRONTEND_PATH!, 'dist', 'uploads');
+    console.log('distPath: ', distPath);
+    const distResizedFilePath = path.join(distPath, resizedFileName);
+    fs.copyFileSync(file.path, path.join(distPath, file.filename));
+    fs.copyFileSync(resizedFilePath, distResizedFilePath);
+  }
   resp.data = {
     path: path.join('uploads', file.filename),
     filename: file.filename,

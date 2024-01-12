@@ -18,13 +18,13 @@
 - git init --bare && cd hooks
 - vi post-receive and paste the following lines
   - #!/bin/sh
-  - git --work-tree=/usr/share/nginx/lucky-brothers-backend --git-dir=/home/webuser/repositories/lucky-brothers-backend.git checkout -f
-  - cd /usr/share/nginx/lucky-brothers-backend
+  - git --work-tree=/var/www/lucky-brothers-backend --git-dir=/home/webuser/repositories/lucky-brothers-backend.git checkout -f
+  - cd /var/wwww/lucky-brothers-backend
 - chmod +x post-receive
 - cd ..
 - vi HEAD
 - update the branch name to your prod branch name: for instance ref: refs/heads/master -> ref: refs/heads/main. Now it will only accept main branch pushes
-- cd /usr/share/nginx
+- cd /var/www
 - mkdir lucky-brothers-backend
 
 ### client / Github action
