@@ -9,13 +9,13 @@ export const generatePdf = async (req: Request, res: Response, next: NextFunctio
 
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
-  await page.goto('http://localhost:8080/invoices/1/print', {
+  await page.goto(`http://localhost:8080/invoices/${req.params.invoiceId}/print`, {
     waitUntil: 'networkidle2',
   });
   await page.waitForSelector('#print-content');
   await page.emulateMediaType('print');
 
-  const path = `/tmp/invoice-${Date.now()}.pdf`;
+  const path = `/tmp/lucky/invoice-${Date.now()}.pdf`;
 
   // Downlaod the PDF
   const pdfOptions: Record<string, any> = {
