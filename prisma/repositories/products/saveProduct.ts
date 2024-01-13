@@ -8,7 +8,6 @@ const prisma = new PrismaClient();
 export const saveProduct = async (product: Product): Promise<Product | null> => {
   try {
     product.sku = await getSku(product.productTypeId as number);
-    console.log('sku', product.sku)
     product.imagePath = product.imagePath ?? 'src/assets/no-image.jpg';
     const result = await prisma.product.create({
       data: product,
