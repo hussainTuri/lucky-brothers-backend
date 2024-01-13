@@ -7,7 +7,7 @@ export const getCustomers = async () => {
       orderBy: {
         id: 'desc',
       },
-      take: 5,
+      take: 50,
     });
     return customers;
   } catch (e) {
