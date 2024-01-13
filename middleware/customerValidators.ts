@@ -3,7 +3,6 @@ import { Request, Response, NextFunction } from 'express';
 import { response } from '../lib/response';
 import { createCustomerSchema, updateCustomerSchema } from '../lib/validators/';
 import { Customer } from '@prisma/client';
-import { toNumber } from '../lib/utils';
 
 export const extractCustomerData = (
   payload: Prisma.CustomerUncheckedUpdateInput | Prisma.CustomerUncheckedCreateInput,

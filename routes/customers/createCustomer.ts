@@ -1,11 +1,11 @@
 import { NextFunction, Request, Response } from 'express';
-import { createCustomer as createCustomerRepository } from '../../prisma/repositories/customers/';
+import { saveCustomer as saveCustomerRepository } from '../../prisma/repositories/customers/';
 import { response } from '../../lib/response';
 
 export const createCustomer = async (req: Request, res: Response, next: NextFunction) => {
   const resp = response();
 
-  const customer = await createCustomerRepository(req.body);
+  const customer = await saveCustomerRepository(req.body);
   if (customer === null) {
     resp.success = false;
     resp.message = 'Failed to create customer';

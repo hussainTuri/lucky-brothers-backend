@@ -5,9 +5,10 @@ import type { Product } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-export const createProduct = async (product: Product): Promise<Product | null> => {
+export const saveProduct = async (product: Product): Promise<Product | null> => {
   try {
     product.sku = await getSku(product.productTypeId as number);
+    console.log('sku', product.sku)
     product.imagePath = product.imagePath ?? 'src/assets/no-image.jpg';
     const result = await prisma.product.create({
       data: product,

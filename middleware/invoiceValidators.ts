@@ -2,7 +2,7 @@ import { Customer, Invoice, InvoiceItem, Prisma } from '@prisma/client';
 import { Request, Response, NextFunction, query } from 'express';
 import { response } from '../lib/response';
 import { createCustomerSchema, queryParamsSchema } from '../lib/validators/';
-import { createInvoiceSchema } from '../lib/validators/createInvoiceSchema';
+import { createInvoiceSchema } from '../lib/validators/invoiceCreateSchema';
 import { extractCustomerData } from './customerValidators';
 
 export const validateQueryParams = async (req: Request, res: Response, next: NextFunction) => {
