@@ -2,20 +2,19 @@ import { Prisma, PrismaClient } from '@prisma/client';
 import { QueryOptions, QuerySort } from '../../../types';
 import { getRelatedData } from './getRelatedData';
 
-if (process.env.NODE_ENV === 'development') {
-  const prisma = new PrismaClient({
-    log: [
-      {
-        emit: 'event',
-        level: 'query',
-      },
-    ],
-  });
-  prisma.$on('query', async (e: Prisma.QueryEvent) => {
-    console.log(`${e.query} ${e.params} duration: ${e.duration / 100}s`);
-    // console.log(`${e.query} duration: ${e.duration/100} s`);
-  });
-}
+const prisma = new PrismaClient();
+// const prisma = new PrismaClient({
+//   log: [
+//     {
+//       emit: 'event',
+//       level: 'query',
+//     },
+//   ],
+// });
+// prisma.$on('query', async (e: Prisma.QueryEvent) => {
+//   console.log(`${e.query} ${e.params} duration: ${e.duration / 100}s`);
+//   // console.log(`${e.query} duration: ${e.duration/100} s`);
+// });
 
 export const getInvoices = async (options: QueryOptions, sort: QuerySort) => {
   const today = new Date();

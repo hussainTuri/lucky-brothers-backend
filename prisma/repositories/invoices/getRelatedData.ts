@@ -1,7 +1,7 @@
 import { Prisma, PrismaClient } from '@prisma/client';
 import { InvoiceRelatedData } from '../../../types/';
+
 const prisma = new PrismaClient();
-import { response } from '../../../lib/response';
 
 export const getRelatedData = async () => {
   try {
