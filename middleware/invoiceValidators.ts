@@ -24,6 +24,9 @@ const extractInvoiceData = (payload: Partial<Invoice>) => {
     dueDate: payload.dueDate ?? null,
     statusId: payload.statusId ?? null,
     comment: payload.comment ?? null,
+    driverName: payload.driverName ?? null,
+    vehicleName: payload.vehicleName ?? null,
+    vehicleRegistrationNumber: payload.vehicleRegistrationNumber ?? null,
   };
 };
 const extractInvoiceItemData = (payload: Partial<InvoiceItem>) => {
@@ -42,7 +45,6 @@ export const normalizeCreateData = async (req: Request, res: Response, next: Nex
   let invoice = null;
   let items = null;
   let customer = null;
-  console.log('Unchanged req.body', req.body);
 
   if (invoicePayload) invoice = extractInvoiceData(invoicePayload);
   if (itemsPayload) items = itemsPayload.map((i) => extractInvoiceItemData(i));
@@ -55,7 +57,6 @@ export const normalizeCreateData = async (req: Request, res: Response, next: Nex
     customer = extractCustomerData(customerPayload);
 
   req.body = { ...req.body, invoice, items, customer };
-  console.log('normalized req.body', req.body);
   next();
 };
 
@@ -63,7 +64,6 @@ export const validateCreateInvoice = async (req: Request, res: Response, next: N
   const resp = response();
   const data = { ...req.body.invoice };
   data.items = req.body.items;
-  console.log('validated req.body', data);
   const { error } = createInvoiceSchema.validate(data, { allowUnknown: true });
   if (error) {
     resp.message = error.details[0].message || '';

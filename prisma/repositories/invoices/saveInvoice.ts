@@ -8,7 +8,6 @@ const prisma = new PrismaClient();
 export const saveInvoice = async (payload: InvoicePayload): Promise<Invoice | null> => {
   const { invoice, items, customer } = payload;
   let createdCustomer = null;
-  console.log('saving', invoice);
 
   const paidStatusId = (await getRelatedData()).statuses.find(
     (status) => status.statusName === 'Paid',
@@ -37,6 +36,9 @@ export const saveInvoice = async (payload: InvoicePayload): Promise<Invoice | nu
         dueDate: invoice.dueDate || new Date(),
         statusId: invoice.statusId!,
         comment: invoice.comment,
+        driverName: invoice.driverName,
+        vehicleName: invoice.vehicleName,
+        vehicleRegistrationNumber: invoice.vehicleRegistrationNumber,
         items: {
           createMany: {
             data: items.map((item) => ({
@@ -63,7 +65,6 @@ export const saveInvoice = async (payload: InvoicePayload): Promise<Invoice | nu
       },
     });
 
-    console.log('createdInvoice', createdInvoice);
     return createdInvoice;
   } catch (e) {
     console.error('DB error', e);
