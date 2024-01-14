@@ -65,6 +65,8 @@ export const saveInvoice = async (payload: InvoicePayload): Promise<Invoice | nu
       },
     });
 
+    // TODO: Update Stock quantity when you've added inventory tables
+
     return createdInvoice;
   } catch (e) {
     console.error('DB error', e);

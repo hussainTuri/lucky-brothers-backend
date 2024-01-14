@@ -2,7 +2,7 @@ import { Customer, Invoice, InvoiceItem, Prisma } from '@prisma/client';
 import { Request, Response, NextFunction, query } from 'express';
 import { response } from '../lib/response';
 import { createCustomerSchema, queryParamsSchema } from '../lib/validators/';
-import { createInvoiceSchema } from '../lib/validators/invoiceCreateSchema';
+import { createInvoiceSchema, updateInvoiceSchema } from '../lib/validators/';
 import { extractCustomerData } from './customerValidators';
 
 export const validateQueryParams = async (req: Request, res: Response, next: NextFunction) => {
@@ -59,6 +59,20 @@ export const normalizeCreateData = async (req: Request, res: Response, next: Nex
   req.body = { ...req.body, invoice, items, customer };
   next();
 };
+export const normalizeUpdateData = async (req: Request, res: Response, next: NextFunction) => {
+  const invoicePayload = req.body?.invoice as Partial<Invoice>;
+  const itemsPayload = req.body?.items as Partial<InvoiceItem>[];
+  let invoice = null;
+  let items = null;
+
+  if (invoicePayload) invoice = extractInvoiceData(invoicePayload) as Invoice;
+  if (itemsPayload) items = itemsPayload.map((i) => extractInvoiceItemData(i));
+
+  if (invoice) invoice.id = invoicePayload.id ?? 0;
+
+  req.body = { ...req.body, invoice, items };
+  next();
+};
 
 export const validateCreateInvoice = async (req: Request, res: Response, next: NextFunction) => {
   const resp = response();
@@ -79,5 +93,19 @@ export const validateCreateInvoice = async (req: Request, res: Response, next: N
       return res.status(400).json(resp);
     }
   }
+  next();
+};
+
+export const validateUpdateInvoice = async (req: Request, res: Response, next: NextFunction) => {
+  const resp = response();
+  const data = { ...req.body.invoice };
+  data.items = req.body.items;
+  const { error } = updateInvoiceSchema.validate(data, { allowUnknown: true });
+  if (error) {
+    resp.message = error.details[0].message || '';
+    resp.success = false;
+    return res.status(400).json(resp);
+  }
+
   next();
 };

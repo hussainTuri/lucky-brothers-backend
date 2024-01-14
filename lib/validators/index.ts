@@ -1,6 +1,7 @@
 export * from './productCreateSchema';
 export * from './productUpdateSchema';
 export * from './invoiceCreateSchema';
+export * from './invoiceUpdateSchema';
 export * from './invoiceQueryParamsSchema';
 export * from './customerCreateSchema';
 export * from './customerUpdateSchema';
