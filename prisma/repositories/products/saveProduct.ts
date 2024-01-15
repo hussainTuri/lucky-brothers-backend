@@ -3,7 +3,19 @@ import { ProductTypesEnum, ProductSkuPrefixEnum } from '../../../lib/enums';
 import { incrementSku } from '../../../lib/utils';
 import type { Product } from '@prisma/client';
 
-const prisma = new PrismaClient();
+// const prisma = new PrismaClient();
+const prisma = new PrismaClient({
+  log: [
+    {
+      emit: 'event',
+      level: 'query',
+    },
+  ],
+});
+prisma.$on('query', async (e: Prisma.QueryEvent) => {
+  console.log(`${e.query} ${e.params} duration: ${e.duration / 100}s`);
+  // console.log(`${e.query} duration: ${e.duration/100} s`);
+});
 
 export const saveProduct = async (product: Product): Promise<Product | null> => {
   try {
