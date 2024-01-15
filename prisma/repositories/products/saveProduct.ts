@@ -42,6 +42,8 @@ export const getSku = async (productTypeId: number) => {
       },
     });
 
+    console.log('first Product', result);
+
     if (!result) {
       return `${ProductSkuPrefixEnum[productTypeId]}-001`;
     }
