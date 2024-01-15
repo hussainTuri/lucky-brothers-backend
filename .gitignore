@@ -6,7 +6,6 @@ node_modules/
 coverage/
 docker-compose.override.yml
 dist/
-prisma/migrations/
 
 # IDE
 .build

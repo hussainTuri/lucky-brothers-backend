@@ -66,7 +66,12 @@ export const normalizeUpdateData = async (req: Request, res: Response, next: Nex
   let items = null;
 
   if (invoicePayload) invoice = extractInvoiceData(invoicePayload) as Invoice;
-  if (itemsPayload) items = itemsPayload.map((i) => extractInvoiceItemData(i));
+  if (itemsPayload)
+    items = itemsPayload.map((i) => {
+      const item = extractInvoiceItemData(i) as InvoiceItem;
+      if (i.id) item.id = i.id;
+      return item;
+    });
 
   if (invoice) invoice.id = invoicePayload.id ?? 0;
 

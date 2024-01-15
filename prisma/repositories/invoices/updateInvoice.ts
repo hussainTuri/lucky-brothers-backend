@@ -71,7 +71,7 @@ const updateDatabase = async (
 ) => {
   return prisma.$transaction(async (tx) => {
     // 1. upate existing items
-    const updatedItem = await upateItems.map(async (item) => {
+    await upateItems.map(async (item) => {
       return tx.invoiceItem.update({
         where: {
           id: item.id,
@@ -85,7 +85,7 @@ const updateDatabase = async (
     });
 
     // 2. create new items
-    const createdItem = await createItem.map(async (item) => {
+    await createItem.map(async (item) => {
       return tx.invoiceItem.create({
         data: {
           invoiceId: invoice.id,
@@ -98,7 +98,7 @@ const updateDatabase = async (
     });
 
     // 3. remove items
-    const removedItem = await removeItem.map(async (item) => {
+    await removeItem.map(async (item) => {
       return tx.invoiceItem.delete({
         where: {
           id: item.id,
@@ -109,7 +109,7 @@ const updateDatabase = async (
     // 4. update invoice
     const updatedInvoice = await tx.invoice.update({
       where: {
-        id: invoice.id + 888,
+        id: invoice.id,
       },
       data: {
         totalAmount: invoice.totalAmount,
