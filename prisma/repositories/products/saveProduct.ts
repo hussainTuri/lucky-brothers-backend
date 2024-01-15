@@ -35,7 +35,9 @@ export const getSku = async (productTypeId: number) => {
   try {
     const result = await prisma.product.findFirst({
       where: {
-        productTypeId: productTypeId,
+        sku: {
+          startsWith: ProductSkuPrefixEnum[productTypeId],
+        }
       },
       orderBy: {
         id: 'desc',

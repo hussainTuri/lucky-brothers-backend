@@ -9,7 +9,7 @@ export enum ProductTypesEnum {
 }
 
 export enum ProductSkuPrefixEnum {
-  TRY = 1,
+  TYR = 1,
   BAT = 2,
   FLT = 3,
   SVC = 4,
