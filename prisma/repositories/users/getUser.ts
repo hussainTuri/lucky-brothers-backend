@@ -3,19 +3,14 @@ import { extend } from 'joi';
 const prisma = new PrismaClient();
 
 export const getUser = async (id: number | string) => {
-  try {
-    const user = await prisma.user.findFirstOrThrow({
-      where: {
-        id: Number(id),
-      },
-    });
+  const user = await prisma.user.findFirstOrThrow({
+    where: {
+      id: Number(id),
+    },
+  });
 
-    return user;
-    // return exclude(user, ['password']);
-  } catch (e) {
-    console.error(e);
-    throw e;
-  }
+  // return exclude(user, ['password']);
+  return user;
 };
 
 // const exclude = <User, Key extends keyof User>(

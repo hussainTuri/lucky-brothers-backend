@@ -1,4 +1,5 @@
 import { ProductType } from '../../types';
+
 export const productTypes: ProductType[] = [
   {
     id: 1,
@@ -17,3 +18,5 @@ export const productTypes: ProductType[] = [
     name: 'Service',
   },
 ];
+
+export * from './messages';

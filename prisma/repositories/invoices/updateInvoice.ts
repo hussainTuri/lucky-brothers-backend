@@ -19,51 +19,43 @@ const prisma = new PrismaClient();
 
 export const updateInvoice = async (payload: InvoicePayload): Promise<Invoice | null> => {
   const { invoice, items } = payload;
-  const invoiceData = {} as Invoice;
-  const itemsData = [] as InvoiceItem[];
+  const dbInvoice = await prisma.invoice.findUnique({
+    where: {
+      id: invoice.id,
+    },
+    include: {
+      items: true,
+    },
+  });
 
-  try {
-    const dbInvoice = await prisma.invoice.findUnique({
-      where: {
-        id: invoice.id,
-      },
-      include: {
-        items: true,
-      },
-    });
-
-    if (!dbInvoice) {
-      throw new Error('رسید نہیں ملی');
-    }
-
-    // Find matching and new and removed items between db and payload
-    const matchingItems = items.filter((item) =>
-      dbInvoice.items.find((i) => i.id === item.id),
-    ) as InvoiceItem[];
-    const newItems = items.filter(
-      (item) => !dbInvoice.items.find((i) => i.id === item.id),
-    ) as InvoiceItem[];
-    const removedItems = dbInvoice.items.filter(
-      (item) => !items.find((i) => i.id === item.id),
-    ) as InvoiceItem[];
-
-    // TODO: Update Stock quantity when you've added inventory tables
-
-    const updatedInvoice = await updateDatabase(
-      invoice as Invoice,
-      matchingItems,
-      newItems,
-      removedItems,
-    );
-
-    return updatedInvoice;
-  } catch (e) {
-    console.error('DB error', e);
-    return null;
+  if (!dbInvoice) {
+    throw new Error('رسید نہیں ملی');
   }
+
+  // Find matching and new and removed items between db and payload
+  const matchingItems = items.filter((item) =>
+    dbInvoice.items.find((i) => i.id === item.id),
+  ) as InvoiceItem[];
+  const newItems = items.filter(
+    (item) => !dbInvoice.items.find((i) => i.id === item.id),
+  ) as InvoiceItem[];
+  const removedItems = dbInvoice.items.filter(
+    (item) => !items.find((i) => i.id === item.id),
+  ) as InvoiceItem[];
+
+  // TODO: Update Stock quantity when you've added inventory tables
+
+  const updatedInvoice = await updateInvoiceTransaction(
+    invoice as Invoice,
+    matchingItems,
+    newItems,
+    removedItems,
+  );
+
+  return updatedInvoice;
 };
 
-const updateDatabase = async (
+const updateInvoiceTransaction = async (
   invoice: Invoice,
   upateItems: InvoiceItem[],
   createItem: InvoiceItem[],
@@ -71,40 +63,46 @@ const updateDatabase = async (
 ) => {
   return prisma.$transaction(async (tx) => {
     // 1. upate existing items
-    await upateItems.map(async (item) => {
-      return tx.invoiceItem.update({
-        where: {
-          id: item.id,
-        },
-        data: {
-          quantity: item.quantity,
-          price: item.price,
-          subTotal: item.subTotal,
-        },
-      });
-    });
+    await Promise.all(
+      upateItems.map(async (item) => {
+        return tx.invoiceItem.update({
+          where: {
+            id: item.id,
+          },
+          data: {
+            quantity: item.quantity,
+            price: item.price,
+            subTotal: item.subTotal,
+          },
+        });
+      }),
+    );
 
     // 2. create new items
-    await createItem.map(async (item) => {
-      return tx.invoiceItem.create({
-        data: {
-          invoiceId: invoice.id,
-          productId: item.productId,
-          quantity: item.quantity ?? 0,
-          price: item.price ?? 0,
-          subTotal: item.subTotal ?? 0,
-        },
-      });
-    });
+    await Promise.all(
+      createItem.map(async (item) => {
+        return tx.invoiceItem.create({
+          data: {
+            invoiceId: invoice.id,
+            productId: item.productId,
+            quantity: item.quantity ?? 0,
+            price: item.price ?? 0,
+            subTotal: item.subTotal ?? 0,
+          },
+        });
+      }),
+    );
 
     // 3. remove items
-    await removeItem.map(async (item) => {
-      return tx.invoiceItem.delete({
-        where: {
-          id: item.id,
-        },
-      });
-    });
+    await Promise.all(
+      removeItem.map(async (item) => {
+        return tx.invoiceItem.delete({
+          where: {
+            id: item.id,
+          },
+        });
+      }),
+    );
 
     // 4. update invoice
     const updatedInvoice = await tx.invoice.update({

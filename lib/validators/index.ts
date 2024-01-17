@@ -8,3 +8,4 @@ export * from './customerUpdateSchema';
 export * from './userCreateSchema';
 export * from './userUpdateSchema';
 export * from './userLoginSchema';
+export * from './invoicePaymentCreateSchema';

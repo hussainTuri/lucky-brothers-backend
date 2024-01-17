@@ -4,6 +4,7 @@ import { response } from '../../lib/response';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { env } from 'process';
+import { messages } from '../../lib/constants';
 
 export const loginUser = async (req: Request, res: Response, next: NextFunction) => {
   const resp = response();
@@ -12,16 +13,10 @@ export const loginUser = async (req: Request, res: Response, next: NextFunction)
 
   try {
     user = await getUserByUsernameRepository(username);
-    if (user === null) {
-      resp.success = false;
-      resp.message = 'غلط صارف نام یا پاس ورڈ';
-      return res.status(400).json(resp);
-    }
-
     const passwordMatch = await bcrypt.compare(password, user.password);
     if (!passwordMatch) {
       resp.success = false;
-      resp.message = 'غلط صارف نام یا پاس ورڈ';
+      resp.message = messages.INVALID_CREDENTIALS;
       return res.status(400).json(resp);
     }
     delete (user as { password?: string }).password;
@@ -32,9 +27,10 @@ export const loginUser = async (req: Request, res: Response, next: NextFunction)
       algorithm: 'HS256',
     });
   } catch (e: any) {
+    console.error('DB Error', e);
     resp.success = false;
-    resp.message = e.message;
-    return res.status(400).json(resp);
+    resp.message = messages.INTERNAL_SERVER_ERROR;
+    return res.status(500).json(resp);
   }
 
   return res.json(resp);

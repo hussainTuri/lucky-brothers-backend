@@ -2,31 +2,28 @@ import { NextFunction, Request, Response } from 'express';
 import { saveUser as saveUserRepository } from '../../prisma/repositories/users';
 import { response } from '../../lib/response';
 import bcrypt from 'bcrypt';
+import { Prisma } from '@prisma/client';
+import { messages } from '../../lib/constants';
 
 export const registerUser = async (req: Request, res: Response, next: NextFunction) => {
   const resp = response();
-  let user = null;
-
   req.body.password = await bcrypt.hash(req.body.password, 10);
 
   try {
-    user = await saveUserRepository(req.body);
-    if (user === null) {
-      resp.success = false;
-      resp.message = 'Failed to create user';
-      return res.status(400).json(resp);
-    }
-
+    const user = await saveUserRepository(req.body);
     delete (user as { password?: string }).password;
+    resp.data = user;
   } catch (e: any) {
-    // we will only catch error we throw explicitly
-    console.log('Error', e);
-
+    console.error('DB Error', e);
     resp.success = false;
-    resp.message = e.message;
+    resp.message = messages.INTERNAL_SERVER_ERROR;
+    if (e instanceof Prisma.PrismaClientKnownRequestError) {
+      if (e.code === 'P2002') {
+        resp.message = messages.USERNAME_TAKEN;
+      }
+    }
     return res.status(400).json(resp);
   }
 
-  resp.data = user;
   return res.json(resp);
 };

@@ -37,30 +37,25 @@ export const getInvoices = async (options: QueryOptions, sort: QuerySort) => {
     ...(options?.today ? { createdAt: { gte: today } } : {}),
   });
 
-  try {
-    const invoices = await prisma.invoice.findMany({
-      include: {
-        items: {
-          include: {
-            product: true,
-          },
+  const invoices = await prisma.invoice.findMany({
+    include: {
+      items: {
+        include: {
+          product: true,
         },
-        customer: true,
-        payments: true,
       },
-      where: {
-        ...whereStatus,
-        ...whereToday,
-      },
-      orderBy: {
-        ...(sort.id && { id: sort.id }),
-        ...(sort.createdAt && { createdAt: sort.createdAt }),
-      },
-      take: options?.take || 1000,
-    });
-    return invoices;
-  } catch (e) {
-    console.error(e);
-    throw e;
-  }
+      customer: true,
+      payments: true,
+    },
+    where: {
+      ...whereStatus,
+      ...whereToday,
+    },
+    orderBy: {
+      ...(sort.id && { id: sort.id }),
+      ...(sort.createdAt && { createdAt: sort.createdAt }),
+    },
+    take: options?.take || 1000,
+  });
+  return invoices;
 };

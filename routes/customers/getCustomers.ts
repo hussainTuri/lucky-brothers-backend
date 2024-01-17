@@ -1,10 +1,19 @@
 import { NextFunction, Request, Response } from 'express';
 import { getCustomers as getCustomersRepository } from '../../prisma/repositories/customers';
 import { response } from '../../lib/response';
+import { messages } from '../../lib/constants';
 
 export const getCustomers = async (req: Request, res: Response, next: NextFunction) => {
   const resp = response();
 
-  resp.data = await getCustomersRepository();
+  try {
+    resp.data = await getCustomersRepository();
+  } catch (error) {
+    console.error('DB Error', error);
+    resp.success = false;
+    resp.message = messages.INTERNAL_SERVER_ERROR;
+    return res.status(500).json(resp);
+  }
+
   return res.json(resp);
 };

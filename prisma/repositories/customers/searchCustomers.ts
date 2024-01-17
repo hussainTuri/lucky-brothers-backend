@@ -15,23 +15,18 @@ export const searchCustomers = async (query: SearchQuery) => {
     ...(query.customerPhone ? { phone: { startsWith: query.customerPhone } } : {}),
   });
 
-  try {
-    const customers = await prisma.customer.findMany({
-      where: {
-        OR: [whereNameContains, wherePhoneStartsWith],
+  const customers = await prisma.customer.findMany({
+    where: {
+      OR: [whereNameContains, wherePhoneStartsWith],
+    },
+    orderBy: {
+      _relevance: {
+        fields: ['customerName'],
+        search: query.customerName ?? '',
+        sort: 'asc',
       },
-      orderBy: {
-        _relevance: {
-          fields: ['customerName'],
-          search: query.customerName ?? '',
-          sort: 'asc',
-        },
-      },
-      take: query.take,
-    });
-    return customers;
-  } catch (e) {
-    console.error(e);
-    throw e;
-  }
+    },
+    take: query.take,
+  });
+  return customers;
 };

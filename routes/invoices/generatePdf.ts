@@ -1,5 +1,4 @@
 import { NextFunction, Request, Response } from 'express';
-import { getInvoice as getInvoiceRepository } from '../../prisma/repositories/invoices/';
 import { response } from '../../lib/response';
 import puppeteer from 'puppeteer';
 import fs from 'fs';
