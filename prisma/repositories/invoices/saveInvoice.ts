@@ -1,4 +1,4 @@
-import { Prisma, PrismaClient } from '@prisma/client';
+import { PrismaClient } from '@prisma/client';
 import type { Customer, Invoice } from '@prisma/client';
 import { getRelatedData } from './getRelatedData';
 import { InvoicePayload } from '../../../types';
@@ -23,7 +23,7 @@ export const saveInvoice = async (payload: InvoicePayload): Promise<Invoice | nu
     data: {
       customerId: invoice?.customerId || createdCustomer?.id || null,
       totalAmount: invoice.totalAmount!,
-      dueDate: invoice.dueDate || new Date(),
+      dueDate: invoice.dueDate || null,
       statusId: invoice.statusId!,
       comment: invoice.comment,
       driverName: invoice.driverName,

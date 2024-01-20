@@ -28,8 +28,11 @@ export const getInvoices = async (options: QueryOptions, sort: QuerySort) => {
     ...(options?.status && options.status === 'paid'
       ? { statusId: relatedData.statuses.find((i) => i.statusName === 'Paid')?.id }
       : {}),
+  });
+
+  const whereOverdue = Prisma.validator<Prisma.InvoiceWhereInput>()({
     ...(options?.status && options.status === 'overdue'
-      ? { statusId: relatedData.statuses.find((i) => i.statusName === 'Overdue')?.id }
+      ? { dueDate: { lt: today, not: null } }
       : {}),
   });
 
@@ -50,6 +53,7 @@ export const getInvoices = async (options: QueryOptions, sort: QuerySort) => {
     where: {
       ...whereStatus,
       ...whereToday,
+      ...whereOverdue,
     },
     orderBy: {
       ...(sort.id && { id: sort.id }),

@@ -8,7 +8,6 @@ import { extractCustomerData } from './customerValidators';
 export const validateQueryParams = async (req: Request, res: Response, next: NextFunction) => {
   const resp = response();
   const { error } = queryParamsSchema.validate(req.query, { allowUnknown: true });
-  console.log('error', error);
   if (error) {
     resp.message = error.details[0].message || '';
     resp.success = false;

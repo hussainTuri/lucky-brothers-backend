@@ -74,9 +74,11 @@ model Invoice {
   id Int @id @default(autoincrement())
   customerId Int? @db.Int
   totalAmount Int @db.Int
-  dueDate DateTime @db.DateTime
+  dueDate DateTime? @db.DateTime
   statusId Int @db.Int
   comment String? @db.VarChar(255)
+  canceledAt DateTime? @db.DateTime
+  refundedAt DateTime? @db.DateTime
   driverName String? @db.VarChar(255)
   vehicleName String? @db.VarChar(255)
   vehicleRegistrationNumber String? @db.VarChar(255)

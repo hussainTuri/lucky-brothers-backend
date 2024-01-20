@@ -17,7 +17,7 @@ const generateFakeInvoice = (customerId?: number) => {
     customerId: customerId || faker.number.int({ min: 1, max: maxRecords.customers }),
     totalAmount: faker.number.int({ min: 100, max: 1000 }),
     dueDate: faker.date.future(),
-    statusId: faker.number.int({ min: 1, max: 5 }),
+    statusId: faker.number.int({ min: 1, max: 4 }),
     comment: faker.lorem.sentence(),
   };
 };
@@ -78,7 +78,7 @@ const generateFakeInvoicePayment = (invoiceId: number, totalAmount: number) => {
 
 export const seedInvoices = async () => {
   // See Invoice Statuses
-  const invoiceStatuses = ['Pending', 'Paid', 'Overdue', 'Cancelled', 'Refunded'];
+  const invoiceStatuses = ['Pending', 'Paid', 'Cancelled', 'Refunded'];
   await prisma.invoiceStatus.createMany({
     data: invoiceStatuses.map((statusName) => generateFakeInvoiceStatus(statusName)),
   });
@@ -109,6 +109,5 @@ export const seedInvoices = async () => {
 
 // 1. Pending: The invoice has been sent to the customer but has not been paid yet.
 // 2. Paid: The customer has made the payment, and the invoice is considered settled.
-// 3. Overdue: The payment for the invoice is past the due date.
 // 4. Canceled: The invoice has been canceled, possibly due to an error or change in circumstances.
 // 5. Refunded: The payment for the invoice has been refunded to the customer.

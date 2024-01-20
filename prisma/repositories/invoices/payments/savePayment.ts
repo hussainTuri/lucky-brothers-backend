@@ -3,7 +3,6 @@ import type { Invoice, InvoicePayment } from '@prisma/client';
 import { InvoiceIncludeOptions } from '../../../../types/includeOptions';
 import { getInvoice } from '../getInvoice';
 import { getRelatedData } from '../getRelatedData';
-import { stat } from 'fs';
 
 const prisma = new PrismaClient();
 
@@ -30,7 +29,7 @@ const savePaymentTransaction = async (invoice: Invoice, payment: InvoicePayment)
     await tx.invoicePayment.create({
       data: payment,
     });
-console.log('payment', payment);
+
     // 2 update invoice status
     await tx.invoice.update({
       where: {
@@ -42,4 +41,3 @@ console.log('payment', payment);
     });
   });
 };
-
