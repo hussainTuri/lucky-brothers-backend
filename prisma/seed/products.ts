@@ -1,4 +1,4 @@
-import { PrismaClient, Prisma, Product, InvoiceItem } from '@prisma/client';
+import { PrismaClient, Prisma } from '@prisma/client';
 import { faker } from '@faker-js/faker';
 import { maxRecords } from './seed';
 
@@ -62,5 +62,15 @@ export const seedProducts = async () => {
     // Seed PriceHistory
     const priceHistories = productIds.map((product: any) => generateFakePriceHistory(product.id));
     await prisma.priceHistory.createMany({ data: priceHistories });
+
+    // Seed Inventory
+    const inventory = productIds.map((product: any) =>  {
+      return {
+        productId: product.id,
+        quantity: faker.number.int({ min: 10, max: 100 }),
+        reason: faker.lorem.sentence(),
+      };
+    });
+    await prisma.inventory.createMany({ data: inventory });
   }
 };
