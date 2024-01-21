@@ -64,7 +64,7 @@ export const seedProducts = async () => {
     await prisma.priceHistory.createMany({ data: priceHistories });
 
     // Seed Inventory
-    const inventory = productIds.map((product: any) =>  {
+    const inventory = productIds.map((product: any) => {
       return {
         productId: product.id,
         quantity: faker.number.int({ min: 10, max: 100 }),

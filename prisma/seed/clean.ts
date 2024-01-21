@@ -21,7 +21,7 @@ const seedDatabase = async () => {
       try {
         transactions.push(prisma.$executeRawUnsafe(`TRUNCATE ${name};`));
       } catch (error) {
-        console.log({ error });
+        console.error({ error });
       }
     }
 
@@ -29,7 +29,7 @@ const seedDatabase = async () => {
       await prisma.$transaction(transactions);
       transactions.push(prisma.$executeRaw`SET FOREIGN_KEY_CHECKS = 1;`);
     } catch (error) {
-      console.log({ error });
+      console.error({ error });
     } finally {
       transactions.push(prisma.$executeRaw`SET FOREIGN_KEY_CHECKS = 1;`);
     }

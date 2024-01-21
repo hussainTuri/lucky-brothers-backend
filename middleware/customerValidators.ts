@@ -34,7 +34,6 @@ export const normalizeUpdateData = async (req: Request, res: Response, next: Nex
 export const validateCreateCustomer = async (req: Request, res: Response, next: NextFunction) => {
   const resp = response();
   const { error } = createCustomerSchema.validate(req.body, { allowUnknown: true });
-  console.log('error', error);
   if (error) {
     resp.message = error.details[0].message || '';
     resp.success = false;

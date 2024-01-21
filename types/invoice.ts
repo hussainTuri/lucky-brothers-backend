@@ -1,4 +1,10 @@
-import { Customer, Invoice, InvoiceItem, InvoiceStatus, Prisma } from '@prisma/client';
+import {
+  Customer,
+  Invoice,
+  InvoiceItem,
+  InvoiceStatus,
+  Invoice as PrismaInvoice,
+} from '@prisma/client';
 
 export interface InvoiceRelatedData {
   statuses: InvoiceStatus[];
@@ -22,3 +28,12 @@ export interface InvoicePayload {
   items: Partial<InvoiceItem>[];
   customer: Partial<Customer>;
 }
+
+export interface AccumulatedQuantity {
+  productId: number;
+  quantity: number;
+}
+
+export type InvoiceWithRelations = PrismaInvoice & {
+  items?: InvoiceItem[];
+};

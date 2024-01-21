@@ -1,6 +1,8 @@
 import { PrismaClient } from '@prisma/client';
 import type { Invoice, InvoiceItem } from '@prisma/client';
 import { getRelatedData } from './getRelatedData';
+import { updateStockQuantity } from './common';
+import { InvoiceWithRelations } from '../../../types';
 
 const prisma = new PrismaClient();
 // const prisma = new PrismaClient({
@@ -35,21 +37,28 @@ export const cancelInvoice = async (id: number): Promise<Invoice | null> => {
   return updatedInvoice;
 };
 
-const updateInvoiceTransaction = async (invoice: Invoice) => {
+const updateInvoiceTransaction = async (invoice: InvoiceWithRelations) => {
   return prisma.$transaction(async (tx) => {
     const data = await getRelatedData();
-    // 1. TODO: Update Stock quantity when you've added inventory tables
 
-    // 2. update invoice
+    // 1. update invoice
     const updatedInvoice = await tx.invoice.update({
       where: {
         id: invoice.id,
       },
       data: {
         statusId: data.statuses.find((i) => i.statusName === 'Cancelled')?.id!,
-        canceledAt: new Date(),
+        cancelledAt: new Date(),
       },
     });
+
+    // 2. update stock quantity
+    await Promise.all(
+      invoice.items!.map(async (item) => {
+        const reason = `Invoice #${invoice.id} - Products returned (cancelled) - Qty: ${item.quantity}`;
+        await updateStockQuantity(tx, item.productId, item.quantity, invoice.id, reason);
+      }),
+    );
 
     return updatedInvoice;
   });

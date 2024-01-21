@@ -1,7 +1,8 @@
-import { Prisma, PrismaClient } from '@prisma/client';
-import type { Customer, Invoice, InvoiceItem } from '@prisma/client';
+import { PrismaClient } from '@prisma/client';
+import type { Invoice as PrismaInvoice, InvoiceItem } from '@prisma/client';
+import { AccumulatedQuantity, InvoicePayload, InvoiceWithRelations } from '../../../types';
+import { updateStockQuantity } from './common';
 import { getRelatedData } from './getRelatedData';
-import { InvoicePayload } from '../../../types';
 
 const prisma = new PrismaClient();
 // const prisma = new PrismaClient({
@@ -17,7 +18,7 @@ const prisma = new PrismaClient();
 //   // console.log(`${e.query} duration: ${e.duration/100} s`);
 // });
 
-export const updateInvoice = async (payload: InvoicePayload): Promise<Invoice | null> => {
+export const updateInvoice = async (payload: InvoicePayload): Promise<PrismaInvoice | null> => {
   const { invoice, items } = payload;
   const dbInvoice = await prisma.invoice.findUnique({
     where: {
@@ -36,9 +37,11 @@ export const updateInvoice = async (payload: InvoicePayload): Promise<Invoice | 
   const matchingItems = items.filter((item) =>
     dbInvoice.items.find((i) => i.id === item.id),
   ) as InvoiceItem[];
+
   const newItems = items.filter(
     (item) => !dbInvoice.items.find((i) => i.id === item.id),
   ) as InvoiceItem[];
+
   const removedItems = dbInvoice.items.filter(
     (item) => !items.find((i) => i.id === item.id),
   ) as InvoiceItem[];
@@ -46,25 +49,36 @@ export const updateInvoice = async (payload: InvoicePayload): Promise<Invoice | 
   // TODO: Update Stock quantity when you've added inventory tables
 
   const updatedInvoice = await updateInvoiceTransaction(
-    invoice as Invoice,
+    invoice as PrismaInvoice,
     matchingItems,
     newItems,
     removedItems,
+    dbInvoice,
   );
 
   return updatedInvoice;
 };
 
 const updateInvoiceTransaction = async (
-  invoice: Invoice,
-  upateItems: InvoiceItem[],
+  invoice: PrismaInvoice,
+  updateItems: InvoiceItem[],
   createItem: InvoiceItem[],
   removeItem: InvoiceItem[],
+  invoiceBeforeUpdate: InvoiceWithRelations,
 ) => {
   return prisma.$transaction(async (tx) => {
+    let stockQuantityPendingUpdate = [] as AccumulatedQuantity[];
     // 1. upate existing items
     await Promise.all(
-      upateItems.map(async (item) => {
+      updateItems.map(async (item) => {
+        const qtyBeforeUpdate =
+          invoiceBeforeUpdate.items?.find((i: InvoiceItem) => i.id === item.id)?.quantity || 0;
+        if (qtyBeforeUpdate !== item.quantity) {
+          stockQuantityPendingUpdate.push({
+            productId: item.productId,
+            quantity: qtyBeforeUpdate - item.quantity,
+          });
+        }
         return tx.invoiceItem.update({
           where: {
             id: item.id,
@@ -81,6 +95,11 @@ const updateInvoiceTransaction = async (
     // 2. create new items
     await Promise.all(
       createItem.map(async (item) => {
+        stockQuantityPendingUpdate.push({
+          productId: item.productId,
+          quantity: -item.quantity,
+        });
+
         return tx.invoiceItem.create({
           data: {
             invoiceId: invoice.id,
@@ -96,6 +115,11 @@ const updateInvoiceTransaction = async (
     // 3. remove items
     await Promise.all(
       removeItem.map(async (item) => {
+        stockQuantityPendingUpdate.push({
+          productId: item.productId,
+          quantity: item.quantity,
+        });
+
         return tx.invoiceItem.delete({
           where: {
             id: item.id,
@@ -103,6 +127,14 @@ const updateInvoiceTransaction = async (
         });
       }),
     );
+
+    // if totalAmount is changed, update invoice status to pending
+    const pendingStatusId = (await getRelatedData()).statuses.find(
+      (status) => status.statusName === 'Pending',
+    )?.id;
+    if (invoiceBeforeUpdate.totalAmount < invoice.totalAmount) {
+      invoice.statusId = pendingStatusId || 0;
+    }
 
     // 4. update invoice
     const updatedInvoice = await tx.invoice.update({
@@ -120,6 +152,35 @@ const updateInvoiceTransaction = async (
       },
     });
 
+    // 5. update stock quantity
+    const accumulatedQuantities = accumulateQuantities(stockQuantityPendingUpdate);
+    await Promise.all(
+      accumulatedQuantities.map(async (item) => {
+        const reason = `Invoice #${
+          invoice.id
+        } - Products Sold (Update Invoice)  - Qty: ${item.quantity!}`;
+        await updateStockQuantity(tx, item.productId!, item.quantity!, invoice.id, reason);
+      }),
+    );
+
     return updatedInvoice;
   });
+};
+
+const accumulateQuantities = (stockPendingUpdates: AccumulatedQuantity[]) => {
+  const accumulatedQuantities = [] as AccumulatedQuantity[];
+
+  for (const pendingUpdate of stockPendingUpdates) {
+    const { productId, quantity } = pendingUpdate;
+
+    const existingEntry = accumulatedQuantities.find((entry) => entry.productId === productId);
+
+    if (existingEntry) {
+      existingEntry.quantity += quantity;
+    } else {
+      accumulatedQuantities.push({ productId, quantity });
+    }
+  }
+
+  return accumulatedQuantities;
 };

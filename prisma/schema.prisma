@@ -87,7 +87,7 @@ model Invoice {
   dueDate DateTime? @db.DateTime
   statusId Int @db.Int
   comment String? @db.VarChar(255)
-  canceledAt DateTime? @db.DateTime
+  cancelledAt DateTime? @db.DateTime
   refundedAt DateTime? @db.DateTime
   driverName String? @db.VarChar(255)
   vehicleName String? @db.VarChar(255)

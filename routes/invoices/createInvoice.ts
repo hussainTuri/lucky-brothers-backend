@@ -15,7 +15,7 @@ export const createInvoice = async (req: Request, res: Response, next: NextFunct
     resp.message = messages.INTERNAL_SERVER_ERROR;
     if (e instanceof Prisma.PrismaClientKnownRequestError) {
       if (e.code === 'P2002') {
-        resp.message = messages.PHONE_EXISTS;
+        resp.message = messages.PHONE_EXISTS; // customer phone error while also saving customer
       }
     }
     return res.status(400).json(resp);

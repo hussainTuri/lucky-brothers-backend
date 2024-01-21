@@ -18,13 +18,17 @@ import { refundInvoice } from './refundInvoice';
 import { cancelInvoice } from './cancelInvoice';
 
 const router = express.Router();
+
+// CAUTION: The order of the routes is important - if /related-data is place under /:invoiceId,
+//  it will be treated as an invoiceId and route /:invoiceId will be called instead
+
+// Related data
+router.get('/related-data', authenticate, getRelatedData);
+
 router.get('/', authenticate, validateQueryParams, getInvoices);
 router.post('/', authenticate, normalizeCreateData, validateCreateInvoice, createInvoice);
 router.get('/:invoiceId', authenticate, getInvoice);
 router.put('/:invoiceId', authenticate, normalizeUpdateData, validateUpdateInvoice, updateInvoice);
-
-// Related data
-router.get('/related-data', authenticate, getRelatedData);
 
 // Payments
 router.use('/:invoiceId/payments', paymentRoutes);
