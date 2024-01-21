@@ -3,6 +3,7 @@ import type { Customer, Invoice, InvoiceItem } from '@prisma/client';
 import { getRelatedData } from './getRelatedData';
 import { InvoicePayload } from '../../../types';
 import { updateStockQuantity } from './common';
+import { UCFirst } from '../../../lib/utils';
 
 const prisma = new PrismaClient();
 
@@ -25,6 +26,7 @@ const saveInvoiceTransaction = async (
 
     // 1. Create Customer
     if (customer) {
+      customer.customerName = UCFirst(customer.customerName!);
       createdCustomer = await tx.customer.create({
         data: customer as Customer,
       });
