@@ -66,6 +66,7 @@ model Inventory {
   reason String @db.VarChar(255)
   product Product @relation(fields: [productId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   createdAt DateTime @default(now())
+  @@index([createdAt])
 }
 
 model Customer {
@@ -98,6 +99,9 @@ model Invoice {
   items InvoiceItem[]
   payments InvoicePayment[]
   status InvoiceStatus @relation(fields: [statusId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  @@index([dueDate])
+  @@index([createdAt])
+  @@index([updatedAt])
 }
 
 model InvoiceItem {
@@ -129,6 +133,8 @@ model InvoicePayment {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   invoice Invoice @relation(fields: [invoiceId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  @@index([createdAt])
+  @@index([updatedAt])
  }
 
 model User {
