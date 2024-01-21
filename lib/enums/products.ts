@@ -6,6 +6,9 @@ export enum ProductTypesEnum {
   Battery = 2,
   Filter = 3,
   Service = 4,
+  Oil = 5,
+  Tube = 6,
+  Langoti = 7,
 }
 
 export enum ProductSkuPrefixEnum {
@@ -13,4 +16,7 @@ export enum ProductSkuPrefixEnum {
   BAT = 2,
   FLT = 3,
   SVC = 4,
+  OIL = 5,
+  TUB = 6,
+  LNG = 7,
 }

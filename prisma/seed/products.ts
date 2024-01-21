@@ -44,7 +44,7 @@ const generateFakePriceHistory = (productId: number) => {
 
 export const seedProducts = async () => {
   // Seed ProductTypes
-  const productTypes = ['Tyre', 'Battery', 'Filter', 'Service'];
+  const productTypes = ['Tyre', 'Battery', 'Filter', 'Service', 'Oil', 'Tube', 'Langoti'];
   const createdProductTypes = await prisma.productType.createMany({
     data: productTypes.map((typeName) => generateFakeProductType(typeName)),
   });
