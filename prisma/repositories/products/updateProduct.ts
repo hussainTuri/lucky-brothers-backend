@@ -1,6 +1,5 @@
-import { Prisma, PrismaClient } from '@prisma/client';
-import { ProductTypesEnum, ProductSkuPrefixEnum } from '../../../lib/enums';
-import { incrementSku } from '../../../lib/utils';
+import { PrismaClient } from '@prisma/client';
+import { UCFirst, incrementSku } from '../../../lib/utils';
 import type { Product } from '@prisma/client';
 
 const prisma = new PrismaClient();
@@ -11,6 +10,7 @@ export const updateProduct = async (product: Product): Promise<Product | null> =
   delete updateData.createdAt;
   delete updateData.updatedAt;
   delete updateData.sku;
+  product.productName = UCFirst(product.productName);
 
   const result = await prisma.product.update({
     where: {

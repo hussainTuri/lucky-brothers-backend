@@ -18,6 +18,6 @@ export const incrementSku = (sku: string): string => {
 export const UCFirst = (inputString: string): string => {
   return inputString
     .split(' ')
-    .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
     .join(' ');
-}
+};
