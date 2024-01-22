@@ -1,6 +1,5 @@
-import { Prisma, PrismaClient } from '@prisma/client';
+import { PrismaClient } from '@prisma/client';
 import type { Customer } from '@prisma/client';
-import { UCFirst } from '../../../lib/utils';
 
 const prisma = new PrismaClient();
 
@@ -9,7 +8,7 @@ export const updateCustomer = async (customer: Customer): Promise<Customer | nul
   delete updateData.id;
   delete updateData.createdAt;
   delete updateData.updatedAt;
-  updateData.customerName = UCFirst(updateData.customerName);
+  updateData.customerName = updateData.customerName;
 
   const result = await prisma.customer.update({
     where: {

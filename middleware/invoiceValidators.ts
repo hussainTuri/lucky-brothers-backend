@@ -4,6 +4,7 @@ import { response } from '../lib/response';
 import { createCustomerSchema, queryParamsSchema } from '../lib/validators/';
 import { createInvoiceSchema, updateInvoiceSchema } from '../lib/validators/';
 import { extractCustomerData } from './customerValidators';
+import { UCFirst, UCFirstLCRest, trimSpaces } from '../lib/utils';
 
 export const validateQueryParams = async (req: Request, res: Response, next: NextFunction) => {
   const resp = response();
@@ -23,9 +24,9 @@ const extractInvoiceData = (payload: Partial<Invoice>) => {
     dueDate: payload.dueDate ?? null,
     statusId: payload.statusId ?? null,
     comment: payload.comment ?? null,
-    driverName: payload.driverName ?? null,
-    vehicleName: payload.vehicleName ?? null,
-    vehicleRegistrationNumber: payload.vehicleRegistrationNumber ?? null,
+    driverName: UCFirstLCRest(trimSpaces((payload.driverName as string) ?? null)),
+    vehicleName: UCFirst(trimSpaces((payload.vehicleName as string) ?? null)),
+    vehicleRegistrationNumber: trimSpaces((payload.vehicleRegistrationNumber as string) ?? null),
   };
 };
 const extractInvoiceItemData = (payload: Partial<InvoiceItem>) => {

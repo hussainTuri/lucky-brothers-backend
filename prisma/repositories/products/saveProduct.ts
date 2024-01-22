@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import { ProductSkuPrefixEnum } from '../../../lib/enums';
-import { UCFirst, incrementSku } from '../../../lib/utils';
+import { incrementSku } from '../../../lib/utils';
 import type { Product } from '@prisma/client';
 
 const prisma = new PrismaClient();
@@ -20,7 +20,7 @@ const prisma = new PrismaClient();
 export const saveProduct = async (product: Product): Promise<Product | null> => {
   product.sku = await getSku(product.productTypeId as number);
   product.imagePath = product.imagePath ?? 'src/assets/no-image.jpg';
-  product.productName = UCFirst(product.productName);
+  product.productName = product.productName;
   const result = await prisma.product.create({
     data: product,
   });

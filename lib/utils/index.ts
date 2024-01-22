@@ -15,9 +15,25 @@ export const incrementSku = (sku: string): string => {
   return sku;
 };
 
-export const UCFirst = (inputString: string): string => {
+export const UCFirstLCRest = (inputString: string): string => {
+  if (typeof inputString !== 'string') return inputString;
+
   return inputString
     .split(' ')
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
     .join(' ');
+};
+
+export const UCFirst = (inputString: string): string => {
+  if (typeof inputString !== 'string') return inputString;
+
+  return inputString
+    .split(' ')
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
+};
+
+export const trimSpaces = (inputString: string): string => {
+  if (typeof inputString !== 'string') return inputString;
+  return inputString.replace(/\s+/g, ' ').trim();
 };

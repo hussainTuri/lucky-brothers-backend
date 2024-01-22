@@ -2,11 +2,12 @@ import { User } from '@prisma/client';
 import { Request, Response, NextFunction } from 'express';
 import { response } from '../lib/response';
 import { createUserSchema, loginUserSchema, updateUserSchema } from '../lib/validators/';
+import { UCFirstLCRest, trimSpaces } from '../lib/utils';
 
 export const extractUserData = (payload: Partial<User>) => {
   return {
-    fullName: payload.fullName ?? null,
-    username: payload.username ?? null,
+    fullName: UCFirstLCRest(trimSpaces((payload.fullName as string) ?? null)),
+    username: trimSpaces((payload.username as string) ?? null),
     password: payload.password ?? null,
     phone: payload.phone ?? null,
     address: payload.address ?? null,

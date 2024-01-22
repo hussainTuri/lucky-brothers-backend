@@ -3,17 +3,17 @@ import { Request, Response, NextFunction } from 'express';
 import { response } from '../lib/response';
 import { createProductSchema, updateProductSchema } from '../lib/validators/';
 import { Product } from '@prisma/client';
-import { toNumber } from '../lib/utils';
+import { UCFirst, toNumber, trimSpaces } from '../lib/utils';
 
 const extractProductData = (
   payload: Prisma.ProductUncheckedUpdateInput | Prisma.ProductUncheckedCreateInput,
 ) => {
   return {
-    productName: payload.productName,
+    productName: UCFirst(trimSpaces((payload.productName as string) ?? null)),
     productTypeId: payload.productTypeId,
     sku: payload.sku ?? null,
     stockQuantity: toNumber(payload.stockQuantity, 0),
-    manufacturer: payload.manufacturer ?? null,
+    manufacturer: UCFirst(trimSpaces((payload.manufacturer as string) ?? null)),
     manufacturingYear: toNumber(payload.manufacturingYear),
     imagePath: payload.imagePath ?? null,
     size: payload.size ?? null,

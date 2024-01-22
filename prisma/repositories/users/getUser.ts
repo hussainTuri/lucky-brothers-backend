@@ -1,5 +1,4 @@
 import { PrismaClient, type User } from '@prisma/client';
-import { extend } from 'joi';
 const prisma = new PrismaClient();
 
 export const getUser = async (id: number | string) => {

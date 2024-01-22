@@ -3,14 +3,15 @@ import { Request, Response, NextFunction } from 'express';
 import { response } from '../lib/response';
 import { createCustomerSchema, updateCustomerSchema } from '../lib/validators/';
 import { Customer } from '@prisma/client';
+import { UCFirstLCRest, trimSpaces } from '../lib/utils';
 
 export const extractCustomerData = (
   payload: Prisma.CustomerUncheckedUpdateInput | Prisma.CustomerUncheckedCreateInput,
 ) => {
   return {
-    customerName: payload.customerName ?? null,
+    customerName: UCFirstLCRest(trimSpaces((payload.customerName as string) ?? null)),
     email: payload.email ?? null,
-    phone: payload.phone ?? null,
+    phone: trimSpaces((payload.phone as string) ?? null),
     address: payload.address ?? null,
     imagePath: payload.imagePath ?? null,
   };
