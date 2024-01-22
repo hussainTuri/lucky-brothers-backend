@@ -17,7 +17,7 @@ export const updateStockQuantity = async (
   >,
   productId: number,
   quantitySold: number,
-  invoiceId: number,
+  invoiceId?: number,
   reason?: string,
 ): Promise<void> => {
   const dbProduct = await tx.product.findUnique({

@@ -13,6 +13,7 @@ import {
 import multer from 'multer';
 import path from 'path';
 import { authenticate } from '../../middleware/authenticate';
+import inventoryRoutes from './inventory';
 
 const storage = multer.diskStorage({
   destination: (req: Request, file: Express.Multer.File, cb) => {
@@ -33,5 +34,8 @@ router.post('/image', authenticate, upload.single('image'), uploadImage);
 router.get('/:productId', authenticate, getProduct);
 router.put('/:productId', authenticate, normalizeUpdateData, validateUpdateProduct, updateProduct);
 // router.get('/related-data', getProductRelatedData); // return product types and so for client to cache
+
+// Payments
+router.use('/:productId/inventory', inventoryRoutes);
 
 export default router;
