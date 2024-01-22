@@ -28,6 +28,12 @@ export const getInvoices = async (options: QueryOptions, sort: QuerySort) => {
     ...(options?.status && options.status === 'paid'
       ? { statusId: relatedData.statuses.find((i) => i.statusName === 'Paid')?.id }
       : {}),
+    ...(options?.status && options.status === 'cancelled'
+      ? { statusId: relatedData.statuses.find((i) => i.statusName === 'Cancelled')?.id }
+      : {}),
+    ...(options?.status && options.status === 'refunded'
+      ? { statusId: relatedData.statuses.find((i) => i.statusName === 'Refunded')?.id }
+      : {}),
   });
 
   const whereOverdue = Prisma.validator<Prisma.InvoiceWhereInput>()({

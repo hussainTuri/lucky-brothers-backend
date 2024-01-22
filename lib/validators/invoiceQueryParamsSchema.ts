@@ -4,6 +4,6 @@ export const queryParamsSchema = Joi.object({
   sort: Joi.string()
     .pattern(/^(id|createdAt),(asc|desc)$/)
     .optional(),
-  status: Joi.string().valid('paid', 'pending', 'overdue').optional(),
+  status: Joi.string().valid('paid', 'pending', 'overdue', 'cancelled', 'refunded').optional(),
   take: Joi.number().integer().min(1).max(1000).optional(),
 });

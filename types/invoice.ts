@@ -10,7 +10,7 @@ export interface InvoiceRelatedData {
   statuses: InvoiceStatus[];
 }
 
-export type QueryInvoiceStatus = 'pending' | 'paid' | 'overdue';
+export type QueryInvoiceStatus = 'pending' | 'paid' | 'overdue' | 'cancelled' | 'refunded';
 export interface QueryOptions {
   status?: QueryInvoiceStatus;
   today?: boolean;
