@@ -16,6 +16,9 @@ export const getCustomer = async (id: number | string) => {
           },
           payments: true,
         },
+        orderBy: {
+          id: 'desc',
+        },
       },
     },
   });
