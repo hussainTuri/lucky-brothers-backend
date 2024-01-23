@@ -91,6 +91,7 @@ CREATE TABLE `Invoice` (
     `driverName` VARCHAR(255) NULL,
     `vehicleName` VARCHAR(255) NULL,
     `vehicleRegistrationNumber` VARCHAR(255) NULL,
+    `profit` INTEGER NULL DEFAULT 0,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
 

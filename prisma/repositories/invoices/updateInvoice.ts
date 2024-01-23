@@ -1,8 +1,9 @@
 import { PrismaClient } from '@prisma/client';
 import type { Invoice as PrismaInvoice, InvoiceItem } from '@prisma/client';
 import { AccumulatedQuantity, InvoicePayload, InvoiceWithRelations } from '../../../types';
-import { updateStockQuantity } from './common';
+import { getProfit, updateStockQuantity } from './common';
 import { getRelatedData } from './getRelatedData';
+import { th } from '@faker-js/faker';
 
 const prisma = new PrismaClient();
 // const prisma = new PrismaClient({
@@ -46,8 +47,6 @@ export const updateInvoice = async (payload: InvoicePayload): Promise<PrismaInvo
     (item) => !items.find((i) => i.id === item.id),
   ) as InvoiceItem[];
 
-  // TODO: Update Stock quantity when you've added inventory tables
-
   const updatedInvoice = await updateInvoiceTransaction(
     invoice as PrismaInvoice,
     matchingItems,
@@ -55,6 +54,29 @@ export const updateInvoice = async (payload: InvoicePayload): Promise<PrismaInvo
     removedItems,
     dbInvoice,
   );
+
+  // Update profit
+  const i = await prisma.invoice.findUnique({
+    where: {
+      id: updatedInvoice.id,
+    },
+    include: {
+      items: {
+        include: {
+          product: true,
+        },
+      },
+    },
+  });
+  const profit = await getProfit(prisma, i?.items as InvoiceItem[]);
+  await prisma.invoice.update({
+    where: {
+      id: updatedInvoice.id,
+    },
+    data: {
+      profit,
+    },
+  });
 
   return updatedInvoice;
 };
@@ -68,7 +90,7 @@ const updateInvoiceTransaction = async (
 ) => {
   return prisma.$transaction(async (tx) => {
     let stockQuantityPendingUpdate = [] as AccumulatedQuantity[];
-    // 1. upate existing items
+    // 1. update existing items
     await Promise.all(
       updateItems.map(async (item) => {
         const qtyBeforeUpdate =

@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client';
+import { InvoiceItem, PrismaClient } from '@prisma/client';
 import { DefaultArgs, PrismaClientOptions } from '@prisma/client/runtime/library';
 
 /**
@@ -64,4 +64,31 @@ export const updateStockQuantity = async (
       stockQuantity: newInventoryQuantity,
     },
   });
+};
+
+export const getProfit = async (
+  tx: Omit<
+    PrismaClient<PrismaClientOptions, never, DefaultArgs>,
+    '$connect' | '$disconnect' | '$on' | '$transaction' | '$use' | '$extends'
+  >,
+  items: Partial<InvoiceItem>[],
+): Promise<number> => {
+  const products = await tx.product.findMany({
+    where: {
+      id: {
+        in: items.map((item) => item.productId!),
+      },
+    },
+  });
+  const profit = items.reduce((acc, item) => {
+    const product = products.find((p) => p.id === item.productId);
+    if (product) {
+      const costPrice = product.buyingPrice || 0;
+      const profit = (item.price || 0) - costPrice;
+      return acc + profit * (item.quantity || 0);
+    }
+    return acc;
+  }, 0);
+
+  return profit;
 };

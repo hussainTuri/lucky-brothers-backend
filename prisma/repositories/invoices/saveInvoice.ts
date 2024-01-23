@@ -2,7 +2,7 @@ import { PrismaClient } from '@prisma/client';
 import type { Customer, Invoice, InvoiceItem } from '@prisma/client';
 import { getRelatedData } from './getRelatedData';
 import { InvoicePayload } from '../../../types';
-import { updateStockQuantity } from './common';
+import { getProfit, updateStockQuantity } from './';
 
 const prisma = new PrismaClient();
 
@@ -31,6 +31,9 @@ const saveInvoiceTransaction = async (
       });
     }
 
+    // Calculate profit - get products based on items
+    const profit = await getProfit(tx, items);
+
     // 2. Create invoice
     const createdInvoice = await tx.invoice.create({
       data: {
@@ -42,6 +45,7 @@ const saveInvoiceTransaction = async (
         driverName: invoice.driverName,
         vehicleName: invoice.vehicleName,
         vehicleRegistrationNumber: invoice.vehicleRegistrationNumber,
+        profit,
         items: {
           createMany: {
             data: items.map((item) => ({
