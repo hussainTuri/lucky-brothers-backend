@@ -2,12 +2,29 @@ import { NextFunction, Request, Response } from 'express';
 import { getCustomers as getCustomersRepository } from '../../prisma/repositories/customers';
 import { response } from '../../lib/response';
 import { messages } from '../../lib/constants';
+import { QueryOptions, QuerySort, SortOrder } from '../../types';
 
 export const getCustomers = async (req: Request, res: Response, next: NextFunction) => {
   const resp = response();
 
+  const filters = {} as QueryOptions;
+  if (req.query?.skip) {
+    filters.skip = Number(req.query.skip);
+  }
+
+  if (req.query?.take) {
+    filters.take = Number(req.query.take);
+  }
+
+  const sort = {} as QuerySort;
+  const sortParam = req.query?.sort as string;
+  if (sortParam) {
+    const [sortField, sortOrder] = sortParam.split(',');
+    sort[sortField as keyof QuerySort] = sortOrder as SortOrder;
+  }
+
   try {
-    resp.data = await getCustomersRepository();
+    resp.data = await getCustomersRepository(filters, sort);
   } catch (error) {
     console.error('DB Error', error);
     resp.success = false;
