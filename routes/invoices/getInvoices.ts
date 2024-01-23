@@ -16,6 +16,10 @@ export const getInvoices = async (req: Request, res: Response, next: NextFunctio
     filters.today = true;
   }
 
+  if (req.query?.skip) {
+    filters.skip = Number(req.query.skip);
+  }
+
   if (req.query?.take) {
     filters.take = Number(req.query.take);
   }

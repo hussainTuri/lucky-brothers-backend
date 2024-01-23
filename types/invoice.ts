@@ -14,6 +14,7 @@ export type QueryInvoiceStatus = 'pending' | 'paid' | 'overdue' | 'cancelled' | 
 export interface QueryOptions {
   status?: QueryInvoiceStatus;
   today?: boolean;
+  skip?: number;
   take?: number;
 }
 

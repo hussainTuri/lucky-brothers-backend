@@ -46,26 +46,37 @@ export const getInvoices = async (options: QueryOptions, sort: QuerySort) => {
     ...(options?.today ? { createdAt: { gte: today } } : {}),
   });
 
-  const invoices = await prisma.invoice.findMany({
-    include: {
-      items: {
-        include: {
-          product: true,
+  const [invoices, totalCount] = await Promise.all([
+    prisma.invoice.findMany({
+      include: {
+        items: {
+          include: {
+            product: true,
+          },
         },
+        customer: true,
+        payments: true,
       },
-      customer: true,
-      payments: true,
-    },
-    where: {
-      ...whereStatus,
-      ...whereToday,
-      ...whereOverdue,
-    },
-    orderBy: {
-      ...(sort.id && { id: sort.id }),
-      ...(sort.createdAt && { createdAt: sort.createdAt }),
-    },
-    take: options?.take || 1000,
-  });
-  return invoices;
+      where: {
+        ...whereStatus,
+        ...whereToday,
+        ...whereOverdue,
+      },
+      orderBy: {
+        ...(sort.id && { id: sort.id }),
+        ...(sort.createdAt && { createdAt: sort.createdAt }),
+      },
+      skip: options?.skip || 0,
+      take: options?.take || 1000,
+    }),
+    prisma.invoice.count({
+      where: {
+        ...whereStatus,
+        ...whereToday,
+        ...whereOverdue,
+      },
+    }),
+  ]);
+
+  return { invoices, totalCount };
 };
