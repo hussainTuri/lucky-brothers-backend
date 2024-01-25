@@ -38,6 +38,7 @@ model Product {
   priceHistory PriceHistory[]
   productType ProductType @relation(fields: [productTypeId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   invoiceItems InvoiceItem[]
+  inventoryBatches InventoryBatch[]
   inventories Inventory[]
 }
 
@@ -62,13 +63,25 @@ model PriceHistory {
 model Inventory {
   id Int @id @default(autoincrement())
   productId Int @db.Int
+  inventoryBatchId Int @db.Int
   quantity Int @db.Int
   reason String @db.VarChar(255)
-  product Product @relation(fields: [productId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   createdAt DateTime @default(now())
+  product Product @relation(fields: [productId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  inventoryBatch InventoryBatch @relation(fields: [inventoryBatchId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   @@index([createdAt])
 }
 
+model InventoryBatch {
+  id Int @id @default(autoincrement())
+  productId Int @db.Int
+  quantity Int @db.Int
+  price Int @db.Int @default(0)
+  createdAt DateTime @default(now())
+  product Product @relation(fields: [productId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  inventories Inventory[]
+  @@index([createdAt])
+}
 model Customer {
   id Int @id @default(autoincrement())
   customerName String @db.VarChar(255)
