@@ -150,12 +150,24 @@ const updateInvoiceTransaction = async (
       }),
     );
 
-    // if totalAmount is changed, update invoice status to pending
-    const pendingStatusId = (await getRelatedData()).statuses.find(
-      (status) => status.statusName === 'Pending',
-    )?.id;
-    if (invoiceBeforeUpdate.totalAmount < invoice.totalAmount) {
-      invoice.statusId = pendingStatusId || 0;
+    const payments = await tx.invoicePayment.findMany({
+      where: {
+        invoiceId: invoice.id,
+      },
+    });
+
+    // status check
+    if (invoiceBeforeUpdate.totalAmount != invoice.totalAmount) {
+      const data = await getRelatedData();
+      const pendingStatusId = data.statuses.find((status) => status.statusName === 'Pending')?.id;
+      const paidStatusId = data.statuses.find((status) => status.statusName === 'Paid')?.id;
+      const paidAmount = payments?.reduce((sum, p) => sum + p.amount, 0) || 0;
+      // what if new total amount is equal to paid amount? change status to paid
+      if (invoice.totalAmount <= paidAmount) {
+        invoice.statusId = paidStatusId!;
+      } else {
+        invoice.statusId = pendingStatusId!;
+      }
     }
 
     // 4. update invoice
@@ -184,6 +196,25 @@ const updateInvoiceTransaction = async (
         await updateStockQuantity(tx, item.productId!, item.quantity!, invoice.id, reason);
       }),
     );
+
+    // 5. update transaction
+    if (invoice.customerId) {
+      const transaction = await tx.customerTransaction.findFirst({
+        where: {
+          invoiceId: invoice.id,
+        },
+      });
+      if (transaction) {
+        await tx.customerTransaction.update({
+          where: {
+            id: transaction.id,
+          },
+          data: {
+            amount: invoice.totalAmount * -1,
+          },
+        });
+      }
+    }
 
     return updatedInvoice;
   });

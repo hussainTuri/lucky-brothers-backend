@@ -12,6 +12,7 @@ import {
 } from '../../middleware/customerValidators';
 import { createCustomer } from './createCustomer';
 import { authenticate } from '../../middleware/authenticate';
+import transactionRoutes from './transactions';
 
 const router = express.Router();
 router.get('/', authenticate, getCustomers);
@@ -25,5 +26,8 @@ router.put(
   validateUpdateCustomer,
   updateCustomer,
 );
+
+// Payments
+router.use('/:customerId/transactions', transactionRoutes);
 
 export default router;

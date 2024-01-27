@@ -2,6 +2,7 @@ import {
   Customer,
   Invoice,
   InvoiceItem,
+  InvoicePayment,
   InvoiceStatus,
   Invoice as PrismaInvoice,
 } from '@prisma/client';
@@ -37,4 +38,5 @@ export interface AccumulatedQuantity {
 
 export type InvoiceWithRelations = PrismaInvoice & {
   items?: InvoiceItem[];
+  payments?: InvoicePayment[];
 };

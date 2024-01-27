@@ -3,6 +3,7 @@ import type { Customer, Invoice, InvoiceItem } from '@prisma/client';
 import { getRelatedData } from './getRelatedData';
 import { InvoicePayload } from '../../../types';
 import { getProfit, updateStockQuantity } from './';
+import { CustomerTransactionTypesEnum } from '../../../lib/enums';
 
 const prisma = new PrismaClient();
 
@@ -87,6 +88,33 @@ const saveInvoiceTransaction = async (
         );
       }),
     );
+
+    // 4. Add invoice as a transaction to the customerTransactions table
+    if (invoice.customerId) {
+      await tx.customerTransaction.create({
+        data: {
+          customerId: invoice.customerId,
+          typeId: CustomerTransactionTypesEnum.Invoice,
+          invoiceId: createdInvoice.id,
+          amount: createdInvoice.totalAmount * -1,
+          comment: `Invoice`,
+        },
+      });
+
+      // 5. Add payment as transction to the customerTransactions table if it was paid
+      if (invoice.statusId === paidStatusId) {
+        await tx.customerTransaction.create({
+          data: {
+            customerId: invoice.customerId,
+            typeId: CustomerTransactionTypesEnum.Payment,
+            invoiceId: createdInvoice.id,
+            amount: createdInvoice.totalAmount,
+            comment: `Invoice cash payment`,
+          },
+        });
+      }
+    }
+
     return createdInvoice;
   });
 };

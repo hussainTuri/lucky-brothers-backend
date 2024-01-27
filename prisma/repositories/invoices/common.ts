@@ -1,5 +1,15 @@
-import { InvoiceItem, PrismaClient } from '@prisma/client';
+import {
+  Invoice,
+  InvoiceItem,
+  InvoicePayment,
+  InvoiceStatus,
+  Prisma,
+  PrismaClient,
+} from '@prisma/client';
 import { DefaultArgs, PrismaClientOptions } from '@prisma/client/runtime/library';
+import { getInvoice } from './getInvoice';
+import { InvoiceIncludeOptions } from '../../../types/includeOptions';
+import { getRelatedData } from './getRelatedData';
 
 /**
  * Pay attention to quantiySold. For adding items use positive number and for removing items use negative number.
@@ -91,4 +101,47 @@ export const getProfit = async (
   }, 0);
 
   return profit;
+};
+
+export const saveInvoicePayment = async (
+  tx: Omit<
+    PrismaClient<PrismaClientOptions, never, DefaultArgs>,
+    '$connect' | '$disconnect' | '$on' | '$transaction' | '$use' | '$extends'
+  >,
+  invoiceId: number,
+  payment: InvoicePayment,
+) => {
+  let statusChangeNeeded = false;
+  const includeOptions: InvoiceIncludeOptions = {
+    payments: true,
+  };
+  const invoice = await getInvoice(invoiceId, includeOptions);
+  const data = await getRelatedData();
+
+  if (
+    invoice.totalAmount <=
+    payment.amount + (invoice.payments?.reduce((sum, p) => sum + p.amount, 0) || 0)
+  ) {
+    statusChangeNeeded = true;
+    invoice.statusId = data.statuses.find((i) => i.statusName === 'Paid')?.id!;
+  }
+
+  // 1 save payment
+  const createdPayment = await tx.invoicePayment.create({
+    data: payment,
+  });
+
+  // 2 update invoice status
+  if (statusChangeNeeded) {
+    await tx.invoice.update({
+      where: {
+        id: invoice.id,
+      },
+      data: {
+        statusId: invoice.statusId,
+      },
+    });
+  }
+
+  return createdPayment;
 };

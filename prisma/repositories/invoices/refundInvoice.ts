@@ -3,6 +3,7 @@ import type { Invoice } from '@prisma/client';
 import { getRelatedData } from './getRelatedData';
 import { InvoiceWithRelations } from '../../../types';
 import { updateStockQuantity } from './common';
+import { CustomerTransactionTypesEnum } from '../../../lib/enums';
 
 const prisma = new PrismaClient();
 // const prisma = new PrismaClient({
@@ -25,6 +26,7 @@ export const refundInvoice = async (id: number): Promise<Invoice | null> => {
     },
     include: {
       items: true,
+      payments: true,
     },
   });
 
@@ -51,6 +53,20 @@ const updateInvoiceTransaction = async (invoice: InvoiceWithRelations) => {
         refundedAt: new Date(),
       },
     });
+
+    // 3. Deduct payments as refund
+    if (invoice.customerId) {
+      for (const payment of invoice.payments || []) {
+        await tx.customerTransaction.create({
+          data: {
+            customerId: invoice.customerId,
+            typeId: CustomerTransactionTypesEnum.Refund,
+            amount: payment.amount * -1,
+            comment: `Invoice #${invoice.id} payment refund`,
+          },
+        });
+      }
+    }
 
     // 2. update stock quantity
     await Promise.all(

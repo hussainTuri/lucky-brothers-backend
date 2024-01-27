@@ -78,9 +78,28 @@ model Customer {
   imagePath String? @db.VarChar(255)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  balance Int? @db.Int @default(0)
   invoices Invoice[]
+  transactions CustomerTransaction[]
   @@fulltext([customerName])
 }
+
+model CustomerTransaction {
+  id Int @id @default(autoincrement())
+  customerId Int @db.Int
+  invoiceId Int? @db.Int
+  amount Int @db.Int
+  comment String? @db.VarChar(255)
+  typeId Int @db.TinyInt // 1: payment, 2: invoice
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  customer Customer @relation(fields: [customerId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  invoice Invoice? @relation(fields: [invoiceId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  @@index([createdAt])
+  @@index([updatedAt])
+  @@index([typeId])
+}
+
 model Invoice {
   id Int @id @default(autoincrement())
   customerId Int? @db.Int
@@ -100,6 +119,7 @@ model Invoice {
   items InvoiceItem[]
   payments InvoicePayment[]
   status InvoiceStatus @relation(fields: [statusId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  transactions CustomerTransaction[]
   @@index([dueDate])
   @@index([createdAt])
   @@index([updatedAt])

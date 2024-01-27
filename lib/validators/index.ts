@@ -10,3 +10,4 @@ export * from './userUpdateSchema';
 export * from './userLoginSchema';
 export * from './invoicePaymentCreateSchema';
 export * from './productInventoryCreateSchema';
+export * from './customerTransactionCreateSchema';
