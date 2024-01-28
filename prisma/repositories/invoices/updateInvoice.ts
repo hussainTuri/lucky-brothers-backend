@@ -1,9 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 import type { Invoice as PrismaInvoice, InvoiceItem } from '@prisma/client';
 import { AccumulatedQuantity, InvoicePayload, InvoiceWithRelations } from '../../../types';
-import { getProfit, updateStockQuantity } from './common';
-import { getRelatedData } from './getRelatedData';
-import { th } from '@faker-js/faker';
+import { getProfit, updateInvoiceStatus, updateStockQuantity } from './common';
 
 const prisma = new PrismaClient();
 // const prisma = new PrismaClient({
@@ -150,13 +148,11 @@ const updateInvoiceTransaction = async (
       }),
     );
 
-    // if totalAmount is changed, update invoice status to pending
-    const pendingStatusId = (await getRelatedData()).statuses.find(
-      (status) => status.statusName === 'Pending',
-    )?.id;
-    if (invoiceBeforeUpdate.totalAmount < invoice.totalAmount) {
-      invoice.statusId = pendingStatusId || 0;
-    }
+    const payments = await tx.invoicePayment.findMany({
+      where: {
+        invoiceId: invoice.id,
+      },
+    });
 
     // 4. update invoice
     const updatedInvoice = await tx.invoice.update({
@@ -166,7 +162,6 @@ const updateInvoiceTransaction = async (
       data: {
         totalAmount: invoice.totalAmount,
         dueDate: invoice.dueDate,
-        statusId: invoice.statusId,
         comment: invoice.comment,
         driverName: invoice.driverName,
         vehicleName: invoice.vehicleName,
@@ -174,7 +169,10 @@ const updateInvoiceTransaction = async (
       },
     });
 
-    // 5. update stock quantity
+    // 5. status update
+    await updateInvoiceStatus(tx, invoice.id);
+
+    // 6. update stock quantity
     const accumulatedQuantities = accumulateQuantities(stockQuantityPendingUpdate);
     await Promise.all(
       accumulatedQuantities.map(async (item) => {
@@ -184,6 +182,25 @@ const updateInvoiceTransaction = async (
         await updateStockQuantity(tx, item.productId!, item.quantity!, invoice.id, reason);
       }),
     );
+
+    // 7. update transaction
+    if (invoice.customerId) {
+      const transaction = await tx.customerTransaction.findFirst({
+        where: {
+          invoiceId: invoice.id,
+        },
+      });
+      if (transaction) {
+        await tx.customerTransaction.update({
+          where: {
+            id: transaction.id,
+          },
+          data: {
+            amount: invoice.totalAmount * -1,
+          },
+        });
+      }
+    }
 
     return updatedInvoice;
   });

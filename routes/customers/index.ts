@@ -12,12 +12,14 @@ import {
 } from '../../middleware/customerValidators';
 import { createCustomer } from './createCustomer';
 import { authenticate } from '../../middleware/authenticate';
+import transactionRoutes from './transactions';
 
 const router = express.Router();
 router.get('/', authenticate, getCustomers);
 router.post('/', authenticate, normalizeCreateData, validateCreateCustomer, createCustomer);
 router.get('/:customerId', authenticate, getCustomer);
 router.post('/search', authenticate, cleanSearchInput, searchCustomers);
+
 router.put(
   '/:customerId',
   authenticate,
@@ -25,5 +27,8 @@ router.put(
   validateUpdateCustomer,
   updateCustomer,
 );
+
+// Payments
+router.use('/', transactionRoutes);
 
 export default router;

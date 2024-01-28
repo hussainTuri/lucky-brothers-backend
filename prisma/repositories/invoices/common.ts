@@ -1,5 +1,12 @@
-import { InvoiceItem, PrismaClient } from '@prisma/client';
+import {
+  InvoiceItem,
+  InvoicePayment,
+  PrismaClient,
+} from '@prisma/client';
 import { DefaultArgs, PrismaClientOptions } from '@prisma/client/runtime/library';
+import { getInvoice } from './getInvoice';
+import { InvoiceIncludeOptions } from '../../../types/includeOptions';
+import { InvoiceStatusEnum } from '../../../lib/enums/invoice';
 
 /**
  * Pay attention to quantiySold. For adding items use positive number and for removing items use negative number.
@@ -91,4 +98,80 @@ export const getProfit = async (
   }, 0);
 
   return profit;
+};
+
+export const saveInvoicePayment = async (
+  tx: Omit<
+    PrismaClient<PrismaClientOptions, never, DefaultArgs>,
+    '$connect' | '$disconnect' | '$on' | '$transaction' | '$use' | '$extends'
+  >,
+  invoiceId: number,
+  payment: InvoicePayment,
+) => {
+  let statusChangeNeeded = false;
+  const includeOptions: InvoiceIncludeOptions = {
+    payments: true,
+  };
+  const invoice = await getInvoice(invoiceId, includeOptions);
+
+  if (
+    invoice.totalAmount <=
+    payment.amount + (invoice.payments?.reduce((sum, p) => sum + p.amount, 0) || 0)
+  ) {
+    statusChangeNeeded = true;
+    invoice.statusId = InvoiceStatusEnum.Paid;
+  }
+
+  // 1 save payment
+  const createdPayment = await tx.invoicePayment.create({
+    data: payment,
+  });
+
+  // 2 update invoice status
+  if (statusChangeNeeded) {
+    await tx.invoice.update({
+      where: {
+        id: invoice.id,
+      },
+      data: {
+        statusId: invoice.statusId,
+      },
+    });
+  }
+
+  return createdPayment;
+};
+
+export const updateInvoiceStatus = async (
+  tx: Omit<
+    PrismaClient<PrismaClientOptions, never, DefaultArgs>,
+    '$connect' | '$disconnect' | '$on' | '$transaction' | '$use' | '$extends'
+  >,
+  invoiceId: number,
+) => {
+  const invoice = await tx.invoice.findUnique({
+    where: {
+      id: invoiceId,
+    },
+    include: {
+      payments: true,
+    },
+  });
+
+  if (!invoice) {
+    throw new Error('رسید نہیں ملی');
+  }
+
+  const paidAmount = invoice.payments?.reduce((sum, p) => sum + p.amount, 0);
+  const status =
+    invoice.totalAmount <= paidAmount ? InvoiceStatusEnum.Paid : InvoiceStatusEnum.Pending;
+
+  await tx.invoice.update({
+    where: {
+      id: invoice.id,
+    },
+    data: {
+      statusId: status,
+    },
+  });
 };

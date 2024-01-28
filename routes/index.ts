@@ -9,5 +9,4 @@ router.use('/products', productRoutes);
 router.use('/customers', customerRoutes);
 router.use('/invoices', invoiceRoutes);
 router.use('/users', userRoutes);
-
 export default router;

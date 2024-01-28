@@ -1,6 +1,6 @@
 import { Prisma, PrismaClient } from '@prisma/client';
 import { QueryOptions, QuerySort } from '../../../types';
-import { getRelatedData } from './getRelatedData';
+import { InvoiceStatusEnum } from '../../../lib/enums/invoice';
 
 const prisma = new PrismaClient();
 // const prisma = new PrismaClient({
@@ -19,20 +19,17 @@ const prisma = new PrismaClient();
 export const getInvoices = async (options: QueryOptions, sort: QuerySort) => {
   const today = new Date();
   today.setUTCHours(0, 0, 0, 0); // Set time to midnight in UTC for the start of the day
-  const relatedData = await getRelatedData();
 
   const whereStatus = Prisma.validator<Prisma.InvoiceWhereInput>()({
     ...(options?.status && options.status === 'pending'
-      ? { statusId: relatedData.statuses.find((i) => i.statusName === 'Pending')?.id }
+      ? { statusId: InvoiceStatusEnum.Pending }
       : {}),
-    ...(options?.status && options.status === 'paid'
-      ? { statusId: relatedData.statuses.find((i) => i.statusName === 'Paid')?.id }
-      : {}),
+    ...(options?.status && options.status === 'paid' ? { statusId: InvoiceStatusEnum.Paid } : {}),
     ...(options?.status && options.status === 'cancelled'
-      ? { statusId: relatedData.statuses.find((i) => i.statusName === 'Cancelled')?.id }
+      ? { statusId: InvoiceStatusEnum.Cancelled }
       : {}),
     ...(options?.status && options.status === 'refunded'
-      ? { statusId: relatedData.statuses.find((i) => i.statusName === 'Refunded')?.id }
+      ? { statusId: InvoiceStatusEnum.Refunded }
       : {}),
   });
 

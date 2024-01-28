@@ -1,10 +1,14 @@
-import { Customer, Invoice, InvoiceItem, Prisma } from '@prisma/client';
-import { Request, Response, NextFunction, query } from 'express';
+import { Customer, Invoice, InvoiceItem } from '@prisma/client';
+import { Request, Response, NextFunction } from 'express';
 import { response } from '../lib/response';
 import { createCustomerSchema, queryParamsSchema } from '../lib/validators/';
 import { createInvoiceSchema, updateInvoiceSchema } from '../lib/validators/';
 import { extractCustomerData } from './customerValidators';
 import { UCFirst, UCFirstLCRest, trimSpaces } from '../lib/utils';
+import { getInvoice } from '../prisma/repositories/invoices';
+import { InvoiceIncludeOptions } from '../types/includeOptions';
+import { messages } from '../lib/constants';
+import { InvoiceStatusEnum } from '../lib/enums/invoice';
 
 export const validateQueryParams = async (req: Request, res: Response, next: NextFunction) => {
   const resp = response();
@@ -106,6 +110,26 @@ export const validateUpdateInvoice = async (req: Request, res: Response, next: N
   const data = { ...req.body.invoice };
   data.items = req.body.items;
   const { error } = updateInvoiceSchema.validate(data, { allowUnknown: true });
+
+  // if new total amount is less than paid amount, throw error, send error message to client
+  const includeOptions: InvoiceIncludeOptions = {
+    payments: true,
+  };
+  const invoice = await getInvoice(req.body.invoice.id as number, includeOptions);
+  const payments = invoice.payments?.reduce((sum, p) => sum + p.amount, 0) || 0;
+  if (payments > req.body.invoice.totalAmount) {
+    resp.message = messages.PAID_AMOUNT_GREATER_THAN_TOTAL_AMOUNT;
+    resp.success = false;
+    return res.status(400).json(resp);
+  }
+
+  // if invoices status is not pending, throw error, send error message to client
+  if (invoice.statusId !== InvoiceStatusEnum.Pending) {
+    resp.message = messages.INVOICE_NOT_PENDING;
+    resp.success = false;
+    return res.status(400).json(resp);
+  }
+
   if (error) {
     resp.message = error.details[0].message || '';
     resp.success = false;

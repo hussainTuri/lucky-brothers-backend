@@ -20,6 +20,7 @@ export const getCustomer = async (id: number | string) => {
           id: 'desc',
         },
       },
+      transactions: true,
     },
   });
   return customer;

@@ -36,7 +36,7 @@ app.use((req, res, next) => {
   res.status(404).json(resp);
 });
 
-const port = 3001;
+const port = process.env.PORT || 3001;
 app.set('port', port);
 app.listen(port, () => {
   console.log(`Server is Fire at http://localhost:${port}`);

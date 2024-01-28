@@ -1,8 +1,9 @@
 import { PrismaClient } from '@prisma/client';
 import type { Customer, Invoice, InvoiceItem } from '@prisma/client';
-import { getRelatedData } from './getRelatedData';
 import { InvoicePayload } from '../../../types';
 import { getProfit, updateStockQuantity } from './';
+import { CustomerTransactionTypesEnum } from '../../../lib/enums';
+import { InvoiceStatusEnum } from '../../../lib/enums/invoice';
 
 const prisma = new PrismaClient();
 
@@ -19,9 +20,6 @@ const saveInvoiceTransaction = async (
 ): Promise<Invoice | null> => {
   return prisma.$transaction(async (tx) => {
     let createdCustomer = null;
-    const paidStatusId = (await getRelatedData()).statuses.find(
-      (status) => status.statusName === 'Paid',
-    )?.id;
 
     // 1. Create Customer
     if (customer) {
@@ -57,7 +55,7 @@ const saveInvoiceTransaction = async (
           },
         },
         payments:
-          invoice.statusId === paidStatusId
+          invoice.statusId === InvoiceStatusEnum.Paid
             ? {
                 create: {
                   amount: invoice.totalAmount!,
@@ -87,6 +85,33 @@ const saveInvoiceTransaction = async (
         );
       }),
     );
+
+    // 4. Add invoice as a transaction to the customerTransactions table
+    if (invoice.customerId) {
+      await tx.customerTransaction.create({
+        data: {
+          customerId: invoice.customerId,
+          typeId: CustomerTransactionTypesEnum.Invoice,
+          invoiceId: createdInvoice.id,
+          amount: createdInvoice.totalAmount * -1,
+          comment: `Invoice`,
+        },
+      });
+
+      // 5. Add payment as transction to the customerTransactions table if it was paid
+      if (invoice.statusId === InvoiceStatusEnum.Paid) {
+        await tx.customerTransaction.create({
+          data: {
+            customerId: invoice.customerId,
+            typeId: CustomerTransactionTypesEnum.Payment,
+            invoiceId: createdInvoice.id,
+            amount: createdInvoice.totalAmount,
+            comment: `Invoice cash payment`,
+          },
+        });
+      }
+    }
+
     return createdInvoice;
   });
 };
