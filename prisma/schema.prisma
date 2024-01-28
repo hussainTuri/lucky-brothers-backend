@@ -95,6 +95,7 @@ model CustomerTransaction {
   updatedAt DateTime @updatedAt
   customer Customer @relation(fields: [customerId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   invoice Invoice? @relation(fields: [invoiceId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  invoicePayments InvoicePayment[]
   @@index([createdAt])
   @@index([updatedAt])
   @@index([typeId])
@@ -149,11 +150,13 @@ model InvoiceStatus {
 model InvoicePayment {
   id Int @id @default(autoincrement())
   invoiceId Int @db.Int
+  customerTransactionId Int? @db.Int
   amount Int @db.Int
   comment String? @db.VarChar(255)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   invoice Invoice @relation(fields: [invoiceId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  customerPayment CustomerTransaction? @relation(fields: [customerTransactionId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   @@index([createdAt])
   @@index([updatedAt])
  }

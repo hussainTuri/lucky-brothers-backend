@@ -19,6 +19,7 @@ router.get('/', authenticate, getCustomers);
 router.post('/', authenticate, normalizeCreateData, validateCreateCustomer, createCustomer);
 router.get('/:customerId', authenticate, getCustomer);
 router.post('/search', authenticate, cleanSearchInput, searchCustomers);
+
 router.put(
   '/:customerId',
   authenticate,
@@ -28,6 +29,6 @@ router.put(
 );
 
 // Payments
-router.use('/:customerId/transactions', transactionRoutes);
+router.use('/', transactionRoutes);
 
 export default router;

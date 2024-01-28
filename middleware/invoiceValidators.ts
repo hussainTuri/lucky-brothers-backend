@@ -1,13 +1,14 @@
-import { Customer, Invoice, InvoiceItem, Prisma } from '@prisma/client';
-import { Request, Response, NextFunction, query } from 'express';
+import { Customer, Invoice, InvoiceItem } from '@prisma/client';
+import { Request, Response, NextFunction } from 'express';
 import { response } from '../lib/response';
 import { createCustomerSchema, queryParamsSchema } from '../lib/validators/';
 import { createInvoiceSchema, updateInvoiceSchema } from '../lib/validators/';
 import { extractCustomerData } from './customerValidators';
 import { UCFirst, UCFirstLCRest, trimSpaces } from '../lib/utils';
-import { getInvoice, getRelatedData } from '../prisma/repositories/invoices';
+import { getInvoice } from '../prisma/repositories/invoices';
 import { InvoiceIncludeOptions } from '../types/includeOptions';
 import { messages } from '../lib/constants';
+import { InvoiceStatusEnum } from '../lib/enums/invoice';
 
 export const validateQueryParams = async (req: Request, res: Response, next: NextFunction) => {
   const resp = response();
@@ -123,8 +124,7 @@ export const validateUpdateInvoice = async (req: Request, res: Response, next: N
   }
 
   // if invoices status is not pending, throw error, send error message to client
-  const { statuses } = await getRelatedData();
-  if (invoice.statusId !== statuses.find((s) => s.statusName === 'Pending')?.id) {
+  if (invoice.statusId !== InvoiceStatusEnum.Pending) {
     resp.message = messages.INVOICE_NOT_PENDING;
     resp.success = false;
     return res.status(400).json(resp);

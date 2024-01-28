@@ -1,15 +1,12 @@
 import {
-  Invoice,
   InvoiceItem,
   InvoicePayment,
-  InvoiceStatus,
-  Prisma,
   PrismaClient,
 } from '@prisma/client';
 import { DefaultArgs, PrismaClientOptions } from '@prisma/client/runtime/library';
 import { getInvoice } from './getInvoice';
 import { InvoiceIncludeOptions } from '../../../types/includeOptions';
-import { getRelatedData } from './getRelatedData';
+import { InvoiceStatusEnum } from '../../../lib/enums/invoice';
 
 /**
  * Pay attention to quantiySold. For adding items use positive number and for removing items use negative number.
@@ -116,14 +113,13 @@ export const saveInvoicePayment = async (
     payments: true,
   };
   const invoice = await getInvoice(invoiceId, includeOptions);
-  const data = await getRelatedData();
 
   if (
     invoice.totalAmount <=
     payment.amount + (invoice.payments?.reduce((sum, p) => sum + p.amount, 0) || 0)
   ) {
     statusChangeNeeded = true;
-    invoice.statusId = data.statuses.find((i) => i.statusName === 'Paid')?.id!;
+    invoice.statusId = InvoiceStatusEnum.Paid;
   }
 
   // 1 save payment
@@ -144,4 +140,38 @@ export const saveInvoicePayment = async (
   }
 
   return createdPayment;
+};
+
+export const updateInvoiceStatus = async (
+  tx: Omit<
+    PrismaClient<PrismaClientOptions, never, DefaultArgs>,
+    '$connect' | '$disconnect' | '$on' | '$transaction' | '$use' | '$extends'
+  >,
+  invoiceId: number,
+) => {
+  const invoice = await tx.invoice.findUnique({
+    where: {
+      id: invoiceId,
+    },
+    include: {
+      payments: true,
+    },
+  });
+
+  if (!invoice) {
+    throw new Error('رسید نہیں ملی');
+  }
+
+  const paidAmount = invoice.payments?.reduce((sum, p) => sum + p.amount, 0);
+  const status =
+    invoice.totalAmount <= paidAmount ? InvoiceStatusEnum.Paid : InvoiceStatusEnum.Pending;
+
+  await tx.invoice.update({
+    where: {
+      id: invoice.id,
+    },
+    data: {
+      statusId: status,
+    },
+  });
 };
