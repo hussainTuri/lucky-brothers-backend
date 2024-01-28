@@ -142,6 +142,7 @@ export const saveInvoicePayment = async (
   return createdPayment;
 };
 
+
 export const updateInvoiceStatus = async (
   tx: Omit<
     PrismaClient<PrismaClientOptions, never, DefaultArgs>,
