@@ -67,6 +67,7 @@ const saveInvoiceTransaction = async (
       include: {
         items: true,
         payments: true,
+        customer: true,
       },
     });
 
@@ -87,10 +88,10 @@ const saveInvoiceTransaction = async (
     );
 
     // 4. Add invoice as a transaction to the customerTransactions table
-    if (invoice.customerId) {
+    if (createdInvoice.customer?.id) {
       await tx.customerTransaction.create({
         data: {
-          customerId: invoice.customerId,
+          customerId: invoice.customerId || createdInvoice.customer?.id,
           typeId: CustomerTransactionTypesEnum.Invoice,
           invoiceId: createdInvoice.id,
           amount: createdInvoice.totalAmount * -1,
@@ -102,7 +103,7 @@ const saveInvoiceTransaction = async (
       if (invoice.statusId === InvoiceStatusEnum.Paid) {
         await tx.customerTransaction.create({
           data: {
-            customerId: invoice.customerId,
+            customerId: invoice.customerId || createdInvoice.customer?.id,
             typeId: CustomerTransactionTypesEnum.Payment,
             invoiceId: createdInvoice.id,
             amount: createdInvoice.totalAmount,
