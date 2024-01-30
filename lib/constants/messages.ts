@@ -14,4 +14,5 @@ export const messages = {
   INVALID_CUSTOMER_ID: ' غلط کسٹمر آئی ڈی فراہم کی گئی۔',
   CUSTOMER_TRANSACTION_NOT_FOUND: 'کسٹمر ٹرانزیکشن نہیں ملا',
   CUSTOMER_TRANSACTION_DELETE_NOT_ALLOWED: 'کسٹمر ٹرانزیکشن کو ہٹانے کی اجازت نہیں ہے',
+  INVOICE_CUSTOMER_REQUIRED: 'براہ کرم کسٹمر کو منتخب کریں۔ قرض کی رسید صرف معروف صارف کے لیے بنائی جا سکتی ہے۔',
 };
