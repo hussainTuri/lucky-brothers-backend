@@ -1,6 +1,7 @@
-import { Prisma, PrismaClient } from '@prisma/client';
+import { PrismaClient } from '@prisma/client';
 import { InvoiceStatusEnum } from '../../../../lib/enums/invoice';
 import { updateInvoiceStatus } from '../../invoices';
+import { updateCustomerBalance } from '../common';
 const prisma = new PrismaClient();
 // const prisma = new PrismaClient({
 //   log: [
@@ -58,6 +59,9 @@ export const deleteTransaction = async (id: number) => {
         id: id,
       },
     });
+
+    // 5. update customer balance
+    await updateCustomerBalance(tx, deletedTransaction.customerId);
 
     return deletedTransaction;
   });

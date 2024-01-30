@@ -4,6 +4,7 @@ import { InvoicePayload } from '../../../types';
 import { getProfit, updateStockQuantity } from './';
 import { CustomerTransactionTypesEnum } from '../../../lib/enums';
 import { InvoiceStatusEnum } from '../../../lib/enums/invoice';
+import { updateCustomerBalance } from '../customers/common';
 
 const prisma = new PrismaClient();
 
@@ -91,7 +92,7 @@ const saveInvoiceTransaction = async (
     if (createdInvoice.customer?.id) {
       await tx.customerTransaction.create({
         data: {
-          customerId: invoice.customerId || createdInvoice.customer?.id,
+          customerId: invoice.customerId || createdInvoice.customer.id,
           typeId: CustomerTransactionTypesEnum.Invoice,
           invoiceId: createdInvoice.id,
           amount: createdInvoice.totalAmount * -1,
@@ -103,7 +104,7 @@ const saveInvoiceTransaction = async (
       if (invoice.statusId === InvoiceStatusEnum.Paid) {
         await tx.customerTransaction.create({
           data: {
-            customerId: invoice.customerId || createdInvoice.customer?.id,
+            customerId: invoice.customerId || createdInvoice.customer.id,
             typeId: CustomerTransactionTypesEnum.Payment,
             invoiceId: createdInvoice.id,
             amount: createdInvoice.totalAmount,
@@ -111,6 +112,9 @@ const saveInvoiceTransaction = async (
           },
         });
       }
+
+      // 6. Update customer balance
+      await updateCustomerBalance(tx, createdInvoice.customer.id);
     }
 
     return createdInvoice;

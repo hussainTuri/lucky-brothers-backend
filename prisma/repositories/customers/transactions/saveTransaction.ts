@@ -4,6 +4,7 @@ import { getCustomer } from '../getCustomer';
 import { saveInvoicePayment } from '../../invoices';
 import { InvoiceWithRelations } from '../../../../types';
 import { InvoiceStatusEnum } from '../../../../lib/enums/invoice';
+import { updateCustomerBalance } from '../common';
 
 const prisma = new PrismaClient();
 
@@ -44,6 +45,9 @@ const saveCustomerTransactionTransaction = async (transaction: CustomerTransacti
       payment.comment = `Through transaction # ${createdTransaction.id}`;
       await saveInvoicePayment(tx, invoice.id, payment);
     }
+
+    // 3. update customer balance
+    await updateCustomerBalance(tx, customer.id);
 
     return createdTransaction;
   });

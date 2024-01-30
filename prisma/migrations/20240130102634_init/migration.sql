@@ -72,9 +72,27 @@ CREATE TABLE `Customer` (
     `imagePath` VARCHAR(255) NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
+    `balance` INTEGER NULL DEFAULT 0,
 
     UNIQUE INDEX `Customer_phone_key`(`phone`),
     FULLTEXT INDEX `Customer_customerName_idx`(`customerName`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `CustomerTransaction` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `customerId` INTEGER NOT NULL,
+    `invoiceId` INTEGER NULL,
+    `amount` INTEGER NOT NULL,
+    `comment` VARCHAR(255) NULL,
+    `typeId` TINYINT NOT NULL,
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updatedAt` DATETIME(3) NOT NULL,
+
+    INDEX `CustomerTransaction_createdAt_idx`(`createdAt`),
+    INDEX `CustomerTransaction_updatedAt_idx`(`updatedAt`),
+    INDEX `CustomerTransaction_typeId_idx`(`typeId`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -129,6 +147,7 @@ CREATE TABLE `InvoiceStatus` (
 CREATE TABLE `InvoicePayment` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `invoiceId` INTEGER NOT NULL,
+    `customerTransactionId` INTEGER NULL,
     `amount` INTEGER NOT NULL,
     `comment` VARCHAR(255) NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
@@ -164,6 +183,12 @@ ALTER TABLE `PriceHistory` ADD CONSTRAINT `PriceHistory_productId_fkey` FOREIGN 
 ALTER TABLE `Inventory` ADD CONSTRAINT `Inventory_productId_fkey` FOREIGN KEY (`productId`) REFERENCES `Product`(`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 -- AddForeignKey
+ALTER TABLE `CustomerTransaction` ADD CONSTRAINT `CustomerTransaction_customerId_fkey` FOREIGN KEY (`customerId`) REFERENCES `Customer`(`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+-- AddForeignKey
+ALTER TABLE `CustomerTransaction` ADD CONSTRAINT `CustomerTransaction_invoiceId_fkey` FOREIGN KEY (`invoiceId`) REFERENCES `Invoice`(`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+-- AddForeignKey
 ALTER TABLE `Invoice` ADD CONSTRAINT `Invoice_customerId_fkey` FOREIGN KEY (`customerId`) REFERENCES `Customer`(`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 -- AddForeignKey
@@ -177,3 +202,6 @@ ALTER TABLE `InvoiceItem` ADD CONSTRAINT `InvoiceItem_productId_fkey` FOREIGN KE
 
 -- AddForeignKey
 ALTER TABLE `InvoicePayment` ADD CONSTRAINT `InvoicePayment_invoiceId_fkey` FOREIGN KEY (`invoiceId`) REFERENCES `Invoice`(`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+-- AddForeignKey
+ALTER TABLE `InvoicePayment` ADD CONSTRAINT `InvoicePayment_customerTransactionId_fkey` FOREIGN KEY (`customerTransactionId`) REFERENCES `CustomerTransaction`(`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;

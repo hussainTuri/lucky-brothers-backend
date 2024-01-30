@@ -2,6 +2,7 @@ import { PrismaClient } from '@prisma/client';
 import type { Invoice as PrismaInvoice, InvoiceItem } from '@prisma/client';
 import { AccumulatedQuantity, InvoicePayload, InvoiceWithRelations } from '../../../types';
 import { getProfit, updateInvoiceStatus, updateStockQuantity } from './common';
+import { updateCustomerBalance } from '../customers/common';
 
 const prisma = new PrismaClient();
 // const prisma = new PrismaClient({
@@ -200,6 +201,9 @@ const updateInvoiceTransaction = async (
           },
         });
       }
+
+      // 8. update customer balance
+      await updateCustomerBalance(tx, invoice.customerId);
     }
 
     return updatedInvoice;

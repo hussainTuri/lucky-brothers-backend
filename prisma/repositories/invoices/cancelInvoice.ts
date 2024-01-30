@@ -3,6 +3,7 @@ import type { Invoice } from '@prisma/client';
 import { updateStockQuantity } from './common';
 import { InvoiceWithRelations } from '../../../types';
 import { InvoiceStatusEnum } from '../../../lib/enums/invoice';
+import { updateCustomerBalance } from '../customers/common';
 
 const prisma = new PrismaClient();
 // const prisma = new PrismaClient({
@@ -57,6 +58,9 @@ const updateInvoiceTransaction = async (invoice: InvoiceWithRelations) => {
         await updateStockQuantity(tx, item.productId, item.quantity, invoice.id, reason);
       }),
     );
+
+    // 3. update customer balance
+    if (invoice.customerId) await updateCustomerBalance(tx, invoice.customerId);
 
     return updatedInvoice;
   });

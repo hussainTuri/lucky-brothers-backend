@@ -1,8 +1,4 @@
-import {
-  InvoiceItem,
-  InvoicePayment,
-  PrismaClient,
-} from '@prisma/client';
+import { InvoiceItem, InvoicePayment, PrismaClient } from '@prisma/client';
 import { DefaultArgs, PrismaClientOptions } from '@prisma/client/runtime/library';
 import { getInvoice } from './getInvoice';
 import { InvoiceIncludeOptions } from '../../../types/includeOptions';

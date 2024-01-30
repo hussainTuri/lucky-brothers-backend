@@ -3,6 +3,7 @@ import type { InvoicePayment } from '@prisma/client';
 import { saveInvoicePayment } from '../common';
 import { getInvoice } from '../getInvoice';
 import { CustomerTransactionTypesEnum } from '../../../../lib/enums';
+import { updateCustomerBalance } from '../../customers/common';
 
 const prisma = new PrismaClient();
 
@@ -27,6 +28,9 @@ const savePaymentTransaction = async (invoiceId: number, payment: InvoicePayment
         },
       });
     }
+
+    // Update customer balance
+    if (invoice.customerId) await updateCustomerBalance(tx, invoice.customerId);
 
     return createdPayment;
   });
