@@ -103,7 +103,11 @@ export const validateCreateInvoice = async (req: Request, res: Response, next: N
     }
   }
 
-  if(!req.body.customer && !req.body.invoice.customerId && data.statusId === InvoiceStatusEnum.Pending) {
+  if (
+    !req.body.customer &&
+    !req.body.invoice.customerId &&
+    data.statusId === InvoiceStatusEnum.Pending
+  ) {
     resp.message = messages.INVOICE_CUSTOMER_REQUIRED;
     resp.success = false;
     return res.status(400).json(resp);

@@ -57,6 +57,13 @@ export const validateCreateInvoicePayment = async (
       resp.message = messages.PAYMENT_EXCEEDS_BALANCE;
       return res.status(400).json(resp);
     }
+
+    // Registered customer should not use payment via this method but through customer payments
+    if (invoice.customerId) {
+      resp.success = false;
+      resp.message = messages.CUSTOMER_PAYMENT_NOT_ALLOWED;
+      return res.status(400).json(resp);
+    }
   } catch (error) {
     console.error('DB Error', error);
     resp.success = false;

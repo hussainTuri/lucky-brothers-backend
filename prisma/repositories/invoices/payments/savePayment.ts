@@ -7,8 +7,7 @@ import { updateCustomerBalance } from '../../customers/common';
 
 const prisma = new PrismaClient();
 
-// The API using this function is not used in the app anymore. Paymnents for non-customer invoices are not supported.
-// where for registered customers, payments are added as customer transactions.
+// Only non-customer invoice payments use this
 export const savePayment = async (payment: InvoicePayment): Promise<InvoicePayment> => {
   return await savePaymentTransaction(payment.invoiceId, payment);
 };
@@ -16,7 +15,7 @@ export const savePayment = async (payment: InvoicePayment): Promise<InvoicePayme
 const savePaymentTransaction = async (invoiceId: number, payment: InvoicePayment) => {
   return prisma.$transaction(async (tx) => {
     const createdPayment = await saveInvoicePayment(tx, invoiceId, payment);
-    // Save as customer transaction
+    // Save as customer transaction - This is a safty meaure, otherwise payments(registered customers) should be made through customer payments
     const invoice = await getInvoice(invoiceId);
     if (invoice.customerId) {
       await tx.customerTransaction.create({
@@ -27,10 +26,9 @@ const savePaymentTransaction = async (invoiceId: number, payment: InvoicePayment
           comment: `Added to invoice #${invoice.id} as invoice payment`,
         },
       });
+      // Update customer balance
+      await updateCustomerBalance(tx, invoice.customerId);
     }
-
-    // Update customer balance
-    if (invoice.customerId) await updateCustomerBalance(tx, invoice.customerId);
 
     return createdPayment;
   });
