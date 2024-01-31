@@ -2,23 +2,24 @@ import { Prisma, PrismaClient } from '@prisma/client';
 import { QueryOptions, QuerySort } from '../../../types';
 import { InvoiceStatusEnum } from '../../../lib/enums/invoice';
 
-const prisma = new PrismaClient();
-// const prisma = new PrismaClient({
-//   log: [
-//     {
-//       emit: 'event',
-//       level: 'query',
-//     },
-//   ],
-// });
-// prisma.$on('query', async (e: Prisma.QueryEvent) => {
-//   console.log(`${e.query} ${e.params} duration: ${e.duration / 100}s`);
-//   // console.log(`${e.query} duration: ${e.duration/100} s`);
-// });
+// const prisma = new PrismaClient();
+const prisma = new PrismaClient({
+  log: [
+    {
+      emit: 'event',
+      level: 'query',
+    },
+  ],
+});
+prisma.$on('query', async (e: Prisma.QueryEvent) => {
+  console.log(`${e.query} ${e.params} duration: ${e.duration / 100}s`);
+  // console.log(`${e.query} duration: ${e.duration/100} s`);
+});
 
 export const getInvoices = async (options: QueryOptions, sort: QuerySort) => {
   const today = new Date();
   today.setUTCHours(0, 0, 0, 0); // Set time to midnight in UTC for the start of the day
+  let whereCreated = {} as Prisma.InvoiceWhereInput;
 
   const whereStatus = Prisma.validator<Prisma.InvoiceWhereInput>()({
     ...(options?.status && options.status === 'pending'
@@ -39,10 +40,21 @@ export const getInvoices = async (options: QueryOptions, sort: QuerySort) => {
       : {}),
   });
 
-  const whereToday = Prisma.validator<Prisma.InvoiceWhereInput>()({
-    ...(options?.today ? { createdAt: { gte: today } } : {}),
-  });
-
+  if (options?.today) {
+    whereCreated = Prisma.validator<Prisma.InvoiceWhereInput>()({
+      ...(options?.today ? { createdAt: { gte: today } } : {}),
+    });
+  } else if (options?.startDate || options?.endDate) {
+    whereCreated = {
+      AND: [
+        // Start Date condition
+        ...(options?.startDate ? [{ createdAt: { gte: options.startDate } }] : []),
+        // End Date condition
+        ...(options?.endDate ? [{ createdAt: { lte: options.endDate } }] : []),
+      ],
+    };
+  }
+  console.log('whereCreated', whereCreated);
   const [invoices, totalCount] = await Promise.all([
     prisma.invoice.findMany({
       include: {
@@ -56,7 +68,7 @@ export const getInvoices = async (options: QueryOptions, sort: QuerySort) => {
       },
       where: {
         ...whereStatus,
-        ...whereToday,
+        ...whereCreated,
         ...whereOverdue,
       },
       orderBy: {
@@ -69,7 +81,7 @@ export const getInvoices = async (options: QueryOptions, sort: QuerySort) => {
     prisma.invoice.count({
       where: {
         ...whereStatus,
-        ...whereToday,
+        ...whereCreated,
         ...whereOverdue,
       },
     }),

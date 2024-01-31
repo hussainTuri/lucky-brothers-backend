@@ -7,6 +7,8 @@ import {
 import { authenticate } from '../../../middleware/authenticate';
 import { createTransaction } from './createTransaction';
 import { deleteTransaction } from './deleteTransaction';
+import { validateQueryParams } from '../../../middleware/invoiceValidators';
+import { getTransactions } from './getTransactions';
 
 const router = express.Router();
 router.post(
@@ -23,4 +25,7 @@ router.delete(
   validateDeleteCustomerTransaction,
   deleteTransaction,
 );
+
+router.get('/transactions', authenticate, validateQueryParams, getTransactions);
+
 export default router;

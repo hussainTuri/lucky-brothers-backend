@@ -17,6 +17,8 @@ export interface QueryOptions {
   today?: boolean;
   skip?: number;
   take?: number;
+  startDate?: Date | string;
+  endDate?: Date | string;
 }
 
 export type SortOrder = 'asc' | 'desc';

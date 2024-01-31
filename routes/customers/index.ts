@@ -15,8 +15,12 @@ import { authenticate } from '../../middleware/authenticate';
 import transactionRoutes from './transactions';
 
 const router = express.Router();
+
 router.get('/', authenticate, getCustomers);
 router.post('/', authenticate, normalizeCreateData, validateCreateCustomer, createCustomer);
+
+// Transactions
+router.use('/', transactionRoutes);
 router.get('/:customerId', authenticate, getCustomer);
 router.post('/search', authenticate, cleanSearchInput, searchCustomers);
 
@@ -27,8 +31,5 @@ router.put(
   validateUpdateCustomer,
   updateCustomer,
 );
-
-// Payments
-router.use('/', transactionRoutes);
 
 export default router;

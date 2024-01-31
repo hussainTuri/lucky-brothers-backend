@@ -1,20 +1,13 @@
 import { NextFunction, Request, Response } from 'express';
-import { getInvoices as getInvoicesRepository } from '../../prisma/repositories/invoices';
+import { getJournal as getJournalRepository } from '../../prisma/repositories/journal';
 import { response } from '../../lib/response';
-import { QueryOptions, QueryInvoiceStatus, QuerySort, SortOrder } from '../../types';
+import { QueryOptions, QuerySort, SortOrder } from '../../types';
 import { messages } from '../../lib/constants';
 
-export const getInvoices = async (req: Request, res: Response, next: NextFunction) => {
+export const getJournal = async (req: Request, res: Response, next: NextFunction) => {
   const resp = response();
 
   const filters = {} as QueryOptions;
-  if (req.query?.status) {
-    filters.status = req.query.status as QueryInvoiceStatus;
-  }
-
-  if (req.query?.today !== undefined) {
-    filters.today = true;
-  }
 
   if (req.query?.startDate) {
     const s = new Date(req.query.startDate as string);
@@ -43,13 +36,12 @@ export const getInvoices = async (req: Request, res: Response, next: NextFunctio
   }
 
   try {
-    resp.data = await getInvoicesRepository(filters, sort);
+    resp.data = await getJournalRepository(filters, sort);
   } catch (error) {
     console.error('DB Error', error);
     resp.success = false;
     resp.message = messages.INTERNAL_SERVER_ERROR;
     return res.status(500).json(resp);
   }
-
   return res.json(resp);
 };
