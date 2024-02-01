@@ -116,7 +116,5 @@ export const getJournal = async (options: QueryOptions, sort: QuerySort) => {
     totalCount: transactionsAndInvoicesCount,
     balance,
     profit,
-    options,
-    where,
   };
 };
