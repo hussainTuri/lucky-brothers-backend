@@ -17,36 +17,8 @@ const prisma = new PrismaClient();
 // });
 
 export const getJournal = async (options: QueryOptions, sort: QuerySort) => {
-  let where = '';
+  let where = 'WHERE 1=1';
   let limit = '';
-  let sql = ` FROM (SELECT
-    'ct' AS tableName,
-    ct.id,
-    ct.customerId,
-    ct.invoiceId,
-    ct.amount,
-    ct.createdAt,
-    inv.profit,
-    inv.statusId
-FROM
-    CustomerTransaction ct
-        LEFT JOIN
-    Invoice inv ON inv.id = ct.invoiceId AND inv.statusId NOT IN (${InvoiceStatusEnum.Cancelled} , ${InvoiceStatusEnum.Refunded})
-UNION SELECT
-    'inv' AS tableName,
-    id,
-    customerId,
-    NULL AS invoiceId,
-    totalAmount AS amount,
-    createdAt,
-    profit,
-    statusId
-FROM
-    Invoice
-WHERE
-    customerId IS NULL AND statusId NOT IN (${InvoiceStatusEnum.Cancelled} , ${InvoiceStatusEnum.Refunded})) TransactionsAndInvoices
-    WHERE 1=1 `;
-
   if (options?.startDate) {
     const s = new Date(options.startDate as string);
     s.setHours(0, 0, 0, 0);
@@ -58,16 +30,61 @@ WHERE
     where += ` AND createdAt <= '${s.toISOString()}'`;
   }
 
+  let customerTransactionTableSql = `SELECT
+    'ct' AS tableName,
+    ct.id,
+    ct.customerId,
+    ct.invoiceId,
+    ct.amount,
+    ct.createdAt,
+    inv.profit,
+    inv.statusId
+    FROM
+    CustomerTransaction ct
+        LEFT JOIN
+    Invoice inv ON inv.id = ct.invoiceId AND inv.statusId NOT IN (${InvoiceStatusEnum.Cancelled} , ${InvoiceStatusEnum.Refunded})`;
+
+  let invoiceTableSql = `SELECT
+    'inv' AS tableName,
+    id,
+    customerId,
+    NULL AS invoiceId,
+    totalAmount * -1 as amount,
+    createdAt,
+    profit,
+    statusId
+    FROM
+    Invoice
+    WHERE
+    customerId IS NULL AND statusId NOT IN (${InvoiceStatusEnum.Cancelled} , ${InvoiceStatusEnum.Refunded})`;
+
+  let invoicePaymentTableSql = `SELECT
+    'invp' AS tableName,
+    invp.id,
+    NULL AS customerId,
+    invp.invoiceId,
+    invp.amount,
+    invp.createdAt,
+    NULL AS profit,
+    NULL AS statusId
+    FROM
+    InvoicePayment invp
+        INNER JOIN
+    Invoice inv ON invp.invoiceId = inv.id
+    WHERE
+    inv.customerId IS NULL
+        AND inv.statusId NOT IN (${InvoiceStatusEnum.Cancelled} , ${InvoiceStatusEnum.Refunded})`;
+
   options.skip = options.skip ? Number(options.skip) : 0;
   options.take = options.take ? Number(options.take) : 50;
   limit = ` LIMIT ${options.skip}, ${options.take}`;
 
   let transactionsAndInvoices = await prisma.$queryRawUnsafe(
-    `SELECT TransactionsAndInvoices.*, COUNT(*) OVER () as rowsCount ${sql} ${where} ORDER BY createdAt DESC ${limit} `,
+    `SELECT TransactionsAndInvoices.*, COUNT(*) OVER () as rowsCount FROM (${customerTransactionTableSql} UNION ${invoiceTableSql} UNION ${invoicePaymentTableSql}) TransactionsAndInvoices ${where} ORDER BY createdAt DESC ${limit} `,
   );
   //   const transactionsAndInvoicesCount = await prisma.$queryRawUnsafe(`SELECT COUNT(*) as recordsCount ${sql} ${where} ` );
   const sumBalance = await prisma.$queryRawUnsafe(
-    `SELECT SUM(amount) balance FROM( SELECT TransactionsAndInvoices.* ${sql} ${where} ORDER BY createdAt DESC LIMIT 18446744073709551615 OFFSET ${
+    `SELECT SUM(amount) balance FROM( SELECT TransactionsAndInvoices.* FROM (${customerTransactionTableSql} UNION ${invoiceTableSql} UNION ${invoicePaymentTableSql}) TransactionsAndInvoices ${where} ORDER BY createdAt DESC LIMIT 18446744073709551615 OFFSET ${
       options.skip + options.take
     }) tr`,
   );
@@ -79,6 +96,11 @@ WHERE
       options.skip + options.take
     }`,
   );
+
+  transactionsAndInvoices = (transactionsAndInvoices as any).map((item: any) => {
+    item.amount = +item.amount.toString();
+    return item;
+  });
 
   let transactionsAndInvoicesCount = 0;
   transactionsAndInvoices = (transactionsAndInvoices as any).map((item: any) => {
