@@ -17,17 +17,13 @@ const prisma = new PrismaClient();
 // });
 
 export const getJournal = async (options: QueryOptions, sort: QuerySort) => {
-  let where = 'WHERE 1=1';
+  let where = '';
   let limit = '';
   if (options?.startDate) {
-    const s = new Date(options.startDate as string);
-    s.setHours(0, 0, 0, 0);
-    where += ` AND createdAt >= '${s.toISOString()}'`;
+    where += ` AND createdAt >= '${(options?.startDate as Date).toISOString()}'`;
   }
   if (options?.endDate) {
-    const s = new Date(options.endDate as string);
-    s.setHours(23, 59, 59, 999);
-    where += ` AND createdAt <= '${s.toISOString()}'`;
+    where += ` AND createdAt <= '${(options?.endDate as Date).toISOString()}'`;
   }
 
   let customerTransactionTableSql = `SELECT
@@ -48,7 +44,7 @@ export const getJournal = async (options: QueryOptions, sort: QuerySort) => {
     'inv' AS tableName,
     id,
     customerId,
-    NULL AS invoiceId,
+    id AS invoiceId,
     totalAmount * -1 as amount,
     createdAt,
     profit,
@@ -79,22 +75,26 @@ export const getJournal = async (options: QueryOptions, sort: QuerySort) => {
   options.take = options.take ? Number(options.take) : 50;
   limit = ` LIMIT ${options.skip}, ${options.take}`;
 
-  let transactionsAndInvoices = await prisma.$queryRawUnsafe(
-    `SELECT TransactionsAndInvoices.*, COUNT(*) OVER () as rowsCount FROM (${customerTransactionTableSql} UNION ${invoiceTableSql} UNION ${invoicePaymentTableSql}) TransactionsAndInvoices ${where} ORDER BY createdAt DESC ${limit} `,
-  );
-  //   const transactionsAndInvoicesCount = await prisma.$queryRawUnsafe(`SELECT COUNT(*) as recordsCount ${sql} ${where} ` );
+  let transactionsAndInvoices = (await prisma.$queryRawUnsafe(
+    `SELECT TransactionsAndInvoices.*, COUNT(*) OVER () as rowsCount FROM (${customerTransactionTableSql} UNION ${invoiceTableSql} UNION ${invoicePaymentTableSql}) TransactionsAndInvoices WHERE 1=1 ${where} ORDER BY createdAt DESC ${limit} `,
+  )) as any;
+
   const sumBalance = await prisma.$queryRawUnsafe(
-    `SELECT SUM(amount) balance FROM( SELECT TransactionsAndInvoices.* FROM (${customerTransactionTableSql} UNION ${invoiceTableSql} UNION ${invoicePaymentTableSql}) TransactionsAndInvoices ${where} ORDER BY createdAt DESC LIMIT 18446744073709551615 OFFSET ${
+    `SELECT SUM(amount) balance FROM( SELECT TransactionsAndInvoices.* FROM (${customerTransactionTableSql} UNION ${invoiceTableSql} UNION ${invoicePaymentTableSql}) TransactionsAndInvoices WHERE 1=1 ${where} ORDER BY createdAt DESC LIMIT 18446744073709551615 OFFSET ${
       options.skip + options.take
     }) tr`,
   );
 
+  let minInvoiceId = 0;
+  if (Array.isArray(transactionsAndInvoices) && transactionsAndInvoices.length > 0) {
+    const invoiceIds = transactionsAndInvoices
+      .filter((item: any) => item.invoiceId && item.tableName !== 'invp')
+      .map((item: any) => item.invoiceId);
+    minInvoiceId = Math.min(...invoiceIds);
+  }
+
   const sumProfit = await prisma.$queryRawUnsafe(
-    `SELECT SUM(profit) profit FROM Invoice WHERE statusId NOT IN (${
-      InvoiceStatusEnum.Cancelled
-    } , ${InvoiceStatusEnum.Refunded}) ORDER BY createdAt DESC LIMIT 18446744073709551615 OFFSET ${
-      options.skip + options.take
-    }`,
+    `SELECT SUM(inv.profit) profit FROM (SELECT profit FROM Invoice WHERE statusId NOT IN (${InvoiceStatusEnum.Cancelled} , ${InvoiceStatusEnum.Refunded}) ${where} AND id < ${minInvoiceId} ORDER BY createdAt DESC) inv`,
   );
 
   transactionsAndInvoices = (transactionsAndInvoices as any).map((item: any) => {
@@ -116,5 +116,7 @@ export const getJournal = async (options: QueryOptions, sort: QuerySort) => {
     totalCount: transactionsAndInvoicesCount,
     balance,
     profit,
+    options,
+    where,
   };
 };
