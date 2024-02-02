@@ -2,19 +2,19 @@ import { Prisma, PrismaClient } from '@prisma/client';
 import { QueryOptions, QuerySort } from '../../../types';
 import { InvoiceStatusEnum } from '../../../lib/enums';
 
-const prisma = new PrismaClient();
-// const prisma = new PrismaClient({
-//   log: [
-//     {
-//       emit: 'event',
-//       level: 'query',
-//     },
-//   ],
-// });
-// prisma.$on('query', async (e: Prisma.QueryEvent) => {
-//   console.log(`${e.query} ${e.params} duration: ${e.duration / 100}s`);
-//   // console.log(`${e.query} duration: ${e.duration/100} s`);
-// });
+// const prisma = new PrismaClient();
+const prisma = new PrismaClient({
+  log: [
+    {
+      emit: 'event',
+      level: 'query',
+    },
+  ],
+});
+prisma.$on('query', async (e: Prisma.QueryEvent) => {
+  console.log(`${e.query} ${e.params} duration: ${e.duration / 100}s`);
+  // console.log(`${e.query} duration: ${e.duration/100} s`);
+});
 
 export const getJournal = async (options: QueryOptions, sort: QuerySort) => {
   let where = '';
@@ -90,7 +90,7 @@ export const getJournal = async (options: QueryOptions, sort: QuerySort) => {
     const invoiceIds = transactionsAndInvoices
       .filter((item: any) => item.invoiceId && item.tableName !== 'invp')
       .map((item: any) => item.invoiceId);
-    minInvoiceId = Math.min(...invoiceIds);
+      minInvoiceId = invoiceIds.length ? Math.min(...invoiceIds) : 0 ;
   }
 
   const sumProfit = await prisma.$queryRawUnsafe(
