@@ -57,6 +57,7 @@ CREATE TABLE `ProductStock` (
     `pricePerItem` INTEGER NOT NULL,
     `originalQuantity` INTEGER NOT NULL,
     `remainingQuantity` INTEGER NOT NULL,
+    `comment` VARCHAR(255) NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
 

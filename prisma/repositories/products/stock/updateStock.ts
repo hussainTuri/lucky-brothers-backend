@@ -4,20 +4,27 @@ import { getRemainingStockQuantity } from '../';
 
 const prisma = new PrismaClient();
 
-export const saveStock = async (entry: ProductStock): Promise<ProductStock | null> => {
-  if (!entry.remainingQuantity) entry.remainingQuantity = entry.originalQuantity;
-  return await saveStockEntry(entry);
+export const updateStock = async (entry: ProductStock): Promise<ProductStock | null> => {
+  return await updateStockEntry(entry);
 };
 
-const saveStockEntry = async (entry: ProductStock): Promise<ProductStock | null> => {
+const updateStockEntry = async (entry: ProductStock): Promise<ProductStock | null> => {
   return prisma.$transaction(async (tx) => {
     // 1 save stock
-    const stockEntryCreated = await tx.productStock.create({
-      data: entry,
+    const stockEntryUpdated = await tx.productStock.update({
+      where: {
+        id: entry.id,
+      },
+      data: {
+        originalQuantity: entry.originalQuantity,
+        pricePerItem: entry.pricePerItem,
+        remainingQuantity: entry.remainingQuantity,
+      },
     });
 
     // 2 update Product stock quantity field
     const stockQuantity = await getRemainingStockQuantity(tx, entry.productId);
+
     await tx.product.update({
       where: {
         id: entry.productId,
@@ -27,6 +34,6 @@ const saveStockEntry = async (entry: ProductStock): Promise<ProductStock | null>
       },
     });
 
-    return stockEntryCreated;
+    return stockEntryUpdated;
   });
 };

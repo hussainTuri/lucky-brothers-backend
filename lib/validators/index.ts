@@ -12,3 +12,4 @@ export * from './invoicePaymentCreateSchema';
 export * from './productInventoryCreateSchema';
 export * from './customerTransactionCreateSchema';
 export * from './productStockCreateSchema';
+export * from './productStockUpdateSchema';
