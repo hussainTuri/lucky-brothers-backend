@@ -14,6 +14,11 @@ export const getProduct = async (id: number | string) => {
           id: 'desc',
         },
       },
+      productStocks: {
+        orderBy: {
+          id: 'desc',
+        },
+      },
     },
   });
   return product;

@@ -90,7 +90,7 @@ export const getJournal = async (options: QueryOptions, sort: QuerySort) => {
     const invoiceIds = transactionsAndInvoices
       .filter((item: any) => item.invoiceId && item.tableName !== 'invp')
       .map((item: any) => item.invoiceId);
-      minInvoiceId = invoiceIds.length ? Math.min(...invoiceIds) : 0 ;
+    minInvoiceId = invoiceIds.length ? Math.min(...invoiceIds) : 0;
   }
 
   const sumProfit = await prisma.$queryRawUnsafe(

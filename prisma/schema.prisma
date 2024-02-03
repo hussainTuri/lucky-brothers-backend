@@ -39,6 +39,7 @@ model Product {
   productType ProductType @relation(fields: [productTypeId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   invoiceItems InvoiceItem[]
   inventories Inventory[]
+  productStocks ProductStock[]
 }
 
 model ProductType {
@@ -59,6 +60,18 @@ model PriceHistory {
   updatedAt DateTime @updatedAt
 }
 
+model ProductStock {
+  id Int @id @default(autoincrement())
+  productId Int @db.Int
+  pricePerItem Int @db.Int
+  originalQuantity Int @db.Int
+  remainingQuantity Int @db.Int
+  product Product @relation(fields: [productId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+  @@index([createdAt])
+  @@index([remainingQuantity])
+}
 model Inventory {
   id Int @id @default(autoincrement())
   productId Int @db.Int

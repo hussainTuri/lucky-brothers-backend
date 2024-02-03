@@ -5,7 +5,7 @@ import { InvoiceIncludeOptions } from '../../../types/includeOptions';
 import { InvoiceStatusEnum } from '../../../lib/enums/invoice';
 
 /**
- * Pay attention to quantiySold. For adding items use positive number and for removing items use negative number.
+ * Pay attention to quantitySold. For adding items use positive number and for removing items use negative number.
  *
  * @param tx
  * @param productId
