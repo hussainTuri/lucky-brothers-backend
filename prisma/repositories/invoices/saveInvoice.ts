@@ -1,10 +1,11 @@
 import { PrismaClient } from '@prisma/client';
 import type { Customer, Invoice, InvoiceItem } from '@prisma/client';
 import { InvoicePayload } from '../../../types';
-import { getProfit, updateStockQuantity } from './';
+import { updateProfit } from './';
 import { CustomerTransactionTypesEnum } from '../../../lib/enums';
 import { InvoiceStatusEnum } from '../../../lib/enums/invoice';
 import { updateCustomerBalance } from '../customers/common';
+import { removeFromStock } from '../products';
 
 const prisma = new PrismaClient();
 
@@ -30,9 +31,6 @@ const saveInvoiceTransaction = async (
       });
     }
 
-    // Calculate profit - get products based on items
-    const profit = await getProfit(tx, items);
-
     // 2. Create invoice
     const createdInvoice = await tx.invoice.create({
       data: {
@@ -44,7 +42,7 @@ const saveInvoiceTransaction = async (
         driverName: invoice.driverName,
         vehicleName: invoice.vehicleName,
         vehicleRegistrationNumber: invoice.vehicleRegistrationNumber,
-        profit,
+        profit: 0,
         items: {
           createMany: {
             data: items.map((item) => ({
@@ -66,29 +64,23 @@ const saveInvoiceTransaction = async (
             : undefined,
       },
       include: {
-        items: true,
+        items: {
+          include: {
+            productStocks: true,
+          },
+        },
         payments: true,
         customer: true,
       },
     });
 
-    // 3. Update Stock quantity
-    await Promise.all(
-      items.map(async (item) => {
-        const reason = `Invoice #${createdInvoice.id} - Products Sold (Create Invoice) - Qty: ${
-          item.quantity! * -1
-        }`;
-        await updateStockQuantity(
-          tx,
-          item.productId!,
-          item.quantity! * -1,
-          createdInvoice.id,
-          reason,
-        );
-      }),
-    );
+    // 3. Remove items quantity from stock
+    await removeFromStock(tx, createdInvoice.items);
 
-    // 4. Add invoice as a transaction to the customerTransactions table
+    // 4. update profit
+    await updateProfit(tx, createdInvoice.id);
+
+    // 5. Add invoice as a transaction to the customerTransactions table
     if (createdInvoice.customer?.id) {
       await tx.customerTransaction.create({
         data: {
@@ -100,7 +92,7 @@ const saveInvoiceTransaction = async (
         },
       });
 
-      // 5. Add payment as transction to the customerTransactions table if it was paid
+      // 6. Add payment as transaction to the customerTransactions table if it was paid
       if (invoice.statusId === InvoiceStatusEnum.Paid) {
         await tx.customerTransaction.create({
           data: {
@@ -113,7 +105,7 @@ const saveInvoiceTransaction = async (
         });
       }
 
-      // 6. Update customer balance
+      // 7. Update customer balance
       await updateCustomerBalance(tx, createdInvoice.customer.id);
     }
 

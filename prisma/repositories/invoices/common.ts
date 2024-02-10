@@ -1,106 +1,63 @@
-import { InvoiceItem, InvoicePayment, PrismaClient } from '@prisma/client';
+import { InvoicePayment, PrismaClient } from '@prisma/client';
 import { DefaultArgs, PrismaClientOptions } from '@prisma/client/runtime/library';
 import { getInvoice } from './getInvoice';
 import { InvoiceIncludeOptions } from '../../../types/includeOptions';
 import { InvoiceStatusEnum } from '../../../lib/enums/invoice';
+import type { OmitPrismaClient } from '../../../types/';
+import { CustomError } from '../../../lib/errorHandler';
+import { messages } from '../../../lib/constants';
+import { tr } from '@faker-js/faker';
 
-/**
- * Pay attention to quantitySold. For adding items use positive number and for removing items use negative number.
- *
- * @param tx
- * @param productId
- * @param quantitySold
- * @param invoiceId
- * @param reason
- */
-export const updateStockQuantity = async (
-  tx: Omit<
-    PrismaClient<PrismaClientOptions, never, DefaultArgs>,
-    '$connect' | '$disconnect' | '$on' | '$transaction' | '$use' | '$extends'
-  >,
-  productId: number,
-  quantitySold: number,
-  invoiceId?: number,
-  reason?: string,
-): Promise<void> => {
-  const dbProduct = await tx.product.findUnique({
+export const getProfit = async (tx: OmitPrismaClient, invoiceId: number): Promise<number> => {
+  const invoice = await tx.invoice.findUniqueOrThrow({
     where: {
-      id: productId,
+      id: invoiceId,
     },
-  });
-
-  const dbInventory = await tx.inventory.findFirst({
-    where: {
-      productId,
-    },
-    orderBy: {
-      id: 'desc',
-    },
-  });
-
-  if (!dbProduct) {
-    throw new Error('پروڈکٹ نہیں ملا');
-  }
-
-  let currentInventoryQuantity = 0;
-  if (dbInventory) {
-    currentInventoryQuantity = dbInventory.quantity;
-  }
-
-  const newInventoryQuantity = currentInventoryQuantity + quantitySold;
-
-  // Add inventory
-  await tx.inventory.create({
-    data: {
-      productId: dbProduct.id,
-      quantity: newInventoryQuantity,
-      reason: reason || `Invoice #${invoiceId}`,
-    },
-  });
-
-  // Update product stock quantity
-  await tx.product.update({
-    where: {
-      id: dbProduct.id,
-    },
-    data: {
-      stockQuantity: newInventoryQuantity,
-    },
-  });
-};
-
-export const getProfit = async (
-  tx: Omit<
-    PrismaClient<PrismaClientOptions, never, DefaultArgs>,
-    '$connect' | '$disconnect' | '$on' | '$transaction' | '$use' | '$extends'
-  >,
-  items: Partial<InvoiceItem>[],
-): Promise<number> => {
-  const products = await tx.product.findMany({
-    where: {
-      id: {
-        in: items.map((item) => item.productId!),
+    include: {
+      items: {
+        include: {
+          product: true,
+          productStocks: {
+            include: {
+              productStock: true,
+            },
+          },
+        },
       },
     },
   });
-  const profit = items.reduce((acc, item) => {
-    const product = products.find((p) => p.id === item.productId);
-    if (product) {
-      const costPrice = product.buyingPrice || 0;
-      const profit = (item.price || 0) - costPrice;
-      return acc + profit * (item.quantity || 0);
+
+  const profit = invoice.items.reduce((acc, item) => {
+    if (!item.productStocks) {
+      throw new CustomError(messages.PRODUCT_STOCK_NOT_FOUND, 'PRODUCT_STOCK_NOT_FOUND');
     }
-    return acc;
+
+    const profit = item.productStocks.reduce((ac, stock) => {
+      const costPrice = stock.productStock.pricePerItem || 0;
+      const prof = (item.price || 0) - costPrice;
+      return ac + prof * (stock.quantity || 0);
+    }, 0);
+
+    return acc + profit;
   }, 0);
 
   return profit;
 };
 
+export const updateProfit = async (tx: OmitPrismaClient, invoiceId: number): Promise<void> => {
+  const profit = await getProfit(tx, invoiceId);
+  await tx.invoice.update({
+    where: {
+      id: invoiceId,
+    },
+    data: {
+      profit,
+    },
+  });
+};
+
 export const saveInvoicePayment = async (
-  tx: Omit<
-    PrismaClient<PrismaClientOptions, never, DefaultArgs>,
-    '$connect' | '$disconnect' | '$on' | '$transaction' | '$use' | '$extends'
-  >,
+  tx: OmitPrismaClient,
   invoiceId: number,
   payment: InvoicePayment,
 ) => {

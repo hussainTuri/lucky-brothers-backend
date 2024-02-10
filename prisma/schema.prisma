@@ -70,6 +70,7 @@ model ProductStock {
   product Product @relation(fields: [productId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
+  invoiceItemProductStocks InvoiceItemProductStock[]
   @@index([createdAt])
   @@index([remainingQuantity])
 }
@@ -151,6 +152,19 @@ model InvoiceItem {
   updatedAt DateTime @updatedAt
   invoice Invoice @relation(fields: [invoiceId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   product Product @relation(fields: [productId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  productStocks InvoiceItemProductStock[]
+}
+
+model InvoiceItemProductStock {
+  id Int @id @default(autoincrement())
+  invoiceItemId Int @db.Int
+  productStockId Int @db.Int
+  quantity Int @db.Int
+  createdAt DateTime @default(now())
+  invoiceItem InvoiceItem @relation(fields: [invoiceItemId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  productStock ProductStock @relation(fields: [productStockId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  @@index([createdAt])
+  @@unique([invoiceItemId, productStockId])
 }
 
 model InvoiceStatus {

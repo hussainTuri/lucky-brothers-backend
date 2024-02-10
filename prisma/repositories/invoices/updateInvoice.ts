@@ -1,7 +1,8 @@
 import { PrismaClient } from '@prisma/client';
 import type { Invoice as PrismaInvoice, InvoiceItem } from '@prisma/client';
-import { AccumulatedQuantity, InvoicePayload, InvoiceWithRelations } from '../../../types';
-import { getProfit, updateInvoiceStatus, updateStockQuantity } from './common';
+import { InvoicePayload, InvoiceWithRelations } from '../../../types';
+import { updateInvoiceStatus, updateProfit } from './common';
+import { addToStock, removeFromStock } from '../products';
 import { updateCustomerBalance } from '../customers/common';
 
 const prisma = new PrismaClient();
@@ -54,29 +55,6 @@ export const updateInvoice = async (payload: InvoicePayload): Promise<PrismaInvo
     dbInvoice,
   );
 
-  // Update profit
-  const i = await prisma.invoice.findUnique({
-    where: {
-      id: updatedInvoice.id,
-    },
-    include: {
-      items: {
-        include: {
-          product: true,
-        },
-      },
-    },
-  });
-  const profit = await getProfit(prisma, i?.items as InvoiceItem[]);
-  await prisma.invoice.update({
-    where: {
-      id: updatedInvoice.id,
-    },
-    data: {
-      profit,
-    },
-  });
-
   return updatedInvoice;
 };
 
@@ -88,18 +66,9 @@ const updateInvoiceTransaction = async (
   invoiceBeforeUpdate: InvoiceWithRelations,
 ) => {
   return prisma.$transaction(async (tx) => {
-    let stockQuantityPendingUpdate = [] as AccumulatedQuantity[];
     // 1. update existing items
     await Promise.all(
       updateItems.map(async (item) => {
-        const qtyBeforeUpdate =
-          invoiceBeforeUpdate.items?.find((i: InvoiceItem) => i.id === item.id)?.quantity || 0;
-        if (qtyBeforeUpdate !== item.quantity) {
-          stockQuantityPendingUpdate.push({
-            productId: item.productId,
-            quantity: qtyBeforeUpdate - item.quantity,
-          });
-        }
         return tx.invoiceItem.update({
           where: {
             id: item.id,
@@ -116,11 +85,6 @@ const updateInvoiceTransaction = async (
     // 2. create new items
     await Promise.all(
       createItem.map(async (item) => {
-        stockQuantityPendingUpdate.push({
-          productId: item.productId,
-          quantity: -item.quantity,
-        });
-
         return tx.invoiceItem.create({
           data: {
             invoiceId: invoice.id,
@@ -136,11 +100,6 @@ const updateInvoiceTransaction = async (
     // 3. remove items
     await Promise.all(
       removeItem.map(async (item) => {
-        stockQuantityPendingUpdate.push({
-          productId: item.productId,
-          quantity: item.quantity,
-        });
-
         return tx.invoiceItem.delete({
           where: {
             id: item.id,
@@ -149,7 +108,7 @@ const updateInvoiceTransaction = async (
       }),
     );
 
-    const payments = await tx.invoicePayment.findMany({
+    await tx.invoicePayment.findMany({
       where: {
         invoiceId: invoice.id,
       },
@@ -168,21 +127,20 @@ const updateInvoiceTransaction = async (
         vehicleName: invoice.vehicleName,
         vehicleRegistrationNumber: invoice.vehicleRegistrationNumber,
       },
+      include: {
+        items: true,
+      },
     });
 
     // 5. status update
     await updateInvoiceStatus(tx, invoice.id);
 
-    // 6. update stock quantity
-    const accumulatedQuantities = accumulateQuantities(stockQuantityPendingUpdate);
-    await Promise.all(
-      accumulatedQuantities.map(async (item) => {
-        const reason = `Invoice #${
-          invoice.id
-        } - Products Sold (Update Invoice)  - Qty: ${item.quantity!}`;
-        await updateStockQuantity(tx, item.productId!, item.quantity!, invoice.id, reason);
-      }),
-    );
+    // 6. Add stock back to inventory and then remove stock from inventory
+    await addToStock(tx, invoiceBeforeUpdate.items!);
+    await removeFromStock(tx, updatedInvoice.items);
+
+    // 4. update profit
+    await updateProfit(prisma, updatedInvoice.id);
 
     // 7. update transaction
     if (invoice.customerId) {
@@ -208,22 +166,4 @@ const updateInvoiceTransaction = async (
 
     return updatedInvoice;
   });
-};
-
-const accumulateQuantities = (stockPendingUpdates: AccumulatedQuantity[]) => {
-  const accumulatedQuantities = [] as AccumulatedQuantity[];
-
-  for (const pendingUpdate of stockPendingUpdates) {
-    const { productId, quantity } = pendingUpdate;
-
-    const existingEntry = accumulatedQuantities.find((entry) => entry.productId === productId);
-
-    if (existingEntry) {
-      existingEntry.quantity += quantity;
-    } else {
-      accumulatedQuantities.push({ productId, quantity });
-    }
-  }
-
-  return accumulatedQuantities;
 };
