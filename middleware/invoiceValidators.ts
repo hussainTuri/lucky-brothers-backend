@@ -133,7 +133,7 @@ export const validateUpdateInvoice = async (req: Request, res: Response, next: N
   }
 
   // Before this id, we were using old inventory structure, so we can't update those invoices
-  if (invoice.id < 156) {
+  if (invoice.id <= 156) {
     resp.message = messages.INVOICE_OLD_UPDATE_NOT_ALLOWED;
     resp.success = false;
     return res.status(400).json(resp);
