@@ -12,10 +12,14 @@ export const messages = {
   INVOICE_NOT_PENDING: 'آپ صرف ان انوائسز کو اپ ڈیٹ کر سکتے ہیں جن کی ادائیگی ابھی باقی ہے۔',
   INVALID_CUSTOMER_TRANSACTION_ID: 'غلط ٹرانزیکشن آئی ڈی فراہم کی گئی۔',
   INVALID_CUSTOMER_ID: ' غلط کسٹمر آئی ڈی فراہم کی گئی۔',
+  INVOICE_OLD_UPDATE_NOT_ALLOWED: 'پرانی انوائس کو اپ ڈیٹ کرنے کی اجازت نہیں ہے۔',
   CUSTOMER_TRANSACTION_NOT_FOUND: 'کسٹمر ٹرانزیکشن نہیں ملا',
   CUSTOMER_TRANSACTION_DELETE_NOT_ALLOWED: 'کسٹمر ٹرانزیکشن کو ہٹانے کی اجازت نہیں ہے',
   INVOICE_CUSTOMER_REQUIRED:
     'براہ کرم کسٹمر کو منتخب کریں۔ قرض کی رسید صرف معروف صارف کے لیے بنائی جا سکتی ہے۔',
   CUSTOMER_PAYMENT_NOT_ALLOWED:
     'رجسٹرڈ صارفین کے لیے، براہ کرم اس کے بجائے کسٹمر پیج میں ادائیگیاں شامل کریں۔',
+  INSUFFICIENT_STOCK: 'پروڈکٹ کے لیے اسٹاک دستیاب نہیں ہے۔',
+  INVOICE_NOT_FOUND: 'انوائس نہیں ملا',
+  PRODUCT_STOCK_NOT_FOUND: 'پروڈکٹ کی اسٹاک نہیں ملی',
 };

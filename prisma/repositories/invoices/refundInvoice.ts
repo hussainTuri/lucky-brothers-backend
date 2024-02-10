@@ -1,7 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 import type { Invoice } from '@prisma/client';
 import { InvoiceWithRelations } from '../../../types';
-import { updateStockQuantity } from './common';
+import { addToStock } from '../products';
 import { CustomerTransactionTypesEnum } from '../../../lib/enums';
 import { InvoiceStatusEnum } from '../../../lib/enums/invoice';
 import { updateCustomerBalance } from '../customers/common';
@@ -53,6 +53,9 @@ const updateInvoiceTransaction = async (invoice: InvoiceWithRelations) => {
       },
     });
 
+    // 2. Add back stock quantity
+    await addToStock(tx, invoice.items!);
+
     // 3. Deduct payments as refund
     if (invoice.customerId) {
       for (const payment of invoice.payments || []) {
@@ -67,15 +70,7 @@ const updateInvoiceTransaction = async (invoice: InvoiceWithRelations) => {
       }
     }
 
-    // 2. update stock quantity
-    await Promise.all(
-      invoice.items!.map(async (item) => {
-        const reason = `Invoice #${invoice.id} - Products returned (refunded)  - Qty: ${item.quantity}`;
-        await updateStockQuantity(tx, item.productId, item.quantity, invoice.id, reason);
-      }),
-    );
-
-    // 3. update customer balance
+    // 4. update customer balance
     if (invoice.customerId) await updateCustomerBalance(tx, invoice.customerId);
 
     return updatedInvoice;

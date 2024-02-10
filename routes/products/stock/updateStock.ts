@@ -1,13 +1,13 @@
 import { NextFunction, Request, Response } from 'express';
-import { saveInventory as saveProductInventoryRepository } from '../../../prisma/repositories/products/';
+import { updateStock as updateStockInventoryRepository } from '../../../prisma/repositories/products/';
 import { response } from '../../../lib/response';
 import { messages } from '../../../lib/constants';
 
-export const createInventory = async (req: Request, res: Response, next: NextFunction) => {
+export const updateStock = async (req: Request, res: Response, next: NextFunction) => {
   const resp = response();
 
   try {
-    resp.data = await saveProductInventoryRepository(req.body);
+    resp.data = await updateStockInventoryRepository(req.body);
   } catch (error) {
     console.error('DB Error', error);
     resp.success = false;

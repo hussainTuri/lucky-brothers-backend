@@ -9,5 +9,6 @@ export * from './userCreateSchema';
 export * from './userUpdateSchema';
 export * from './userLoginSchema';
 export * from './invoicePaymentCreateSchema';
-export * from './productInventoryCreateSchema';
 export * from './customerTransactionCreateSchema';
+export * from './productStockCreateSchema';
+export * from './productStockUpdateSchema';

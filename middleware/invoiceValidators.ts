@@ -126,6 +126,19 @@ export const validateUpdateInvoice = async (req: Request, res: Response, next: N
     payments: true,
   };
   const invoice = await getInvoice(req.body.invoice.id as number, includeOptions);
+  if (!invoice) {
+    resp.message = messages.INVOICE_NOT_FOUND;
+    resp.success = false;
+    return res.status(400).json(resp);
+  }
+
+  // Before this id, we were using old inventory structure, so we can't update those invoices
+  if (invoice.id < 156) {
+    resp.message = messages.INVOICE_OLD_UPDATE_NOT_ALLOWED;
+    resp.success = false;
+    return res.status(400).json(resp);
+  }
+
   const payments = invoice.payments?.reduce((sum, p) => sum + p.amount, 0) || 0;
   if (payments > req.body.invoice.totalAmount) {
     resp.message = messages.PAID_AMOUNT_GREATER_THAN_TOTAL_AMOUNT;

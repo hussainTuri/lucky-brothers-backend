@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import type { Invoice } from '@prisma/client';
-import { updateStockQuantity } from './common';
+import { addToStock } from '../products';
 import { InvoiceWithRelations } from '../../../types';
 import { InvoiceStatusEnum } from '../../../lib/enums/invoice';
 import { updateCustomerBalance } from '../customers/common';
@@ -52,12 +52,7 @@ const updateInvoiceTransaction = async (invoice: InvoiceWithRelations) => {
     });
 
     // 2. update stock quantity
-    await Promise.all(
-      invoice.items!.map(async (item) => {
-        const reason = `Invoice #${invoice.id} - Products returned (cancelled) - Qty: ${item.quantity}`;
-        await updateStockQuantity(tx, item.productId, item.quantity, invoice.id, reason);
-      }),
-    );
+    await addToStock(tx, invoice.items!);
 
     // 3. update customer balance
     if (invoice.customerId) await updateCustomerBalance(tx, invoice.customerId);

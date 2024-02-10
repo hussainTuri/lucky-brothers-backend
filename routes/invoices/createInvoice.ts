@@ -3,6 +3,7 @@ import { saveInvoice as saveInvoiceRepository } from '../../prisma/repositories/
 import { response } from '../../lib/response';
 import { Prisma } from '@prisma/client';
 import { messages } from '../../lib/constants';
+import { CustomError } from '../../lib/errorHandler';
 
 export const createInvoice = async (req: Request, res: Response, next: NextFunction) => {
   const resp = response();
@@ -17,6 +18,9 @@ export const createInvoice = async (req: Request, res: Response, next: NextFunct
       if (e.code === 'P2002') {
         resp.message = messages.PHONE_EXISTS; // customer phone error while also saving customer
       }
+    }
+    if (e instanceof CustomError) {
+      resp.message = e.message;
     }
     return res.status(400).json(resp);
   }
