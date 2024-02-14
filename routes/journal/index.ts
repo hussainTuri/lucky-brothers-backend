@@ -1,4 +1,4 @@
-import express, { Request, RequestHandler, Response } from 'express';
+import express from 'express';
 import { getJournal } from './getJournal';
 import { validateQueryParams } from '../../middleware/invoiceValidators';
 import { authenticate } from '../../middleware/authenticate';

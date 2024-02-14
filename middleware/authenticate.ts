@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from 'express';
+import { Response, NextFunction } from 'express';
 import { response } from '../lib/response';
 import jwt from 'jsonwebtoken';
 import { env } from 'process';

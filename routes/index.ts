@@ -6,6 +6,7 @@ import invoiceRoutes from './invoices';
 import userRoutes from './users';
 import useJournalRoutes from './journal';
 import useDashboardRoutes from './dashboard';
+import expenseRoutes from './expenses';
 
 router.use('/products', productRoutes);
 router.use('/customers', customerRoutes);
@@ -13,4 +14,5 @@ router.use('/invoices', invoiceRoutes);
 router.use('/users', userRoutes);
 router.use('/journal', useJournalRoutes);
 router.use('/dashboard', useDashboardRoutes);
+router.use('/expenses', expenseRoutes);
 export default router;
