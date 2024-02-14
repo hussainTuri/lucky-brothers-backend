@@ -33,8 +33,9 @@ model Product {
   startStop Int? @db.Int
   design String? @db.VarChar(255)
   threadSize String? @db.VarChar(255)
-  buyingPrice Int? @db.Int
+  buyingPrice Int? @db.Int // @deprecated
   sellingPrice Int? @db.Int
+  isActive Boolean @default(true)
   priceHistory PriceHistory[]
   productType ProductType @relation(fields: [productTypeId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   invoiceItems InvoiceItem[]
