@@ -5,11 +5,7 @@ import { env } from 'process';
 import { User } from '@prisma/client';
 import { AuthenticatedRequest } from '../types/api';
 
-export const authenticate = async (
-  req: AuthenticatedRequest,
-  res: Response,
-  next: NextFunction,
-) => {
+export const authenticate = (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
   const resp = response();
 
   const tokenHeader = req.header('Authorization');

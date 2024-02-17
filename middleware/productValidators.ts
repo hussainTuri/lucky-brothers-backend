@@ -1,8 +1,7 @@
-import { Prisma } from '@prisma/client';
+import { Prisma, Product } from '@prisma/client';
 import { Request, Response, NextFunction } from 'express';
 import { response } from '../lib/response';
 import { createProductSchema, updateProductSchema } from '../lib/validators/';
-import { Product } from '@prisma/client';
 import { UCFirst, toNumber, trimSpaces } from '../lib/utils';
 
 const extractProductData = (
@@ -32,14 +31,14 @@ const extractProductData = (
   };
 };
 
-export const normalizeCreateData = async (req: Request, res: Response, next: NextFunction) => {
+export const normalizeCreateData = (req: Request, res: Response, next: NextFunction) => {
   const payload = req.body as Prisma.ProductCreateInput;
   const product = extractProductData(payload) as Partial<Product>;
   req.body = product;
   next();
 };
 
-export const normalizeUpdateData = async (req: Request, res: Response, next: NextFunction) => {
+export const normalizeUpdateData = (req: Request, res: Response, next: NextFunction) => {
   const payload = req.body as Prisma.ProductCreateInput;
   const product = extractProductData(payload) as Partial<Product>;
   product.id = req.body.id ?? 0;

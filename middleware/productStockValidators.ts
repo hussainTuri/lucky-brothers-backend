@@ -12,7 +12,7 @@ const extractStockData = (payload: Partial<ProductStock>) => {
   };
 };
 
-export const normalizeCreateData = async (req: Request, res: Response, next: NextFunction) => {
+export const normalizeCreateData = (req: Request, res: Response, next: NextFunction) => {
   const payload = req.body as Partial<ProductStock>;
   const stockEntry = extractStockData(payload) as Partial<ProductStock>;
   stockEntry.remainingQuantity = payload.originalQuantity;
@@ -20,7 +20,7 @@ export const normalizeCreateData = async (req: Request, res: Response, next: Nex
   next();
 };
 
-export const normalizeUpdateData = async (req: Request, res: Response, next: NextFunction) => {
+export const normalizeUpdateData = (req: Request, res: Response, next: NextFunction) => {
   const payload = req.body as Partial<ProductStock>;
   const stockEntry = extractStockData(payload) as Partial<ProductStock>;
   stockEntry.id = payload.id ?? undefined;

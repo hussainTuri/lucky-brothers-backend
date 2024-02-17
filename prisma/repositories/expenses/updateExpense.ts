@@ -16,6 +16,7 @@ const updateExpenseEntry = async (entry: Expense): Promise<Expense | null> => {
       data: {
         amount: entry.amount,
         description: entry.description,
+        expenseDate: entry.expenseDate,
       },
     });
 

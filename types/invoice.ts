@@ -25,6 +25,7 @@ export type SortOrder = 'asc' | 'desc';
 export interface QuerySort {
   id?: SortOrder;
   createdAt?: SortOrder;
+  expenseDate?: SortOrder;
 }
 
 export interface InvoicePayload {

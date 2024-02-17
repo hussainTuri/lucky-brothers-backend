@@ -205,6 +205,7 @@ model Expense {
   id Int @id @default(autoincrement())
   amount Int @db.Int
   description String @db.VarChar(255)
+  expenseDate DateTime @db.DateTime
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -215,7 +216,8 @@ model MonthlyProfit {
   sales Int @db.Int
   expense Int @db.Int
   profit Int @db.Int
+  description String? @db.VarChar(255)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
- @@index([monthYear])
+ @@unique([monthYear])
 }

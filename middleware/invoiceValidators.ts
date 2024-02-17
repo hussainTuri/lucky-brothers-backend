@@ -10,7 +10,7 @@ import { InvoiceIncludeOptions } from '../types/includeOptions';
 import { messages } from '../lib/constants';
 import { InvoiceStatusEnum } from '../lib/enums/invoice';
 
-export const validateQueryParams = async (req: Request, res: Response, next: NextFunction) => {
+export const validateQueryParams = (req: Request, res: Response, next: NextFunction) => {
   const resp = response();
   const { error } = queryParamsSchema.validate(req.query, { allowUnknown: true });
   if (error) {
@@ -33,6 +33,7 @@ const extractInvoiceData = (payload: Partial<Invoice>) => {
     vehicleRegistrationNumber: trimSpaces((payload.vehicleRegistrationNumber as string) ?? null),
   };
 };
+
 const extractInvoiceItemData = (payload: Partial<InvoiceItem>) => {
   return {
     productId: payload.productId ?? null,
@@ -42,7 +43,7 @@ const extractInvoiceItemData = (payload: Partial<InvoiceItem>) => {
   };
 };
 
-export const normalizeCreateData = async (req: Request, res: Response, next: NextFunction) => {
+export const normalizeCreateData = (req: Request, res: Response, next: NextFunction) => {
   const invoicePayload = req.body?.invoice as Partial<Invoice>;
   const itemsPayload = req.body?.items as Partial<InvoiceItem>[];
   const customerPayload = req.body?.customer as Partial<Customer>;
@@ -52,18 +53,13 @@ export const normalizeCreateData = async (req: Request, res: Response, next: Nex
 
   if (invoicePayload) invoice = extractInvoiceData(invoicePayload);
   if (itemsPayload) items = itemsPayload.map((i) => extractInvoiceItemData(i));
-  if (
-    customerPayload &&
-    customerPayload?.customerName &&
-    customerPayload?.phone &&
-    !req.body?.invoice.customerId
-  )
+  if (customerPayload?.customerName && customerPayload?.phone && !req.body?.invoice.customerId)
     customer = extractCustomerData(customerPayload);
 
   req.body = { ...req.body, invoice, items, customer };
   next();
 };
-export const normalizeUpdateData = async (req: Request, res: Response, next: NextFunction) => {
+export const normalizeUpdateData = (req: Request, res: Response, next: NextFunction) => {
   const invoicePayload = req.body?.invoice as Partial<Invoice>;
   const itemsPayload = req.body?.items as Partial<InvoiceItem>[];
   let invoice = null;

@@ -23,6 +23,7 @@ CREATE TABLE `Product` (
     `threadSize` VARCHAR(255) NULL,
     `buyingPrice` INTEGER NULL,
     `sellingPrice` INTEGER NULL,
+    `isActive` BOOLEAN NOT NULL DEFAULT true,
 
     UNIQUE INDEX `Product_sku_key`(`sku`),
     PRIMARY KEY (`id`)
@@ -199,6 +200,33 @@ CREATE TABLE `User` (
     `updatedAt` DATETIME(3) NOT NULL,
 
     UNIQUE INDEX `User_username_key`(`username`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `Expense` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `amount` INTEGER NOT NULL,
+    `description` VARCHAR(255) NOT NULL,
+    `expenseDate` DATETIME NOT NULL,
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updatedAt` DATETIME(3) NOT NULL,
+
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `MonthlyProfit` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `monthYear` VARCHAR(7) NOT NULL,
+    `sales` INTEGER NOT NULL,
+    `expense` INTEGER NOT NULL,
+    `profit` INTEGER NOT NULL,
+    `description` VARCHAR(255) NOT NULL,
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updatedAt` DATETIME(3) NOT NULL,
+
+    UNIQUE INDEX `MonthlyProfit_monthYear_key`(`monthYear`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 

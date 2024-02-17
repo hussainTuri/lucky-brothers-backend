@@ -14,7 +14,7 @@ const extractPaymentData = (payload: Partial<InvoicePayment>) => {
   };
 };
 
-export const normalizeCreateData = async (req: Request, res: Response, next: NextFunction) => {
+export const normalizeCreateData = (req: Request, res: Response, next: NextFunction) => {
   const payload = req.body as Partial<InvoicePayment>;
   const payment = extractPaymentData(payload) as Partial<InvoicePayment>;
   req.body = payment;

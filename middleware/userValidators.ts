@@ -14,14 +14,14 @@ export const extractUserData = (payload: Partial<User>) => {
   };
 };
 
-export const normalizeRegisterData = async (req: Request, res: Response, next: NextFunction) => {
+export const normalizeRegisterData = (req: Request, res: Response, next: NextFunction) => {
   const payload = req.body as Partial<User>;
   const user = extractUserData(payload) as Partial<User>;
   req.body = user;
   next();
 };
 
-export const normalizeUpdateData = async (req: Request, res: Response, next: NextFunction) => {
+export const normalizeUpdateData = (req: Request, res: Response, next: NextFunction) => {
   const payload = req.body as Partial<User>;
   const user = extractUserData(payload) as Partial<User>;
   user.id = req.body.id ?? 0;
@@ -29,7 +29,7 @@ export const normalizeUpdateData = async (req: Request, res: Response, next: Nex
   next();
 };
 
-export const normalizeLoginData = async (req: Request, res: Response, next: NextFunction) => {
+export const normalizeLoginData = (req: Request, res: Response, next: NextFunction) => {
   const payload = req.body as Partial<User>;
   const { username, password } = extractUserData(payload) as Partial<User>;
   req.body = { ...req.body, username, password };

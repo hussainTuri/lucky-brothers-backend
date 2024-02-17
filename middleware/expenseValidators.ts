@@ -4,20 +4,22 @@ import { response } from '../lib/response';
 import { createExpenseSchema, updateExpenseSchema } from '../lib/validators/';
 
 const extractExpenseData = (payload: Partial<Expense>) => {
+  console.log('boy', payload)
   return {
     amount: payload.amount ?? null,
     description: payload.description ?? null,
+    expenseDate: payload.expenseDate ? new Date(payload.expenseDate) : null,
   };
 };
 
-export const normalizeCreateData = async (req: Request, res: Response, next: NextFunction) => {
+export const normalizeCreateData = (req: Request, res: Response, next: NextFunction) => {
   const payload = req.body as Partial<Expense>;
   const expenseEntry = extractExpenseData(payload) as Partial<Expense>;
   req.body = expenseEntry;
   next();
 };
 
-export const normalizeUpdateData = async (req: Request, res: Response, next: NextFunction) => {
+export const normalizeUpdateData = (req: Request, res: Response, next: NextFunction) => {
   const payload = req.body as Partial<Expense>;
   const expenseEntry = extractExpenseData(payload) as Partial<Expense>;
   expenseEntry.id = payload.id ?? undefined;
@@ -27,6 +29,7 @@ export const normalizeUpdateData = async (req: Request, res: Response, next: Nex
 
 export const validateCreateExpense = async (req: Request, res: Response, next: NextFunction) => {
   const resp = response();
+  console.log('req.body', req.body)
   const { error } = createExpenseSchema.validate(req.body, { allowUnknown: true });
   if (error) {
     resp.message = error.details[0].message || '';
