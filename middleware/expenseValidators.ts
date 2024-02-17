@@ -4,7 +4,6 @@ import { response } from '../lib/response';
 import { createExpenseSchema, updateExpenseSchema } from '../lib/validators/';
 
 const extractExpenseData = (payload: Partial<Expense>) => {
-  console.log('boy', payload)
   return {
     amount: payload.amount ?? null,
     description: payload.description ?? null,
@@ -29,7 +28,6 @@ export const normalizeUpdateData = (req: Request, res: Response, next: NextFunct
 
 export const validateCreateExpense = async (req: Request, res: Response, next: NextFunction) => {
   const resp = response();
-  console.log('req.body', req.body)
   const { error } = createExpenseSchema.validate(req.body, { allowUnknown: true });
   if (error) {
     resp.message = error.details[0].message || '';

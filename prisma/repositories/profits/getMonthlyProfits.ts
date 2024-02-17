@@ -7,7 +7,7 @@ export const getMonthlyProfits = async (options: QueryOptions, sort?: QuerySort)
   const [records, totalCount] = await Promise.all([
     await prisma.monthlyProfit.findMany({
       orderBy: {
-        ...( sort?.id && {id: sort?.id || 'desc' }),
+        ...(sort?.id && { id: sort?.id || 'desc' }),
         ...(sort?.createdAt && { createdAt: sort?.createdAt }),
       },
       skip: options?.skip || 0,
