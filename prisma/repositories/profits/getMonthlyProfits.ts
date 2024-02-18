@@ -4,7 +4,7 @@ import { QueryOptions, QuerySort } from '../../../types';
 const prisma = new PrismaClient();
 
 export const getMonthlyProfits = async (options: QueryOptions, sort?: QuerySort) => {
-  let orderBy = '';
+  let orderBy = 'id desc';
   if (sort?.id) {
     orderBy = `id ${sort.id}`;
   } else if (sort?.createdAt) {
@@ -19,7 +19,7 @@ export const getMonthlyProfits = async (options: QueryOptions, sort?: QuerySort)
         options?.take || 1000
       };`,
     ) as any,
-    prisma.$queryRawUnsafe(`SELECT COUNT(*) total FROM MonthlyProfit;`) as any,
+    prisma.expense.count(),
     prisma.$queryRawUnsafe(
       `SELECT SUM(profit) - sum(expense) totalNetProfit FROM MonthlyProfit;`,
     ) as any,
@@ -27,7 +27,7 @@ export const getMonthlyProfits = async (options: QueryOptions, sort?: QuerySort)
 
   return {
     records,
-    totalCount: +totalCount[0].total.toString(),
-    totalNetProfit: +profit[0].totalNetProfit.toString(),
+    totalCount,
+    totalNetProfit: (profit as any).length && profit[0].totalNetProfit ? +profit[0].totalNetProfit.toString(): 0,
   };
 };
