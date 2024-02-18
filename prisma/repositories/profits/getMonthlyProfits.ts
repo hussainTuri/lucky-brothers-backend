@@ -4,17 +4,30 @@ import { QueryOptions, QuerySort } from '../../../types';
 const prisma = new PrismaClient();
 
 export const getMonthlyProfits = async (options: QueryOptions, sort?: QuerySort) => {
-  const [records, totalCount] = await Promise.all([
-    await prisma.monthlyProfit.findMany({
-      orderBy: {
-        ...(sort?.id && { id: sort?.id || 'desc' }),
-        ...(sort?.createdAt && { createdAt: sort?.createdAt }),
-      },
-      skip: options?.skip || 0,
-      take: options?.take || 1000,
-    }),
-    prisma.monthlyProfit.count(),
+  let orderBy = '';
+  if (sort?.id) {
+    orderBy = `id ${sort.id}`;
+  } else if (sort?.createdAt) {
+    orderBy = `createdAt ${sort.createdAt}`;
+  } else if (sort?.monthYear) {
+    orderBy = `STR_TO_DATE(concat('01-', monthYear), '%d-%m-%Y') ${sort.monthYear}`;
+  }
+
+  const [records, totalCount, profit] = await Promise.all([
+    prisma.$queryRawUnsafe(
+      `SELECT * FROM MonthlyProfit ORDER BY ${orderBy} LIMIT ${options?.skip || 0}, ${
+        options?.take || 1000
+      };`,
+    ) as any,
+    prisma.$queryRawUnsafe(`SELECT COUNT(*) total FROM MonthlyProfit;`) as any,
+    prisma.$queryRawUnsafe(
+      `SELECT SUM(profit) - sum(expense) totalNetProfit FROM MonthlyProfit;`,
+    ) as any,
   ]);
 
-  return { records, totalCount };
+  return {
+    records,
+    totalCount: +totalCount[0].total.toString(),
+    totalNetProfit: +profit[0].totalNetProfit.toString(),
+  };
 };

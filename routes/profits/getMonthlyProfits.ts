@@ -22,7 +22,7 @@ export const getMonthlyProfits = async (req: Request, res: Response, next: NextF
   }
 
   try {
-    resp.data = await getMonthlyProfitsRepository(filters, sort);
+    resp.data = (await getMonthlyProfitsRepository(filters, sort)) ?? [];
   } catch (error) {
     console.error('DB Error', error);
     resp.success = false;

@@ -14,3 +14,4 @@ export * from './productStockCreateSchema';
 export * from './productStockUpdateSchema';
 export * from './expenseCreateSchema';
 export * from './expenseUpdateSchema';
+export * from './monthlyProfitCreateSchema';

@@ -222,7 +222,7 @@ CREATE TABLE `MonthlyProfit` (
     `sales` INTEGER NOT NULL,
     `expense` INTEGER NOT NULL,
     `profit` INTEGER NOT NULL,
-    `description` VARCHAR(255) NOT NULL,
+    `description` VARCHAR(255) NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
 
