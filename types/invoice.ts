@@ -27,6 +27,8 @@ export interface QuerySort {
   createdAt?: SortOrder;
   expenseDate?: SortOrder;
   monthYear?: SortOrder;
+  cashDate?: SortOrder;
+  reportDate?: SortOrder;
 }
 
 export interface InvoicePayload {

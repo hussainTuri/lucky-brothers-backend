@@ -204,13 +204,14 @@ model User {
 model Expense {
   id Int @id @default(autoincrement())
   amount Int @db.Int
-  description String @db.VarChar(255)
+  description String? @db.VarChar(255)
   expenseDate DateTime @db.DateTime
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
-model MonthlyProfit {
+// MonthlyReport is more of a monthly profit
+model MonthlyReport {
   id Int @id @default(autoincrement())
   monthYear String @db.VarChar(7)
   sales Int @db.Int
@@ -220,4 +221,29 @@ model MonthlyProfit {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
  @@unique([monthYear])
+}
+
+// DailyReport is more of a daily cash register
+model DailyReport {
+  id Int @id @default(autoincrement())
+  reportDate DateTime @db.DateTime
+  openingBalance Int @db.Int
+  sales Int @db.Int
+  expense Int @db.Int
+  receiveCash Int @db.Int // Cash from any other source than selling services/merchandise eg Ali or Sabir
+  buyStock Int @db.Int
+  closingBalance Int @db.Int
+  description String? @db.VarChar(255)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@unique([reportDate])
+}
+
+model Cash {
+  id Int @id @default(autoincrement())
+  amount Int @db.Int
+  description String @db.VarChar(255)
+  cashDate DateTime @db.DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

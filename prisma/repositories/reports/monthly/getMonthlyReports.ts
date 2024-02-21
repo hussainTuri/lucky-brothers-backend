@@ -1,9 +1,9 @@
 import { PrismaClient } from '@prisma/client';
-import { QueryOptions, QuerySort } from '../../../types';
+import { QueryOptions, QuerySort } from '../../../../types';
 
 const prisma = new PrismaClient();
 
-export const getMonthlyProfits = async (options: QueryOptions, sort?: QuerySort) => {
+export const getMonthlyReports = async (options: QueryOptions, sort?: QuerySort) => {
   let orderBy = 'id desc';
   if (sort?.id) {
     orderBy = `id ${sort.id}`;
@@ -15,19 +15,20 @@ export const getMonthlyProfits = async (options: QueryOptions, sort?: QuerySort)
 
   const [records, totalCount, profit] = await Promise.all([
     prisma.$queryRawUnsafe(
-      `SELECT * FROM MonthlyProfit ORDER BY ${orderBy} LIMIT ${options?.skip || 0}, ${
+      `SELECT * FROM MonthlyReport ORDER BY ${orderBy} LIMIT ${options?.skip || 0}, ${
         options?.take || 1000
       };`,
     ) as any,
     prisma.expense.count(),
     prisma.$queryRawUnsafe(
-      `SELECT SUM(profit) - sum(expense) totalNetProfit FROM MonthlyProfit;`,
+      `SELECT SUM(profit) - sum(expense) totalNetProfit FROM MonthlyReport;`,
     ) as any,
   ]);
 
   return {
     records,
     totalCount,
-    totalNetProfit: (profit as any).length && profit[0].totalNetProfit ? +profit[0].totalNetProfit.toString(): 0,
+    totalNetProfit:
+      profit.length && profit[0].totalNetProfit ? +profit[0].totalNetProfit.toString() : 0,
   };
 };

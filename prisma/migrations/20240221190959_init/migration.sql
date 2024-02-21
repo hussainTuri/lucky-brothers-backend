@@ -207,7 +207,7 @@ CREATE TABLE `User` (
 CREATE TABLE `Expense` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `amount` INTEGER NOT NULL,
-    `description` VARCHAR(255) NOT NULL,
+    `description` VARCHAR(255) NULL,
     `expenseDate` DATETIME NOT NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
@@ -216,7 +216,7 @@ CREATE TABLE `Expense` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `MonthlyProfit` (
+CREATE TABLE `MonthlyReport` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `monthYear` VARCHAR(7) NOT NULL,
     `sales` INTEGER NOT NULL,
@@ -226,7 +226,37 @@ CREATE TABLE `MonthlyProfit` (
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
 
-    UNIQUE INDEX `MonthlyProfit_monthYear_key`(`monthYear`),
+    UNIQUE INDEX `MonthlyReport_monthYear_key`(`monthYear`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `DailyReport` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `reportDate` DATETIME NOT NULL,
+    `openingBalance` INTEGER NOT NULL,
+    `sales` INTEGER NOT NULL,
+    `expense` INTEGER NOT NULL,
+    `receiveCash` INTEGER NOT NULL,
+    `buyStock` INTEGER NOT NULL,
+    `closingBalance` INTEGER NOT NULL,
+    `description` VARCHAR(255) NULL,
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updatedAt` DATETIME(3) NOT NULL,
+
+    UNIQUE INDEX `DailyReport_reportDate_key`(`reportDate`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `Cash` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `amount` INTEGER NOT NULL,
+    `description` VARCHAR(255) NOT NULL,
+    `cashDate` DATETIME NOT NULL,
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updatedAt` DATETIME(3) NOT NULL,
+
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 

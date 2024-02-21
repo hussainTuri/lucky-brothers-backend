@@ -1,0 +1,40 @@
+import { PrismaClient } from '@prisma/client';
+import type { DailyReport } from '@prisma/client';
+
+const prisma = new PrismaClient();
+
+export const saveDailyReport = async (entry: DailyReport): Promise<DailyReport | null> => {
+  return await saveDailyReportEntry(entry);
+};
+
+const saveDailyReportEntry = async (entry: DailyReport): Promise<DailyReport | null> => {
+  return prisma.$transaction(async (tx) => {
+    // 1. get last closing balance
+    const lastEntry = await tx.dailyReport.findFirst({
+      orderBy: {
+        reportDate: 'desc',
+      },
+    });
+
+    // 2 save report
+    const entryCreated = await tx.dailyReport.create({
+      data: {
+        reportDate: entry.reportDate,
+        openingBalance: lastEntry?.closingBalance ?? 0,
+        sales: entry.sales,
+        expense: entry.expense,
+        receiveCash: entry.receiveCash,
+        buyStock: entry.buyStock,
+        closingBalance:
+          (lastEntry?.closingBalance ?? 0) +
+          entry.sales -
+          entry.expense +
+          entry.receiveCash -
+          entry.buyStock,
+        description: entry.description,
+      },
+    });
+
+    return entryCreated;
+  });
+};

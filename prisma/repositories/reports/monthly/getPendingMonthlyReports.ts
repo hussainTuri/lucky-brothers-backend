@@ -1,10 +1,10 @@
-import { MonthlyProfit, PrismaClient } from '@prisma/client';
-import { InvoiceStatusEnum } from '../../../lib/enums';
+import { MonthlyReport, PrismaClient } from '@prisma/client';
+import { InvoiceStatusEnum } from '../../../../lib/enums';
 
 const prisma = new PrismaClient();
 
-export const getPendingMonthlyProfits = async () => {
-  const profits = await prisma.monthlyProfit.findMany({
+export const getPendingMonthlyReports = async () => {
+  const profits = await prisma.monthlyReport.findMany({
     select: {
       monthYear: true,
     },
@@ -47,15 +47,15 @@ export const getPendingMonthlyProfits = async () => {
   });
 
   const data = pendingProfits.map((sale: any) => {
-    const monthlyProfit = {} as MonthlyProfit;
-    monthlyProfit.id = 0;
-    monthlyProfit.monthYear = sale.monthYear;
-    monthlyProfit.sales = +sale.totalAmount;
-    monthlyProfit.expense =
+    const monthlyReport = {} as MonthlyReport;
+    monthlyReport.id = 0;
+    monthlyReport.monthYear = sale.monthYear;
+    monthlyReport.sales = +sale.totalAmount;
+    monthlyReport.expense =
       +expenses.find((expense: any) => expense.monthYear === sale.monthYear)?.totalAmount || 0;
-    monthlyProfit.profit =
+    monthlyReport.profit =
       +profit.find((profit: any) => profit.monthYear === sale.monthYear)?.totalAmount || 0;
-    return monthlyProfit;
+    return monthlyReport;
   });
 
   return data;

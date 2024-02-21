@@ -1,13 +1,13 @@
 import { NextFunction, Request, Response } from 'express';
-import { saveMonthlyProfit as saveMonthlyProfitRepository } from '../../prisma/repositories/profits';
+import { saveCash as saveCashRepository } from '../../prisma/repositories/cash';
 import { response } from '../../lib/response';
 import { messages } from '../../lib/constants';
 
-export const createMonthlyProfit = async (req: Request, res: Response, next: NextFunction) => {
+export const createCash = async (req: Request, res: Response, next: NextFunction) => {
   const resp = response();
 
   try {
-    resp.data = await saveMonthlyProfitRepository(req.body);
+    resp.data = await saveCashRepository(req.body);
   } catch (error) {
     console.error('DB Error', error);
     resp.success = false;

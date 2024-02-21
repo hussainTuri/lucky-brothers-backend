@@ -1,10 +1,10 @@
 import { NextFunction, Request, Response } from 'express';
-import { getMonthlyProfits as getMonthlyProfitsRepository } from '../../prisma/repositories/profits';
+import { getCashes as getCashesRepository } from '../../prisma/repositories/cash';
 import { response } from '../../lib/response';
 import { messages } from '../../lib/constants';
 import { QueryOptions, QuerySort, SortOrder } from '../../types';
 
-export const getMonthlyProfits = async (req: Request, res: Response, next: NextFunction) => {
+export const getCashes = async (req: Request, res: Response, next: NextFunction) => {
   const resp = response();
 
   const filters = {} as QueryOptions;
@@ -22,7 +22,7 @@ export const getMonthlyProfits = async (req: Request, res: Response, next: NextF
   }
 
   try {
-    resp.data = (await getMonthlyProfitsRepository(filters, sort)) ?? [];
+    resp.data = await getCashesRepository(filters, sort);
   } catch (error) {
     console.error('DB Error', error);
     resp.success = false;
