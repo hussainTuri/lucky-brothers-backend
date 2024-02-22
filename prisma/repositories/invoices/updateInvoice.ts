@@ -140,7 +140,7 @@ const updateInvoiceTransaction = async (
     await removeFromStock(tx, updatedInvoice.items);
 
     // 4. update profit
-    await updateProfit(prisma, updatedInvoice.id);
+    await updateProfit(tx, updatedInvoice.id);
 
     // 7. update transaction
     if (invoice.customerId) {
