@@ -103,7 +103,7 @@ export const getPendingDailyReports = async () => {
 };
 
 const getDates = () => {
-  const startDate = '2024-02-16';
+  const startDate = '2024-02-23';
   const datesArray = [];
   const currentDate = new Date(startDate);
 
