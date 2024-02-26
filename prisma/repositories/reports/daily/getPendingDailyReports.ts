@@ -86,12 +86,7 @@ export const getPendingDailyReports = async () => {
     dailyReport.expense = +expenseAmount;
     dailyReport.receiveCash = +cashAmount;
     dailyReport.buyStock = +stocksAmount;
-    dailyReport.closingBalance =
-      dailyReport.openingBalance +
-      dailyReport.sales -
-      dailyReport.expense +
-      dailyReport.receiveCash -
-      dailyReport.buyStock;
+    dailyReport.closingBalance = 0;
     return dailyReport;
   });
 
