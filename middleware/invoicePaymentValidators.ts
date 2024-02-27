@@ -5,12 +5,14 @@ import { createInvoicePaymentSchema } from '../lib/validators/';
 import { getInvoice } from '../prisma/repositories/invoices';
 import { messages } from '../lib/constants';
 import { InvoiceIncludeOptions } from '../types/includeOptions';
+import { TransactionModeEnum } from '../lib/enums';
 
 const extractPaymentData = (payload: Partial<InvoicePayment>) => {
   return {
     invoiceId: payload.invoiceId ?? null,
     amount: payload.amount ?? null,
     comment: payload.comment ?? null,
+    mode: payload.mode ?? TransactionModeEnum.Cash,
   };
 };
 

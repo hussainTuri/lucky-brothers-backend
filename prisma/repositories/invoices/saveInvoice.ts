@@ -2,7 +2,7 @@ import { PrismaClient } from '@prisma/client';
 import type { Customer, Invoice, InvoiceItem } from '@prisma/client';
 import { InvoicePayload } from '../../../types';
 import { updateProfit } from './';
-import { CustomerTransactionTypesEnum } from '../../../lib/enums';
+import { CustomerTransactionTypesEnum, TransactionModeEnum } from '../../../lib/enums';
 import { InvoiceStatusEnum } from '../../../lib/enums/invoice';
 import { updateCustomerBalance } from '../customers/common';
 import { removeFromStock } from '../products';
@@ -89,6 +89,7 @@ const saveInvoiceTransaction = async (
           invoiceId: createdInvoice.id,
           amount: createdInvoice.totalAmount * -1,
           comment: `Invoice`,
+          mode: 0,
         },
       });
 
@@ -101,6 +102,7 @@ const saveInvoiceTransaction = async (
             invoiceId: createdInvoice.id,
             amount: createdInvoice.totalAmount,
             comment: `Invoice cash payment`,
+            mode: TransactionModeEnum.Cash,
           },
         });
       }

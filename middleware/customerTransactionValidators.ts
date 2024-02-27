@@ -4,7 +4,7 @@ import { response } from '../lib/response';
 import { createCustomerTransactionSchema } from '../lib/validators/';
 import { messages } from '../lib/constants';
 import { getCustomer, getCustomerTransaction } from '../prisma/repositories/customers';
-import { CustomerTransactionTypesEnum } from '../lib/enums';
+import { CustomerTransactionTypesEnum, TransactionModeEnum } from '../lib/enums';
 import { InvoiceStatusEnum } from '../lib/enums/invoice';
 
 const extractPaymentData = (payload: Partial<CustomerTransaction>) => {
@@ -13,6 +13,7 @@ const extractPaymentData = (payload: Partial<CustomerTransaction>) => {
     typeId: payload.typeId ?? null,
     amount: payload.amount ?? null,
     comment: payload.comment ?? null,
+    mode: payload.mode ?? TransactionModeEnum.Cash,
   };
 };
 

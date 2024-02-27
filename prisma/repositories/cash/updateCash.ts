@@ -17,6 +17,7 @@ const updateCashEntry = async (entry: Cash): Promise<Cash | null> => {
         amount: entry.amount,
         description: entry.description,
         cashDate: entry.cashDate,
+        mode: entry.mode,
       },
     });
 

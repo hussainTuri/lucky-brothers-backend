@@ -1,5 +1,6 @@
 import { DailyReport, PrismaClient } from '@prisma/client';
 import { InvoiceStatusEnum } from '../../../../lib/enums';
+import { TransactionModeEnum } from '../../../../lib/enums';
 
 const prisma = new PrismaClient();
 // const prisma = new PrismaClient({
@@ -31,6 +32,8 @@ export const getPendingDailyReports = async () => {
     SUM(amount) AS totalAmount
     FROM
       Expense
+    WHERE
+      mode = ${TransactionModeEnum.Cash}
     GROUP BY
       DATE_FORMAT(expenseDate, '%Y-%m-%d');`)) as any;
 
@@ -41,7 +44,8 @@ export const getPendingDailyReports = async () => {
       Invoice inv
       INNER JOIN InvoicePayment ip ON inv.id = ip.invoiceId
     WHERE
-      inv.statusId NOT IN (${InvoiceStatusEnum.Cancelled}, ${InvoiceStatusEnum.Refunded})
+      inv.statusId NOT IN (${InvoiceStatusEnum.Cancelled}, ${InvoiceStatusEnum.Refunded}) AND
+      ip.mode = ${TransactionModeEnum.Cash}
     GROUP BY
       DATE_FORMAT(ip.createdAt, '%Y-%m-%d')
     ORDER BY
@@ -52,6 +56,8 @@ export const getPendingDailyReports = async () => {
     SUM(amount) AS totalAmount
     FROM
       Cash
+    WHERE
+      mode = ${TransactionModeEnum.Cash}
     GROUP BY
     DATE_FORMAT(cashDate, '%Y-%m-%d');`)) as any;
 

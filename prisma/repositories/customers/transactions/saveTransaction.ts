@@ -43,6 +43,7 @@ const saveCustomerTransactionTransaction = async (transaction: CustomerTransacti
       payment.amount = transactionBalance > pendingAmount ? pendingAmount : transactionBalance;
       transactionBalance -= payment.amount;
       payment.comment = `Through transaction # ${createdTransaction.id}`;
+      payment.mode = transaction.mode;
       await saveInvoicePayment(tx, invoice.id, payment);
     }
 

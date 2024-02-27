@@ -65,6 +65,7 @@ const updateInvoiceTransaction = async (invoice: InvoiceWithRelations) => {
             typeId: CustomerTransactionTypesEnum.Refund,
             amount: payment.amount * -1,
             comment: `Invoice #${invoice.id} payment refund`,
+            mode: payment.mode,
           },
         });
       }

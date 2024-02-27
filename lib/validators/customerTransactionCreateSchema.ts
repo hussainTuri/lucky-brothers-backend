@@ -5,4 +5,5 @@ export const createCustomerTransactionSchema = Joi.object({
   typeId: Joi.number().integer().valid(1, 2).required(),
   amount: Joi.number().integer().positive().required(),
   comment: Joi.string().max(255).allow(null).allow(''),
+  mode: Joi.number().integer().positive().required(),
 });

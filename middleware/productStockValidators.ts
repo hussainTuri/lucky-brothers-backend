@@ -1,5 +1,5 @@
-import { Inventory, ProductStock } from '@prisma/client';
-import { Request, Response, NextFunction, query } from 'express';
+import { ProductStock } from '@prisma/client';
+import { Request, Response, NextFunction } from 'express';
 import { response } from '../lib/response';
 import { createProductStockSchema, updateProductStockSchema } from '../lib/validators/';
 

@@ -2,12 +2,14 @@ import { Expense } from '@prisma/client';
 import { Request, Response, NextFunction, query } from 'express';
 import { response } from '../lib/response';
 import { createExpenseSchema, updateExpenseSchema } from '../lib/validators/';
+import { TransactionModeEnum } from '../lib/enums';
 
 const extractExpenseData = (payload: Partial<Expense>) => {
   return {
     amount: payload.amount ?? null,
     description: payload.description ?? null,
     expenseDate: payload.expenseDate ? new Date(payload.expenseDate) : null,
+    mode: payload.mode ?? TransactionModeEnum.Cash,
   };
 };
 

@@ -24,6 +24,7 @@ const savePaymentTransaction = async (invoiceId: number, payment: InvoicePayment
           typeId: CustomerTransactionTypesEnum.Payment,
           amount: payment.amount,
           comment: `Added to invoice #${invoice.id} as invoice payment`,
+          mode: payment.mode,
         },
       });
       // Update customer balance

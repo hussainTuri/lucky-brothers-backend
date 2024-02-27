@@ -2,12 +2,14 @@ import { Cash } from '@prisma/client';
 import { Request, Response, NextFunction, query } from 'express';
 import { response } from '../lib/response';
 import { createCashSchema, updateCashSchema } from '../lib/validators/';
+import { TransactionModeEnum } from '../lib/enums';
 
 const extractCashData = (payload: Partial<Cash>) => {
   return {
     amount: payload.amount ?? null,
     description: payload.description ?? null,
     cashDate: payload.cashDate ? new Date(payload.cashDate) : null,
+    mode: payload.mode ?? TransactionModeEnum.Cash,
   };
 };
 

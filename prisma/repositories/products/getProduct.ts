@@ -9,11 +9,6 @@ export const getProduct = async (id: number | string) => {
     include: {
       priceHistory: true,
       productType: true,
-      inventories: {
-        orderBy: {
-          id: 'desc',
-        },
-      },
       productStocks: {
         orderBy: {
           id: 'desc',

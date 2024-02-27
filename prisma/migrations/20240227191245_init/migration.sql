@@ -68,18 +68,6 @@ CREATE TABLE `ProductStock` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `Inventory` (
-    `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `productId` INTEGER NOT NULL,
-    `quantity` INTEGER NOT NULL,
-    `reason` VARCHAR(255) NOT NULL,
-    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
-
-    INDEX `Inventory_createdAt_idx`(`createdAt`),
-    PRIMARY KEY (`id`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-
--- CreateTable
 CREATE TABLE `Customer` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `customerName` VARCHAR(255) NOT NULL,
@@ -104,6 +92,7 @@ CREATE TABLE `CustomerTransaction` (
     `amount` INTEGER NOT NULL,
     `comment` VARCHAR(255) NULL,
     `typeId` TINYINT NOT NULL,
+    `mode` TINYINT NOT NULL DEFAULT 1,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
 
@@ -180,6 +169,7 @@ CREATE TABLE `InvoicePayment` (
     `customerTransactionId` INTEGER NULL,
     `amount` INTEGER NOT NULL,
     `comment` VARCHAR(255) NULL,
+    `mode` TINYINT NOT NULL DEFAULT 1,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
 
@@ -209,6 +199,7 @@ CREATE TABLE `Expense` (
     `amount` INTEGER NOT NULL,
     `description` VARCHAR(255) NULL,
     `expenseDate` DATETIME NOT NULL,
+    `mode` TINYINT NOT NULL DEFAULT 1,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
 
@@ -254,6 +245,7 @@ CREATE TABLE `Cash` (
     `amount` INTEGER NOT NULL,
     `description` VARCHAR(255) NOT NULL,
     `cashDate` DATETIME NOT NULL,
+    `mode` TINYINT NOT NULL DEFAULT 1,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
 
@@ -268,9 +260,6 @@ ALTER TABLE `PriceHistory` ADD CONSTRAINT `PriceHistory_productId_fkey` FOREIGN 
 
 -- AddForeignKey
 ALTER TABLE `ProductStock` ADD CONSTRAINT `ProductStock_productId_fkey` FOREIGN KEY (`productId`) REFERENCES `Product`(`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
--- AddForeignKey
-ALTER TABLE `Inventory` ADD CONSTRAINT `Inventory_productId_fkey` FOREIGN KEY (`productId`) REFERENCES `Product`(`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 -- AddForeignKey
 ALTER TABLE `CustomerTransaction` ADD CONSTRAINT `CustomerTransaction_customerId_fkey` FOREIGN KEY (`customerId`) REFERENCES `Customer`(`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;

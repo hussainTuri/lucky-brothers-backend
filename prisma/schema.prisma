@@ -39,7 +39,6 @@ model Product {
   priceHistory PriceHistory[]
   productType ProductType @relation(fields: [productTypeId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   invoiceItems InvoiceItem[]
-  inventories Inventory[]
   productStocks ProductStock[]
 }
 
@@ -75,15 +74,6 @@ model ProductStock {
   @@index([createdAt])
   @@index([remainingQuantity])
 }
-model Inventory {
-  id Int @id @default(autoincrement())
-  productId Int @db.Int
-  quantity Int @db.Int
-  reason String @db.VarChar(255)
-  product Product @relation(fields: [productId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  createdAt DateTime @default(now())
-  @@index([createdAt])
-}
 
 model Customer {
   id Int @id @default(autoincrement())
@@ -107,6 +97,7 @@ model CustomerTransaction {
   amount Int @db.Int
   comment String? @db.VarChar(255)
   typeId Int @db.TinyInt // 1: payment, 2: invoice
+  mode Int @db.TinyInt @default(1) // 1: cash 2: transfer
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   customer Customer @relation(fields: [customerId], references: [id], onDelete: NoAction, onUpdate: NoAction)
@@ -182,6 +173,7 @@ model InvoicePayment {
   customerTransactionId Int? @db.Int
   amount Int @db.Int
   comment String? @db.VarChar(255)
+  mode Int @db.TinyInt @default(1) // 1: cash 2: transfer
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   invoice Invoice @relation(fields: [invoiceId], references: [id], onDelete: NoAction, onUpdate: NoAction)
@@ -206,6 +198,7 @@ model Expense {
   amount Int @db.Int
   description String? @db.VarChar(255)
   expenseDate DateTime @db.DateTime
+  mode Int @db.TinyInt @default(1) // 1: cash 2: transfer
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -244,6 +237,7 @@ model Cash {
   amount Int @db.Int
   description String @db.VarChar(255)
   cashDate DateTime @db.DateTime
+  mode Int @db.TinyInt @default(1) // 1: cash 2: transfer
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
