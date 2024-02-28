@@ -9,6 +9,7 @@ import { getInvoice } from '../prisma/repositories/invoices';
 import { InvoiceIncludeOptions } from '../types/includeOptions';
 import { messages } from '../lib/constants';
 import { InvoiceStatusEnum } from '../lib/enums/invoice';
+import { TransactionModeEnum } from '../lib/enums';
 
 export const validateQueryParams = (req: Request, res: Response, next: NextFunction) => {
   const resp = response();
@@ -47,6 +48,7 @@ export const normalizeCreateData = (req: Request, res: Response, next: NextFunct
   const invoicePayload = req.body?.invoice as Partial<Invoice>;
   const itemsPayload = req.body?.items as Partial<InvoiceItem>[];
   const customerPayload = req.body?.customer as Partial<Customer>;
+  const mode = req.body?.mode || TransactionModeEnum.Cash
   let invoice = null;
   let items = null;
   let customer = null;
@@ -56,7 +58,7 @@ export const normalizeCreateData = (req: Request, res: Response, next: NextFunct
   if (customerPayload?.customerName && customerPayload?.phone && !req.body?.invoice.customerId)
     customer = extractCustomerData(customerPayload);
 
-  req.body = { ...req.body, invoice, items, customer };
+  req.body = { ...req.body, invoice, items, customer, mode };
   next();
 };
 export const normalizeUpdateData = (req: Request, res: Response, next: NextFunction) => {

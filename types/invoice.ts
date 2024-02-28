@@ -35,6 +35,7 @@ export interface InvoicePayload {
   invoice: Partial<Invoice>;
   items: Partial<InvoiceItem>[];
   customer: Partial<Customer>;
+  mode: number;
 }
 
 export interface AccumulatedQuantity {
