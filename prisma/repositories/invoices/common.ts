@@ -6,7 +6,6 @@ import { InvoiceStatusEnum } from '../../../lib/enums/invoice';
 import type { OmitPrismaClient } from '../../../types/';
 import { CustomError } from '../../../lib/errorHandler';
 import { messages } from '../../../lib/constants';
-import { tr } from '@faker-js/faker';
 
 export const getProfit = async (tx: OmitPrismaClient, invoiceId: number): Promise<number> => {
   const invoice = await tx.invoice.findUniqueOrThrow({
@@ -33,8 +32,8 @@ export const getProfit = async (tx: OmitPrismaClient, invoiceId: number): Promis
     }
 
     const profit = item.productStocks.reduce((ac, stock) => {
-      const costPrice = stock.productStock.pricePerItem || 0;
-      const prof = (item.price || 0) - costPrice;
+      const costPrice = Number(stock.productStock.pricePerItem) || 0;
+      const prof = (Number(item.price) || 0) - costPrice;
       return ac + prof * (stock.quantity || 0);
     }, 0);
 

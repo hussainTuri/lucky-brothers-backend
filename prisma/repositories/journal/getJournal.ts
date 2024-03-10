@@ -97,24 +97,24 @@ export const getJournal = async (options: QueryOptions, sort: QuerySort) => {
     `SELECT SUM(inv.profit) profit FROM (SELECT profit FROM Invoice WHERE statusId NOT IN (${InvoiceStatusEnum.Cancelled} , ${InvoiceStatusEnum.Refunded}) ${where} AND id < ${minInvoiceId} ORDER BY createdAt DESC) inv`,
   );
 
-  transactionsAndInvoices = (transactionsAndInvoices as any).map((item: any) => {
+  transactionsAndInvoices = transactionsAndInvoices.map((item: any) => {
     item.amount = +item.amount.toString();
     return item;
   });
 
   let transactionsAndInvoicesCount = 0;
-  transactionsAndInvoices = (transactionsAndInvoices as any).map((item: any) => {
+  transactionsAndInvoices = transactionsAndInvoices.map((item: any) => {
     transactionsAndInvoicesCount = +item.rowsCount.toString();
     const { rowsCount, ...rest } = item;
     return rest;
   });
 
   const balance = (sumBalance as any).length ? +(sumBalance as any)[0].balance : 0;
-  const profit = (sumProfit as any).length ? +(sumProfit as any)[0].profit : 0;
+  const profit = (sumProfit as any).length ? (sumProfit as any)[0].profit : 0;
   return {
     journalEntries: transactionsAndInvoices,
     totalCount: transactionsAndInvoicesCount,
     balance,
-    profit,
+    profit : +profit || 0,
   };
 };
