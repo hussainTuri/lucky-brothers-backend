@@ -1,8 +1,12 @@
 import { Customer, Invoice, InvoiceItem } from '@prisma/client';
 import { Request, Response, NextFunction } from 'express';
 import { response } from '../lib/response';
-import { createCustomerSchema, queryParamsSchema } from '../lib/validators/';
-import { createInvoiceSchema, updateInvoiceSchema } from '../lib/validators/';
+import {
+  createCustomerSchema,
+  queryParamsSchema,
+  createInvoiceSchema,
+  updateInvoiceSchema,
+} from '../lib/validators/';
 import { extractCustomerData } from './customerValidators';
 import { UCFirst, UCFirstLCRest, trimSpaces } from '../lib/utils';
 import { getInvoice } from '../prisma/repositories/invoices';
@@ -48,7 +52,7 @@ export const normalizeCreateData = (req: Request, res: Response, next: NextFunct
   const invoicePayload = req.body?.invoice as Partial<Invoice>;
   const itemsPayload = req.body?.items as Partial<InvoiceItem>[];
   const customerPayload = req.body?.customer as Partial<Customer>;
-  const mode = req.body?.mode || TransactionModeEnum.Cash
+  const mode = req.body?.mode || TransactionModeEnum.Cash;
   let invoice = null;
   let items = null;
   let customer = null;

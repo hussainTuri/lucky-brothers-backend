@@ -61,6 +61,16 @@ export const getPendingDailyReports = async () => {
     GROUP BY
     DATE_FORMAT(cashDate, '%Y-%m-%d');`)) as any;
 
+  const cashesOut = (await prisma.$queryRawUnsafe(`SELECT
+    DATE_FORMAT(cashDate, '%Y-%m-%d') AS reportDate,
+    SUM(amount) AS totalAmount
+    FROM
+      CashOut
+    WHERE
+      mode = ${TransactionModeEnum.Cash}
+    GROUP BY
+    DATE_FORMAT(cashDate, '%Y-%m-%d');`)) as any;
+
   const stocks = (await prisma.$queryRawUnsafe(`SELECT
     DATE_FORMAT(createdAt, '%Y-%m-%d') AS reportDate,
     SUM(originalQuantity * pricePerItem) AS totalAmount
@@ -81,6 +91,8 @@ export const getPendingDailyReports = async () => {
       expenses.find((expense: any) => expense.reportDate === date)?.totalAmount?.toString() || 0;
     const cashAmount =
       cashes.find((cash: any) => cash.reportDate === date)?.totalAmount.toString() || 0;
+    const cashOutAmount =
+      cashesOut.find((cash: any) => cash.reportDate === date)?.totalAmount.toString() || 0;
     const stocksAmount =
       stocks.find((stock: any) => stock.reportDate === date)?.totalAmount?.toString() || 0;
 
@@ -91,6 +103,7 @@ export const getPendingDailyReports = async () => {
     dailyReport.sales = +salesAmount;
     dailyReport.expense = +expenseAmount;
     dailyReport.receiveCash = +cashAmount;
+    dailyReport.payCash = +cashOutAmount;
     dailyReport.buyStock = +stocksAmount;
     dailyReport.closingBalance = 0;
     return dailyReport;

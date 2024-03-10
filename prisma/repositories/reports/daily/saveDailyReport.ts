@@ -24,12 +24,14 @@ const saveDailyReportEntry = async (entry: DailyReport): Promise<DailyReport | n
         sales: entry.sales,
         expense: entry.expense,
         receiveCash: entry.receiveCash,
+        payCash: entry.payCash,
         buyStock: entry.buyStock,
         closingBalance:
           (lastEntry?.closingBalance ?? 0) +
           entry.sales -
           entry.expense +
           entry.receiveCash -
+          entry.payCash -
           entry.buyStock,
         description: entry.description,
       },

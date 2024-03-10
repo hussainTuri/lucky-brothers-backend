@@ -252,6 +252,19 @@ CREATE TABLE `Cash` (
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
+-- CreateTable
+CREATE TABLE `CashOut` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `amount` INTEGER NOT NULL,
+    `description` VARCHAR(255) NOT NULL,
+    `cashDate` DATETIME NOT NULL,
+    `mode` TINYINT NOT NULL DEFAULT 1,
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updatedAt` DATETIME(3) NOT NULL,
+
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
 -- AddForeignKey
 ALTER TABLE `Product` ADD CONSTRAINT `Product_productTypeId_fkey` FOREIGN KEY (`productTypeId`) REFERENCES `ProductType`(`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 

@@ -17,4 +17,6 @@ export * from './expenseUpdateSchema';
 export * from './monthlyReportCreateSchema';
 export * from './cashCreateSchema';
 export * from './cashUpdateSchema';
+export * from './cashOutCreateSchema';
+export * from './cashOutUpdateSchema';
 export * from './dailyReportCreateSchema';

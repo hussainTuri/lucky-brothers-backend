@@ -101,7 +101,7 @@ const saveInvoiceTransaction = async (
           data: {
             customerId: invoice.customerId || createdInvoice.customer.id,
             typeId: CustomerTransactionTypesEnum.Payment,
-            invoiceId: createdInvoice.id,
+            invoiceId: createdInvoice.id, // TODO: currently messes up journal where this transaction is considered as invoice. If you change the current entire journal system then no changes needed, otherwise set this value here to null.
             amount: createdInvoice.totalAmount,
             comment: `Invoice cash payment`,
             mode: mode ?? TransactionModeEnum.Cash,

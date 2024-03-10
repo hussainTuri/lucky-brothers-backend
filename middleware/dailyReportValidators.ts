@@ -10,6 +10,7 @@ const extractDailyReportData = (payload: Partial<DailyReport>) => {
     sales: payload.sales ?? null,
     expense: payload.expense ?? null,
     receiveCash: payload.receiveCash ?? null,
+    payCash: payload.payCash ?? null,
     buyStock: payload.buyStock ?? null,
     closingBalance: payload.closingBalance ?? null,
     description: payload.description ?? null,

@@ -224,6 +224,7 @@ model DailyReport {
   sales Int @db.Int
   expense Int @db.Int
   receiveCash Int @db.Int // Cash from any other source than selling services/merchandise eg Ali or Sabir
+  payCash Int @db.Int // Cash paid to any other source than buying services/merchandise eg Ali or Sabir
   buyStock Int @db.Int
   closingBalance Int @db.Int
   description String? @db.VarChar(255)
@@ -232,7 +233,18 @@ model DailyReport {
   @@unique([reportDate])
 }
 
+// Cash in.
 model Cash {
+  id Int @id @default(autoincrement())
+  amount Int @db.Int
+  description String @db.VarChar(255)
+  cashDate DateTime @db.DateTime
+  mode Int @db.TinyInt @default(1) // 1: cash 2: transfer
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model CashOut {
   id Int @id @default(autoincrement())
   amount Int @db.Int
   description String @db.VarChar(255)
