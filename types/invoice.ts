@@ -19,6 +19,7 @@ export interface QueryOptions {
   take?: number;
   startDate?: Date | string;
   endDate?: Date | string;
+  date?: Date | string;
 }
 
 export type SortOrder = 'asc' | 'desc';
