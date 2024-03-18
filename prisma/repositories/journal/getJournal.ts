@@ -1,21 +1,21 @@
-import { Prisma, PrismaClient } from '@prisma/client';
+import { Prisma, PrismaClient, Invoice } from '@prisma/client';
 import { QueryOptions } from '../../../types';
 import { CustomerTransactionTypesEnum, InvoiceStatusEnum } from '../../../lib/enums';
 
-const prisma = new PrismaClient();
-// const prisma = new PrismaClient({
-//   log: [
-//     {
-//       emit: 'event',
-//       level: 'query',
-//     },
-//   ],
-// });
-// prisma.$on('query', async (e: Prisma.QueryEvent) => {
-//   console.log(`${e.query} ${e.params} duration: ${e.duration / 100}s`);
-//   console.log('------------------------------------------------------\n')
-//   // console.log(`${e.query} duration: ${e.duration/100} s`);
-// });
+// const prisma = new PrismaClient();
+const prisma = new PrismaClient({
+  log: [
+    {
+      emit: 'event',
+      level: 'query',
+    },
+  ],
+});
+prisma.$on('query', async (e: Prisma.QueryEvent) => {
+  console.log(`${e.query} ${e.params} duration: ${e.duration / 100}s`);
+  console.log('------------------------------------------------------\n')
+  // console.log(`${e.query} duration: ${e.duration/100} s`);
+});
 
 export const getJournal = async (options: QueryOptions) => {
   const whereCreated = {
