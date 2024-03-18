@@ -99,6 +99,7 @@ const getCustomerPayments = async (whereCreated: any) => {
     },
     include: {
       invoicePayments: true,
+      customer: true,
     },
   });
 };
