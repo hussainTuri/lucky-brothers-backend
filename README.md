@@ -30,7 +30,7 @@
 ### client / Github action
 
 - make sure you are on `main` branch
-- git remote add live ssh://webuser@146.185.128.11/home/webuser/repositories/lucky-brothers-backend.git
+- git remote add live ssh://webuser@128.199.28.168/home/webuser/repositories/lucky-brothers-backend.git
 - git push live main
 
 ## Server
