@@ -20,7 +20,7 @@ echo "Stopping PM2..."
 pm2 stop lucky-brothers-backend
 
 echo "Starting PM2..."
-pm2 start dist/app.js --name lucky-brothers-backend
+pm2 start dist/app.js --name lucky-brothers-backend --env "PORT=3001"
 
 # Log the end of the script
 echo "Script completed"
