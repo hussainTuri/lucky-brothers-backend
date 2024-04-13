@@ -43,9 +43,7 @@ export const updateInvoice = async (payload: InvoicePayload): Promise<PrismaInvo
     (item) => !dbInvoice.items.find((i) => i.id === item.id),
   ) as InvoiceItem[];
 
-  const removedItems = dbInvoice.items.filter(
-    (item) => !items.find((i) => i.id === item.id),
-  ) as InvoiceItem[];
+  const removedItems = dbInvoice.items.filter((item) => !items.find((i) => i.id === item.id));
 
   const updatedInvoice = await updateInvoiceTransaction(
     invoice as PrismaInvoice,
@@ -97,7 +95,10 @@ const updateInvoiceTransaction = async (
       }),
     );
 
-    // 3. remove items
+    // 3. Add stock back to inventory ( should go before removing items as there is foreign key constraint)
+    await addToStock(tx, invoiceBeforeUpdate.items!);
+
+    // 4. remove items
     await Promise.all(
       removeItem.map(async (item) => {
         return tx.invoiceItem.delete({
@@ -114,7 +115,7 @@ const updateInvoiceTransaction = async (
       },
     });
 
-    // 4. update invoice
+    // 5. update invoice
     const updatedInvoice = await tx.invoice.update({
       where: {
         id: invoice.id,
@@ -132,17 +133,16 @@ const updateInvoiceTransaction = async (
       },
     });
 
-    // 5. status update
+    // 6. status update
     await updateInvoiceStatus(tx, invoice.id);
 
-    // 6. Add stock back to inventory and then remove stock from inventory
-    await addToStock(tx, invoiceBeforeUpdate.items!);
+    // 7. Remove stock from inventory
     await removeFromStock(tx, updatedInvoice.items);
 
-    // 4. update profit
+    // 8. update profit
     await updateProfit(tx, updatedInvoice.id);
 
-    // 7. update transaction
+    // 9. update transaction
     if (invoice.customerId) {
       const transaction = await tx.customerTransaction.findFirst({
         where: {
@@ -160,7 +160,7 @@ const updateInvoiceTransaction = async (
         });
       }
 
-      // 8. update customer balance
+      // 10. update customer balance
       await updateCustomerBalance(tx, invoice.customerId);
     }
 

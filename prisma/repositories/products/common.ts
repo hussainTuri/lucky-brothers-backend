@@ -133,9 +133,7 @@ export const addToStock = async (
       },
     });
 
-    const productStockIds = invoiceItemProductStock.map(
-      (entry) => entry.productStockId,
-    ) as number[];
+    const productStockIds = invoiceItemProductStock.map((entry) => entry.productStockId);
 
     const stockEntries = await tx.productStock.findMany({
       where: {

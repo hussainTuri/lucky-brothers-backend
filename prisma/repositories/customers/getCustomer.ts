@@ -23,7 +23,7 @@ export const getCustomer = async (id: number | string) => {
       transactions: {
         include: {
           invoicePayments: true,
-        }
+        },
       },
     },
   });
