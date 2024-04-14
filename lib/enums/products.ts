@@ -9,6 +9,8 @@ export enum ProductTypesEnum {
   Oil = 5,
   Tube = 6,
   Langoti = 7,
+  SparePart = 8,
+  Other = 9,
 }
 
 export enum ProductSkuPrefixEnum {
