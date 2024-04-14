@@ -21,4 +21,6 @@ export enum ProductSkuPrefixEnum {
   OIL = 5,
   TUB = 6,
   LNG = 7,
+  SPR = 8,
+  OTH = 9,
 }
