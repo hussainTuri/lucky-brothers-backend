@@ -23,7 +23,7 @@ export const searchCustomers = async (query: SearchQuery) => {
       _relevance: {
         fields: ['customerName'],
         search: query.customerName ?? '',
-        sort: 'asc',
+        sort: 'desc',
       },
     },
     take: query.take,
