@@ -46,3 +46,22 @@
   - `pm2 start dist/app.js`
 
 Note: all of the above has been taken care of through [post-receive](.server/post-receive) script.
+
+
+## Mysql
+
+``` 
+CREATE USER 'lucky'@'%' IDENTIFIED BY 'EeheLcKcaVlD1qq*/yetIpseee'; 
+```
+
+``` 
+GRANT alter, alter routine, create, create routine, create temporary tables, create view, delete, drop, event, execute, index, insert, lock tables, references, select, show view, trigger, update  ON `lucky_prod`.* TO 'lucky'@'%';
+```
+
+```
+FLUSH PRIVILEGES; 
+```
+
+## Mysql Back to Dropbox
+
+See your [Github repo](https://github.com/hussainTuri/dropbox-backups)

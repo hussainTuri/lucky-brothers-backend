@@ -23,7 +23,7 @@ export const loginUser = async (req: Request, res: Response, next: NextFunction)
 
     // Generate JWT token
     resp.data = jwt.sign(user, env.JWT_SECRET as string, {
-      expiresIn: '10h',
+      expiresIn: '15h',
       algorithm: 'HS256',
     });
   } catch (e: any) {
