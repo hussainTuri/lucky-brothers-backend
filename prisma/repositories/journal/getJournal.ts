@@ -120,7 +120,7 @@ const getInvoices = async (whereCreated: any) => {
     where: {
       ...whereCreated,
       statusId: {
-        notIn: [InvoiceStatusEnum.Cancelled, InvoiceStatusEnum.Refunded],
+        notIn: [InvoiceStatusEnum.Cancelled], // Include refunded as normal invoices so their total is added first and then removed in refundedInvoices
       },
     },
     include: {
