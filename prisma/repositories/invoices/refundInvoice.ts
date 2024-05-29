@@ -71,6 +71,29 @@ const updateInvoiceTransaction = async (invoice: InvoiceWithRelations) => {
       }
     }
 
+    // 4. Reset refunded invoice transaction to 0
+    // let's say you add a invoice of 5 dirham to account x, that is you debit account x with 5 dirham (-)
+    // now let's say it was a cash payment, so the next transaction is payment of 5 dirham. so you credit account x with 5 dirham (+)
+    // Now you refund the invoice, so you credit account x with 5 dirham (-)
+    // so you see its debited twice and credited once. so the balance is not correct.
+    // so we need to reset the invoice transaction to 0
+    const transactionId = await tx.customerTransaction.findFirst({
+      where: {
+        invoiceId: invoice.id,
+        typeId: CustomerTransactionTypesEnum.Invoice,
+      },
+    });
+    if (transactionId) {
+      await tx.customerTransaction.update({
+        where: {
+          id: transactionId.id,
+        },
+        data: {
+          amount: 0,
+        },
+      });
+    }
+
     // 4. update customer balance
     if (invoice.customerId) await updateCustomerBalance(tx, invoice.customerId);
 
