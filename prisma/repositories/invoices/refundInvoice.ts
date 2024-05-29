@@ -77,24 +77,26 @@ const updateInvoiceTransaction = async (invoice: InvoiceWithRelations) => {
     // Now you refund the invoice, so you credit account x with 5 dirham (-)
     // so you see its debited twice and credited once. so the balance is not correct.
     // so we need to reset the invoice transaction to 0
-    const transactionId = await tx.customerTransaction.findFirst({
-      where: {
-        invoiceId: invoice.id,
-        typeId: CustomerTransactionTypesEnum.Invoice,
-      },
-    });
-    if (transactionId) {
-      await tx.customerTransaction.update({
+    if (invoice.customerId) {
+      const transactionId = await tx.customerTransaction.findFirst({
         where: {
-          id: transactionId.id,
-        },
-        data: {
-          amount: 0,
+          invoiceId: invoice.id,
+          typeId: CustomerTransactionTypesEnum.Invoice,
         },
       });
+      if (transactionId) {
+        await tx.customerTransaction.update({
+          where: {
+            id: transactionId.id,
+          },
+          data: {
+            amount: 0,
+          },
+        });
+      }
     }
 
-    // 4. update customer balance
+    // 5. update customer balance
     if (invoice.customerId) await updateCustomerBalance(tx, invoice.customerId);
 
     return updatedInvoice;
