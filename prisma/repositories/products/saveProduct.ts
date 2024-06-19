@@ -18,9 +18,8 @@ const prisma = new PrismaClient();
 // });
 
 export const saveProduct = async (product: Product): Promise<Product | null> => {
-  product.sku = await getSku(product.productTypeId as number);
-  product.imagePath = product.imagePath ?? 'src/assets/no-image.jpg';
-  product.productName = product.productName;
+  product.sku = await getSku(product.productTypeId);
+  product.imagePath = product.imagePath ?? '';
   const result = await prisma.product.create({
     data: product,
   });
