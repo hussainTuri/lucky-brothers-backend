@@ -63,7 +63,7 @@ export const removeFromStock = async (
         invoiceStockProductItemEntry.productStockId = stock.id;
         invoiceStockProductItemEntry.quantity = purchasedQty;
         stock.remainingQuantity -= purchasedQty;
-        stock.comment = `Invoice #${item.invoiceId} - create`;
+        // stock.comment = `Invoice #${item.invoiceId} - create`;
         purchasedQty = 0;
         invoiceStockProductItemEntries.push(invoiceStockProductItemEntry);
         break;
@@ -73,7 +73,7 @@ export const removeFromStock = async (
         invoiceStockProductItemEntry.quantity = stock.remainingQuantity;
         purchasedQty -= stock.remainingQuantity;
         stock.remainingQuantity = 0;
-        stock.comment = `Invoice #${item.invoiceId} - create`;
+        // stock.comment = `Invoice #${item.invoiceId} - create`;
         invoiceStockProductItemEntries.push(invoiceStockProductItemEntry);
       }
     }
@@ -97,7 +97,7 @@ export const removeFromStock = async (
         },
         data: {
           remainingQuantity: stock.remainingQuantity,
-          comment: stock.comment,
+          // comment: stock.comment,
         },
       });
       const stockQuantity = await getRemainingStockQuantity(tx, stock.productId);
@@ -164,14 +164,14 @@ export const addToStock = async (
         throw new CustomError(messages.PRODUCT_STOCK_NOT_FOUND, 'PRODUCT_STOCK_NOT_FOUND');
       }
       stock.remainingQuantity += invoiceItemProductStockEntry.quantity;
-      stock.comment = `Invoice #${item.invoiceId} - update|refund|cancel`;
+      // stock.comment = `Invoice #${item.invoiceId} - update|refund|cancel`;
       await tx.productStock.update({
         where: {
           id: stock.id,
         },
         data: {
           remainingQuantity: stock.remainingQuantity,
-          comment: stock.comment,
+          // comment: stock.comment,
         },
       });
       const stockQuantity = await getRemainingStockQuantity(tx, stock.productId);
