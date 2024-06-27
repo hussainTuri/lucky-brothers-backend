@@ -20,6 +20,7 @@ export interface QueryOptions {
   startDate?: Date | string;
   endDate?: Date | string;
   date?: Date | string;
+  vehicleRegistrationNumber: string
 }
 
 export type SortOrder = 'asc' | 'desc';

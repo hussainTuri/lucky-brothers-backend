@@ -13,6 +13,7 @@ const prisma = new PrismaClient();
 // });
 // prisma.$on('query', async (e: Prisma.QueryEvent) => {
 //   console.log(`${e.query} ${e.params} duration: ${e.duration / 100}s`);
+//   console.log('------------------------------------------------------\n')
 //   // console.log(`${e.query} duration: ${e.duration/100} s`);
 // });
 
@@ -20,6 +21,7 @@ export const getInvoices = async (options: QueryOptions, sort: QuerySort) => {
   const today = new Date();
   today.setUTCHours(0, 0, 0, 0); // Set time to midnight in UTC for the start of the day
   let whereCreated = {} as Prisma.InvoiceWhereInput;
+  let whereVehicleRegistrationNumber = {} as Prisma.InvoiceWhereInput;
 
   const whereStatus = Prisma.validator<Prisma.InvoiceWhereInput>()({
     ...(options?.status && options.status === 'pending'
@@ -55,6 +57,12 @@ export const getInvoices = async (options: QueryOptions, sort: QuerySort) => {
     };
   }
 
+  if(options?.vehicleRegistrationNumber) {
+    whereVehicleRegistrationNumber = Prisma.validator<Prisma.InvoiceWhereInput>()({
+      ...{ vehicleRegistrationNumber: options.vehicleRegistrationNumber},
+    });
+  }
+
   const [invoices, totalCount] = await Promise.all([
     prisma.invoice.findMany({
       include: {
@@ -70,6 +78,7 @@ export const getInvoices = async (options: QueryOptions, sort: QuerySort) => {
         ...whereStatus,
         ...whereCreated,
         ...whereOverdue,
+        ...whereVehicleRegistrationNumber,
       },
       orderBy: {
         ...(sort.id && { id: sort.id }),

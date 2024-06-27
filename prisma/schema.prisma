@@ -131,6 +131,8 @@ model Invoice {
   @@index([dueDate])
   @@index([createdAt])
   @@index([updatedAt])
+  @@index([vehicleRegistrationNumber])
+  @@index([driverName])
 }
 
 model InvoiceItem {
