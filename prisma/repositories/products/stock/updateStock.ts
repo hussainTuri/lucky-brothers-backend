@@ -19,6 +19,7 @@ const updateStockEntry = async (entry: ProductStock): Promise<ProductStock | nul
         originalQuantity: entry.originalQuantity,
         pricePerItem: entry.pricePerItem,
         remainingQuantity: entry.remainingQuantity,
+        receiptNumber: entry.receiptNumber,
       },
     });
 

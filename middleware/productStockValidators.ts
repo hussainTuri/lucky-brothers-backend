@@ -9,6 +9,7 @@ const extractStockData = (payload: Partial<ProductStock>) => {
     originalQuantity: payload.originalQuantity ?? null,
     pricePerItem: payload.pricePerItem ?? null,
     comment: payload.comment ?? null,
+    receiptNumber: payload.receiptNumber ?? null,
   };
 };
 
