@@ -92,6 +92,7 @@ export const getInvoices = async (options: QueryOptions, sort: QuerySort) => {
         ...whereStatus,
         ...whereCreated,
         ...whereOverdue,
+        ...whereVehicleRegistrationNumber,
       },
     }),
   ]);
