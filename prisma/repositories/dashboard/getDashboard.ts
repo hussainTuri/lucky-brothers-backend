@@ -50,8 +50,8 @@ export const getDashboard = async () => {
   return {
     stockValue,
     totalCustomersLoan: loan,
-    totalCustomersApproxLoanWithoutProfit: pendingProfit,
     totalProfit: profit,
+    totalProfitFromPendingInvoices: pendingProfit,
     totalExpenses,
   };
 };
