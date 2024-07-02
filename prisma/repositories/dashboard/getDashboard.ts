@@ -32,9 +32,16 @@ export const getDashboard = async () => {
   );
   const profit = (profitRs as any).length ? +(profitRs as any)[0].totalProfit : 0;
 
+  // Expenses
+  const expensesRs = await prisma.$queryRawUnsafe(
+    `SELECT sum(amount) AS totalExpenses FROM Expense`,
+  );
+  const totalExpenses = (expensesRs as any).length ? +(expensesRs as any)[0].totalExpenses : 0;
+
   return {
     stockValue,
     totalCustomersLoan: loan,
     totalProfit: profit,
+    totalExpenses,
   };
 };
