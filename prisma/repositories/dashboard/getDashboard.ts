@@ -46,12 +46,18 @@ export const getDashboard = async () => {
   );
   const pendingProfit = (pendingProfitRs as any).length ? +(pendingProfitRs as any)[0].pendingProfit : 0;
 
+  const paidProfitRs = await prisma.$queryRawUnsafe(
+    `SELECT sum(profit) AS pendingProfit FROM Invoice WHERE statusId = ${InvoiceStatusEnum.Paid}`,
+  );
+  const paidProfit = (pendingProfitRs as any).length ? +(pendingProfitRs as any)[0].pendingProfit : 0;
+
 
   return {
     stockValue,
     totalCustomersLoan: loan,
     totalProfit: profit,
     totalProfitFromPendingInvoices: pendingProfit,
+    totalProfitFromPaidInvoices: paidProfit,
     totalExpenses,
   };
 };
