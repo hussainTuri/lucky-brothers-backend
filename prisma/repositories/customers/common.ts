@@ -1,6 +1,6 @@
-import { Prisma, PrismaClient } from '@prisma/client';
+import { PrismaClient } from '@prisma/client';
 import { DefaultArgs, PrismaClientOptions } from '@prisma/client/runtime/library';
-import { InvoiceStatusEnum } from '../../../lib/enums';
+// import { InvoiceStatusEnum } from '../../../lib/enums';
 
 export const updateCustomerBalance = async (
   tx: Omit<
@@ -15,18 +15,18 @@ export const updateCustomerBalance = async (
     },
     where: {
       customerId: customerId,
-      AND: [
-        {
-          OR: [
-            { invoiceId: null },
-            {
-              invoice: {
-                statusId: { notIn: [InvoiceStatusEnum.Cancelled, InvoiceStatusEnum.Refunded] },
-              },
-            },
-          ],
-        },
-      ],
+      // AND: [
+      //   {
+      //     OR: [
+      //       { invoiceId: null },
+      //       {
+      //         invoice: {
+      //           statusId: { notIn: [InvoiceStatusEnum.Cancelled, InvoiceStatusEnum.Refunded] },
+      //         },
+      //       },
+      //     ],
+      //   },
+      // ],
     },
   });
 

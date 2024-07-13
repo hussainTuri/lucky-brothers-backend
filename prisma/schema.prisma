@@ -97,7 +97,7 @@ model CustomerTransaction {
   invoiceId Int? @db.Int
   amount Int @db.Int
   comment String? @db.VarChar(255)
-  typeId Int @db.TinyInt // 1: payment, 2: invoice
+  typeId Int @db.TinyInt // 1: Payment, 2: Invoice, 3: Refund
   mode Int @db.TinyInt @default(1) // 1: cash 2: transfer
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
