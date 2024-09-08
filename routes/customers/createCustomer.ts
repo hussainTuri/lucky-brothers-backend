@@ -3,6 +3,7 @@ import { saveCustomer as saveCustomerRepository } from '../../prisma/repositorie
 import { response } from '../../lib/response';
 import { messages } from '../../lib/constants';
 import { AuthenticatedRequest } from '../../types';
+import * as Sentry from '@sentry/node';
 
 export const createCustomer = async (
   req: AuthenticatedRequest,
@@ -15,8 +16,8 @@ export const createCustomer = async (
   try {
     resp.data = await saveCustomerRepository(req.body);
   } catch (error) {
-    // TODO - Add Sentry
     console.error('DB Error', error);
+    Sentry.captureException(error);
     resp.success = false;
     resp.message = messages.INTERNAL_SERVER_ERROR;
     return res.status(500).json(resp);

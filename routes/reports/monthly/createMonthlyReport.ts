@@ -3,6 +3,7 @@ import { saveMonthlyReport as saveMonthlyReportRepository } from '../../../prism
 import { response } from '../../../lib/response';
 import { messages } from '../../../lib/constants';
 import { AuthenticatedRequest } from '../../../types';
+import * as Sentry from '@sentry/node';
 
 export const createMonthlyReport = async (
   req: AuthenticatedRequest,
@@ -16,6 +17,7 @@ export const createMonthlyReport = async (
     resp.data = await saveMonthlyReportRepository(req.body);
   } catch (error) {
     console.error('DB Error', error);
+    Sentry.captureException(error);
     resp.success = false;
     resp.message = messages.INTERNAL_SERVER_ERROR;
     return res.status(500).json(resp);

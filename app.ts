@@ -1,15 +1,21 @@
-import experss, { Express, NextFunction, Request, Response } from 'express';
+import express, { Express, NextFunction, Request, Response } from 'express';
 import cors from 'cors';
 import { response } from './lib/response';
 import indexRouter from './routes/index';
+import "./instrument";
+import * as Sentry from "@sentry/node";
 
-const app: Express = experss();
+const app: Express = express();
 
 app.use(cors());
-app.use(experss.json());
-app.use(experss.urlencoded({ extended: true }));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 app.use('/api', indexRouter);
+
+// Add this after all routes,
+// but before any and other error-handling middlewares are defined
+Sentry.setupExpressErrorHandler(app);
 
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   const resp = response();

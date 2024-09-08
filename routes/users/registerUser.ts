@@ -5,6 +5,7 @@ import bcrypt from 'bcrypt';
 import { Prisma } from '@prisma/client';
 import { messages } from '../../lib/constants';
 import { AuthenticatedRequest } from '../../types';
+import * as Sentry from '@sentry/node';
 
 export const registerUser = async (
   req: AuthenticatedRequest,
@@ -21,6 +22,7 @@ export const registerUser = async (
     resp.data = user;
   } catch (e: any) {
     console.error('DB Error', e);
+    Sentry.captureException(e);
     resp.success = false;
     resp.message = messages.INTERNAL_SERVER_ERROR;
     if (e instanceof Prisma.PrismaClientKnownRequestError) {

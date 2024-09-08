@@ -3,6 +3,7 @@ import { getCashesOut as getCashesOutRepository } from '../../prisma/repositorie
 import { response } from '../../lib/response';
 import { messages } from '../../lib/constants';
 import { QueryOptions, QuerySort, SortOrder } from '../../types';
+import * as Sentry from '@sentry/node';
 
 export const getCashesOut = async (req: Request, res: Response, next: NextFunction) => {
   const resp = response();
@@ -25,6 +26,7 @@ export const getCashesOut = async (req: Request, res: Response, next: NextFuncti
     resp.data = await getCashesOutRepository(filters, sort);
   } catch (error) {
     console.error('DB Error', error);
+    Sentry.captureException(error);
     resp.success = false;
     resp.message = messages.INTERNAL_SERVER_ERROR;
     return res.status(500).json(resp);

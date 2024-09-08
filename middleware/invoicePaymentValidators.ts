@@ -6,6 +6,7 @@ import { getInvoice } from '../prisma/repositories/invoices';
 import { messages } from '../lib/constants';
 import { InvoiceIncludeOptions } from '../types/includeOptions';
 import { TransactionModeEnum } from '../lib/enums';
+import * as Sentry from '@sentry/node';
 
 const extractPaymentData = (payload: Partial<InvoicePayment>) => {
   return {
@@ -68,6 +69,7 @@ export const validateCreateInvoicePayment = async (
     }
   } catch (error) {
     console.error('DB Error', error);
+    Sentry.captureException(error);
     resp.success = false;
     resp.message = messages.INTERNAL_SERVER_ERROR;
     return res.status(500).json(resp);

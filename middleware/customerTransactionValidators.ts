@@ -6,6 +6,7 @@ import { messages } from '../lib/constants';
 import { getCustomer, getCustomerTransaction } from '../prisma/repositories/customers';
 import { CustomerTransactionTypesEnum, TransactionModeEnum } from '../lib/enums';
 import { InvoiceStatusEnum } from '../lib/enums/invoice';
+import * as Sentry from '@sentry/node';
 
 const extractPaymentData = (payload: Partial<CustomerTransaction>) => {
   return {
@@ -60,6 +61,7 @@ export const validateCreateCustomerTransaction = async (
     }
   } catch (error) {
     console.error('DB Error', error);
+    Sentry.captureException(error);
     resp.success = false;
     resp.message = messages.INTERNAL_SERVER_ERROR;
     return res.status(500).json(resp);

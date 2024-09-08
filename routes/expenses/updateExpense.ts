@@ -3,6 +3,7 @@ import { updateExpense as updateExpenseRepository } from '../../prisma/repositor
 import { response } from '../../lib/response';
 import { messages } from '../../lib/constants';
 import { AuthenticatedRequest } from '../../types';
+import * as Sentry from '@sentry/node';
 
 export const updateExpense = async (
   req: AuthenticatedRequest,
@@ -16,6 +17,7 @@ export const updateExpense = async (
     resp.data = await updateExpenseRepository(req.body);
   } catch (error) {
     console.error('DB Error', error);
+    Sentry.captureException(error);
     resp.success = false;
     resp.message = messages.INTERNAL_SERVER_ERROR;
     return res.status(500).json(resp);

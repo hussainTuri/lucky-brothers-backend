@@ -3,6 +3,7 @@ import { refundInvoice as refundInvoiceRepository } from '../../prisma/repositor
 import { response } from '../../lib/response';
 import { messages } from '../../lib/constants';
 import { AuthenticatedRequest } from '../../types';
+import * as Sentry from '@sentry/node';
 
 export const refundInvoice = async (
   req: AuthenticatedRequest,
@@ -15,6 +16,7 @@ export const refundInvoice = async (
     resp.data = await refundInvoiceRepository(Number(req.params.invoiceId), req.user?.id ?? 0);
   } catch (error) {
     console.error('DB Error', error);
+    Sentry.captureException(error);
     resp.success = false;
     resp.message = messages.INTERNAL_SERVER_ERROR;
     return res.status(500).json(resp);

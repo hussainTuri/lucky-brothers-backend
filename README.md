@@ -64,3 +64,10 @@ FLUSH PRIVILEGES;
 ## Mysql Back to Dropbox
 
 See your [Github repo](https://github.com/hussainTuri/dropbox-backups)
+
+
+# Deploy
+
+```
+git push && git push live main
+```

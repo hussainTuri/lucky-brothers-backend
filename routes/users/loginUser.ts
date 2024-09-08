@@ -5,6 +5,7 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { env } from 'process';
 import { messages } from '../../lib/constants';
+import * as Sentry from '@sentry/node';
 
 export const loginUser = async (req: Request, res: Response, next: NextFunction) => {
   const resp = response();
@@ -28,6 +29,7 @@ export const loginUser = async (req: Request, res: Response, next: NextFunction)
     });
   } catch (e: any) {
     console.error('DB Error', e);
+    Sentry.captureException(e);
     resp.success = false;
     resp.message = messages.INTERNAL_SERVER_ERROR;
     return res.status(500).json(resp);

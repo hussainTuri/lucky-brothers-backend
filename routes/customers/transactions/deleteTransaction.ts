@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import { deleteTransaction as deleteCustomerTransactionRepository } from '../../../prisma/repositories/customers/';
 import { response } from '../../../lib/response';
 import { messages } from '../../../lib/constants';
+import * as Sentry from '@sentry/node';
 
 export const deleteTransaction = async (req: Request, res: Response, next: NextFunction) => {
   const resp = response();
@@ -10,6 +11,7 @@ export const deleteTransaction = async (req: Request, res: Response, next: NextF
     resp.data = await deleteCustomerTransactionRepository(Number(req.params.transactionId));
   } catch (error) {
     console.error('DB Error', error);
+    Sentry.captureException(error);
     resp.success = false;
     resp.message = messages.INTERNAL_SERVER_ERROR;
     return res.status(500).json(resp);

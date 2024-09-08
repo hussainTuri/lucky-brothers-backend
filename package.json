@@ -13,6 +13,8 @@
   },
   "dependencies": {
     "@prisma/client": "^5.8.1",
+    "@sentry/node": "^8.28.0",
+    "@sentry/profiling-node": "^8.28.0",
     "bcrypt": "^5.1.1",
     "cors": "^2.8.5",
     "debug": "~2.6.9",

@@ -4,6 +4,7 @@ import { response } from '../../lib/response';
 import bcrypt from 'bcrypt';
 import { messages } from '../../lib/constants';
 import { AuthenticatedRequest } from '../../types';
+import * as Sentry from '@sentry/node';
 
 export const updateUser = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
   const resp = response();
@@ -15,6 +16,7 @@ export const updateUser = async (req: AuthenticatedRequest, res: Response, next:
     resp.data = await updateUserRepository(req.body);
   } catch (error) {
     console.error('DB Error', error);
+    Sentry.captureException(error);
     resp.success = false;
     resp.message = messages.INTERNAL_SERVER_ERROR;
     return res.status(500).json(resp);

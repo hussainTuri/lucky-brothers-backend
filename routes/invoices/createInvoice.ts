@@ -5,6 +5,7 @@ import { Prisma } from '@prisma/client';
 import { messages } from '../../lib/constants';
 import { CustomError } from '../../lib/errorHandler';
 import { AuthenticatedRequest } from '../../types';
+import * as Sentry from '@sentry/node';
 
 export const createInvoice = async (
   req: AuthenticatedRequest,
@@ -18,6 +19,7 @@ export const createInvoice = async (
     resp.data = await saveInvoiceRepository(req.body);
   } catch (e: any) {
     console.error('DB Error', e);
+    Sentry.captureException(e);
     resp.success = false;
     resp.message = messages.INTERNAL_SERVER_ERROR;
     if (e instanceof Prisma.PrismaClientKnownRequestError) {

@@ -3,6 +3,7 @@ import { getTransactions as getTransactionsRepository } from '../../../prisma/re
 import { response } from '../../../lib/response';
 import { QueryOptions, QuerySort, SortOrder } from '../../../types';
 import { messages } from '../../../lib/constants';
+import * as Sentry from '@sentry/node';
 
 export const getTransactions = async (req: Request, res: Response, next: NextFunction) => {
   const resp = response();
@@ -39,6 +40,7 @@ export const getTransactions = async (req: Request, res: Response, next: NextFun
     resp.data = await getTransactionsRepository(filters, sort);
   } catch (error) {
     console.error('DB Error', error);
+    Sentry.captureException(error);
     resp.success = false;
     resp.message = messages.INTERNAL_SERVER_ERROR;
     return res.status(500).json(resp);

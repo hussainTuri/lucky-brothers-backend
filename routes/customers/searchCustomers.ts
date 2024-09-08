@@ -3,6 +3,7 @@ import { searchCustomers as searchCustomersRepository } from '../../prisma/repos
 import { SearchQuery } from '../../types';
 import { response } from '../../lib/response';
 import { messages } from '../../lib/constants';
+import * as Sentry from '@sentry/node';
 
 export const searchCustomers = async (req: Request, res: Response, next: NextFunction) => {
   const resp = response();
@@ -16,6 +17,7 @@ export const searchCustomers = async (req: Request, res: Response, next: NextFun
     resp.data = await searchCustomersRepository(searchQuery);
   } catch (error) {
     console.error('DB Error', error);
+    Sentry.captureException(error);
     resp.success = false;
     resp.message = messages.INTERNAL_SERVER_ERROR;
     return res.status(500).json(resp);

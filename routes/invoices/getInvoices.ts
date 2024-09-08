@@ -3,6 +3,7 @@ import { getInvoices as getInvoicesRepository } from '../../prisma/repositories/
 import { response } from '../../lib/response';
 import { QueryOptions, QueryInvoiceStatus, QuerySort, SortOrder } from '../../types';
 import { messages } from '../../lib/constants';
+import * as Sentry from '@sentry/node';
 
 export const getInvoices = async (req: Request, res: Response, next: NextFunction) => {
   const resp = response();
@@ -50,6 +51,7 @@ export const getInvoices = async (req: Request, res: Response, next: NextFunctio
     resp.data = await getInvoicesRepository(filters, sort);
   } catch (error) {
     console.error('DB Error', error);
+    Sentry.captureException(error);
     resp.success = false;
     resp.message = messages.INTERNAL_SERVER_ERROR;
     return res.status(500).json(resp);

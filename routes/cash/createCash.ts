@@ -3,6 +3,7 @@ import { saveCash as saveCashRepository } from '../../prisma/repositories/cash';
 import { response } from '../../lib/response';
 import { messages } from '../../lib/constants';
 import { AuthenticatedRequest } from '../../types';
+import * as Sentry from '@sentry/node';
 
 export const createCash = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
   const resp = response();
@@ -12,6 +13,7 @@ export const createCash = async (req: AuthenticatedRequest, res: Response, next:
     resp.data = await saveCashRepository(req.body);
   } catch (error) {
     console.error('DB Error', error);
+    Sentry.captureException(error);
     resp.success = false;
     resp.message = messages.INTERNAL_SERVER_ERROR;
     return res.status(500).json(resp);
