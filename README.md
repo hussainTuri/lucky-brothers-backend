@@ -66,8 +66,8 @@ FLUSH PRIVILEGES;
 See your [Github repo](https://github.com/hussainTuri/dropbox-backups)
 
 
-# Deploy
+## deploy 
 
-```
-git push && git push live main
-```
+1. Make code changes and commit
+
+2. Use npm script `npm run deploy`

@@ -9,7 +9,8 @@
     "seed": "ts-node prisma/seed/seed.ts",
     "migrate:dev": "prisma migrate dev --name init",
     "migrate:deploy": "prisma migrate deploy",
-    "clean": "ts-node prisma/seed/clean.ts"
+    "clean": "ts-node prisma/seed/clean.ts",
+    "deploy": "git push && git push live main"
   },
   "dependencies": {
     "@prisma/client": "^5.8.1",
