@@ -40,6 +40,12 @@ model Product {
   productType ProductType @relation(fields: [productTypeId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   invoiceItems InvoiceItem[]
   productStocks ProductStock[]
+  createdById Int? @db.Int
+  updatedById Int? @db.Int
+  createdBy User? @relation("ProductCreatedBy", fields: [createdById], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  updatedBy User? @relation("ProductUpdatedBy", fields: [updatedById], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  @@index([createdById])
+  @@index([updatedById])
 }
 
 model ProductType {
@@ -58,22 +64,34 @@ model PriceHistory {
   product Product @relation(fields: [productId], references: [id], onDelete: Cascade, onUpdate: NoAction)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  createdById Int? @db.Int
+  updatedById Int? @db.Int
+  createdBy User? @relation("PriceHistoryCreatedBy", fields: [createdById], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  updatedBy User? @relation("PriceHistoryUpdatedBy", fields: [updatedById], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  @@index([createdById])
+  @@index([updatedById])
 }
 
 model ProductStock {
   id Int @id @default(autoincrement())
   productId Int @db.Int
-  pricePerItem Decimal @db.Decimal(10, 2)
+  pricePerItem Decimal @db.Decimal(10, 2) // buying price
   originalQuantity Int @db.Int
   remainingQuantity Int @db.Int
   comment String? @db.VarChar(255)
   receiptNumber String? @db.VarChar(45)
   product Product @relation(fields: [productId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   createdAt DateTime @default(now())
-  updatedAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
   invoiceItemProductStocks InvoiceItemProductStock[]
+  createdById Int? @db.Int
+  updatedById Int? @db.Int
+  createdBy User? @relation("ProductStockCreatedBy", fields: [createdById], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  updatedBy User? @relation("ProductStockUpdatedBy", fields: [updatedById], references: [id], onDelete: NoAction, onUpdate: NoAction)
   @@index([createdAt])
   @@index([remainingQuantity])
+  @@index([createdById])
+  @@index([updatedById])
 }
 
 model Customer {
@@ -88,7 +106,13 @@ model Customer {
   balance Int? @db.Int @default(0)
   invoices Invoice[]
   transactions CustomerTransaction[]
+  createdById Int? @db.Int
+  updatedById Int? @db.Int
+  createdBy User? @relation("CustomerCreatedBy", fields: [createdById], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  updatedBy User? @relation("CustomerUpdatedBy", fields: [updatedById], references: [id], onDelete: NoAction, onUpdate: NoAction)
   @@fulltext([customerName])
+  @@index([createdById])
+  @@index([updatedById])
 }
 
 model CustomerTransaction {
@@ -104,9 +128,15 @@ model CustomerTransaction {
   customer Customer @relation(fields: [customerId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   invoice Invoice? @relation(fields: [invoiceId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   invoicePayments InvoicePayment[]
+  createdById Int? @db.Int
+  updatedById Int? @db.Int
+  createdBy User? @relation("CustomerTransactionCreatedBy", fields: [createdById], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  updatedBy User? @relation("CustomerTransactionUpdatedBy", fields: [updatedById], references: [id], onDelete: NoAction, onUpdate: NoAction)
   @@index([createdAt])
   @@index([updatedAt])
   @@index([typeId])
+  @@index([createdById])
+  @@index([updatedById])
 }
 
 model Invoice {
@@ -129,11 +159,17 @@ model Invoice {
   payments InvoicePayment[]
   status InvoiceStatus @relation(fields: [statusId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   transactions CustomerTransaction[]
+  createdById Int? @db.Int
+  updatedById Int? @db.Int
+  createdBy User? @relation("InvoiceCreatedBy", fields: [createdById], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  updatedBy User? @relation("InvoiceUpdatedBy", fields: [updatedById], references: [id], onDelete: NoAction, onUpdate: NoAction)
   @@index([dueDate])
   @@index([createdAt])
   @@index([updatedAt])
   @@index([vehicleRegistrationNumber])
   @@index([driverName])
+  @@index([createdById])
+  @@index([updatedById])
 }
 
 model InvoiceItem {
@@ -141,7 +177,7 @@ model InvoiceItem {
   invoiceId Int @db.Int
   productId Int @db.Int
   quantity Int @db.Int
-  price Int @db.Int
+  price Int @db.Int // Selling price
   subTotal Int @db.Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -181,8 +217,14 @@ model InvoicePayment {
   updatedAt DateTime @updatedAt
   invoice Invoice @relation(fields: [invoiceId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   customerPayment CustomerTransaction? @relation(fields: [customerTransactionId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  createdById Int? @db.Int
+  updatedById Int? @db.Int
+  createdBy User? @relation("InvoicePaymentCreatedBy", fields: [createdById], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  updatedBy User? @relation("InvoicePaymentUpdatedBy", fields: [updatedById], references: [id], onDelete: NoAction, onUpdate: NoAction)
   @@index([createdAt])
   @@index([updatedAt])
+  @@index([createdById])
+  @@index([updatedById])
  }
 
 model User {
@@ -194,6 +236,32 @@ model User {
   address String? @db.VarChar(255)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  createdById Int? @db.Int
+  updatedById Int? @db.Int
+  createdProducts Product[] @relation("ProductCreatedBy")
+  updatedProducts Product[] @relation("ProductUpdatedBy")
+  createdPriceHistories PriceHistory[] @relation("PriceHistoryCreatedBy")
+  updatedPriceHistories PriceHistory[] @relation("PriceHistoryUpdatedBy")
+  createdProductStocks ProductStock[] @relation("ProductStockCreatedBy")
+  updatedProductStocks ProductStock[] @relation("ProductStockUpdatedBy")
+  createdCustomers Customer[] @relation("CustomerCreatedBy")
+  updatedCustomers Customer[] @relation("CustomerUpdatedBy")
+  createdCustomerTransactions CustomerTransaction[] @relation("CustomerTransactionCreatedBy")
+  updatedCustomerTransactions CustomerTransaction[] @relation("CustomerTransactionUpdatedBy")
+  createdInvoices Invoice[] @relation("InvoiceCreatedBy")
+  updatedInvoices Invoice[] @relation("InvoiceUpdatedBy")
+  createdInvoicePayments InvoicePayment[] @relation("InvoicePaymentCreatedBy")
+  updatedInvoicePayments InvoicePayment[] @relation("InvoicePaymentUpdatedBy")
+  createdExpenses Expense[] @relation("ExpenseCreatedBy")
+  updatedExpenses Expense[] @relation("ExpenseUpdatedBy")
+  createdMonthlyReports MonthlyReport[] @relation("MonthlyReportCreatedBy")
+  updatedMonthlyReports MonthlyReport[] @relation("MonthlyReportUpdatedBy")
+  createdDailyReports DailyReport[] @relation("DailyReportCreatedBy")
+  updatedDailyReports DailyReport[] @relation("DailyReportUpdatedBy")
+  createdCash Cash[] @relation("CashCreatedBy")
+  updatedCash Cash[] @relation("CashUpdatedBy")
+  createdCashOut CashOut[] @relation("CashOutCreatedBy")
+  updatedCashOut CashOut[] @relation("CashOutUpdatedBy")
 }
 
 model Expense {
@@ -204,6 +272,12 @@ model Expense {
   mode Int @db.TinyInt @default(1) // 1: cash 2: transfer
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  createdById Int? @db.Int
+  updatedById Int? @db.Int
+  createdBy User? @relation("ExpenseCreatedBy", fields: [createdById], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  updatedBy User? @relation("ExpenseUpdatedBy", fields: [updatedById], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  @@index([createdById])
+  @@index([updatedById])
 }
 
 // MonthlyReport is more of a monthly profit
@@ -216,6 +290,10 @@ model MonthlyReport {
   description String? @db.VarChar(255)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  createdById Int? @db.Int
+  updatedById Int? @db.Int
+  createdBy User? @relation("MonthlyReportCreatedBy", fields: [createdById], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  updatedBy User? @relation("MonthlyReportUpdatedBy", fields: [updatedById], references: [id], onDelete: NoAction, onUpdate: NoAction)
  @@unique([monthYear])
 }
 
@@ -233,7 +311,13 @@ model DailyReport {
   description String? @db.VarChar(255)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  createdById Int? @db.Int
+  updatedById Int? @db.Int
+  createdBy User? @relation("DailyReportCreatedBy", fields: [createdById], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  updatedBy User? @relation("DailyReportUpdatedBy", fields: [updatedById], references: [id], onDelete: NoAction, onUpdate: NoAction)
   @@unique([reportDate])
+  @@index([createdById])
+  @@index([updatedById])
 }
 
 // Cash in.
@@ -245,6 +329,12 @@ model Cash {
   mode Int @db.TinyInt @default(1) // 1: cash 2: transfer
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  createdById Int? @db.Int
+  updatedById Int? @db.Int
+  createdBy User? @relation("CashCreatedBy", fields: [createdById], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  updatedBy User? @relation("CashUpdatedBy", fields: [updatedById], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  @@index([createdById])
+  @@index([updatedById])
 }
 
 model CashOut {
@@ -255,4 +345,10 @@ model CashOut {
   mode Int @db.TinyInt @default(1) // 1: cash 2: transfer
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  createdById Int? @db.Int
+  updatedById Int? @db.Int
+  createdBy User? @relation("CashOutCreatedBy", fields: [createdById], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  updatedBy User? @relation("CashOutUpdatedBy", fields: [updatedById], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  @@index([createdById])
+  @@index([updatedById])
 }
