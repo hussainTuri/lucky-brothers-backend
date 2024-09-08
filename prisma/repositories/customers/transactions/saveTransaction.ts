@@ -44,6 +44,7 @@ const saveCustomerTransactionTransaction = async (transaction: CustomerTransacti
       transactionBalance -= payment.amount;
       payment.comment = `Through transaction # ${createdTransaction.id}`;
       payment.mode = transaction.mode;
+      payment.updatedById = transaction.updatedById;
       await saveInvoicePayment(tx, invoice.id, payment);
     }
 

@@ -1,13 +1,18 @@
-import { NextFunction, Request, Response } from 'express';
+import { NextFunction, Response } from 'express';
 import { cancelInvoice as cancelInvoiceRepository } from '../../prisma/repositories/invoices/';
 import { response } from '../../lib/response';
 import { messages } from '../../lib/constants';
+import { AuthenticatedRequest } from '../../types';
 
-export const cancelInvoice = async (req: Request, res: Response, next: NextFunction) => {
+export const cancelInvoice = async (
+  req: AuthenticatedRequest,
+  res: Response,
+  next: NextFunction,
+) => {
   const resp = response();
 
   try {
-    resp.data = await cancelInvoiceRepository(Number(req.params.invoiceId));
+    resp.data = await cancelInvoiceRepository(Number(req.params.invoiceId), req.user?.id ?? 0);
   } catch (error) {
     console.error('DB Error', error);
     resp.success = false;

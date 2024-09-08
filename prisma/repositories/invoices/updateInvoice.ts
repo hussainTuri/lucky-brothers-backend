@@ -20,7 +20,7 @@ const prisma = new PrismaClient();
 // });
 
 export const updateInvoice = async (payload: InvoicePayload): Promise<PrismaInvoice | null> => {
-  const { invoice, items } = payload;
+  const { invoice, items, updatedById } = payload;
   const dbInvoice = await prisma.invoice.findUnique({
     where: {
       id: invoice.id,
@@ -51,6 +51,7 @@ export const updateInvoice = async (payload: InvoicePayload): Promise<PrismaInvo
     newItems,
     removedItems,
     dbInvoice,
+    updatedById,
   );
 
   return updatedInvoice;
@@ -62,6 +63,7 @@ const updateInvoiceTransaction = async (
   createItem: InvoiceItem[],
   removeItem: InvoiceItem[],
   invoiceBeforeUpdate: InvoiceWithRelations,
+  updatedById?: number,
 ) => {
   return prisma.$transaction(async (tx) => {
     // 1. update existing items
@@ -110,6 +112,7 @@ const updateInvoiceTransaction = async (
     );
 
     await tx.invoicePayment.findMany({
+      // ??? what the fuck?
       where: {
         invoiceId: invoice.id,
       },
@@ -127,6 +130,7 @@ const updateInvoiceTransaction = async (
         driverName: invoice.driverName,
         vehicleName: invoice.vehicleName,
         vehicleRegistrationNumber: invoice.vehicleRegistrationNumber,
+        updatedById,
       },
       include: {
         items: true,
@@ -156,6 +160,7 @@ const updateInvoiceTransaction = async (
           },
           data: {
             amount: invoice.totalAmount * -1,
+            updatedById,
           },
         });
       }

@@ -1,10 +1,16 @@
-import { NextFunction, Request, Response } from 'express';
+import { NextFunction, Response } from 'express';
 import { saveDailyReport as saveDailyReportRepository } from '../../../prisma/repositories/reports/daily';
 import { response } from '../../../lib/response';
 import { messages } from '../../../lib/constants';
+import { AuthenticatedRequest } from '../../../types';
 
-export const createDailyReport = async (req: Request, res: Response, next: NextFunction) => {
+export const createDailyReport = async (
+  req: AuthenticatedRequest,
+  res: Response,
+  next: NextFunction,
+) => {
   const resp = response();
+  req.body.createdById = req.user?.id ?? 0;
 
   try {
     resp.data = await saveDailyReportRepository(req.body);

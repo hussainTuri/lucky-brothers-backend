@@ -18,7 +18,7 @@ export const updateProduct = async (product: Product): Promise<Product | null> =
     data: updateData,
   });
 
-  // Get last recored and compare with current record to check if history needs to be updated
+  // Get last record and compare with current record to check if history needs to be updated
   const lastRecord = await prisma.priceHistory.findFirst({
     where: {
       productId: product.id,
@@ -49,6 +49,7 @@ const addHistory = async (product: Product) => {
       productId: product.id,
       buyingPrice: product.buyingPrice ?? 0,
       sellingPrice: product.sellingPrice ?? 0,
+      createdById: product.updatedById,
     },
   });
 };

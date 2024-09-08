@@ -20,7 +20,7 @@ export interface QueryOptions {
   startDate?: Date | string;
   endDate?: Date | string;
   date?: Date | string;
-  vehicleRegistrationNumber: string
+  vehicleRegistrationNumber: string;
 }
 
 export type SortOrder = 'asc' | 'desc';
@@ -38,6 +38,8 @@ export interface InvoicePayload {
   items: Partial<InvoiceItem>[];
   customer: Partial<Customer>;
   mode: number;
+  createdById?: number;
+  updatedById?: number;
 }
 
 export interface AccumulatedQuantity {

@@ -87,6 +87,7 @@ export const saveInvoicePayment = async (
       },
       data: {
         statusId: invoice.statusId,
+        updatedById: payment.updatedById,
       },
     });
   }

@@ -10,9 +10,9 @@ import { removeFromStock } from '../products';
 const prisma = new PrismaClient();
 
 export const saveInvoice = async (payload: InvoicePayload): Promise<Invoice | null> => {
-  const { invoice, items, customer, mode } = payload;
+  const { invoice, items, customer, mode, createdById } = payload;
 
-  return await saveInvoiceTransaction(invoice, items, customer, mode);
+  return await saveInvoiceTransaction(invoice, items, customer, mode, createdById);
 };
 
 const saveInvoiceTransaction = async (
@@ -20,6 +20,7 @@ const saveInvoiceTransaction = async (
   items: Partial<InvoiceItem>[],
   customer?: Partial<Customer>,
   mode?: number,
+  createdById?: number,
 ): Promise<Invoice | null> => {
   return prisma.$transaction(async (tx) => {
     let createdCustomer = null;
@@ -44,6 +45,7 @@ const saveInvoiceTransaction = async (
         vehicleName: invoice.vehicleName,
         vehicleRegistrationNumber: invoice.vehicleRegistrationNumber,
         profit: 0,
+        createdById,
         items: {
           createMany: {
             data: items.map((item) => ({
@@ -61,6 +63,7 @@ const saveInvoiceTransaction = async (
                   amount: invoice.totalAmount!,
                   comment: 'Immediate',
                   mode: mode ?? TransactionModeEnum.Cash,
+                  createdById,
                 },
               }
             : undefined,
@@ -92,6 +95,7 @@ const saveInvoiceTransaction = async (
           amount: createdInvoice.totalAmount * -1,
           comment: `Invoice`,
           mode: 0,
+          createdById,
         },
       });
 
@@ -105,6 +109,7 @@ const saveInvoiceTransaction = async (
             amount: createdInvoice.totalAmount,
             comment: `Invoice cash payment`,
             mode: mode ?? TransactionModeEnum.Cash,
+            createdById,
           },
         });
       }

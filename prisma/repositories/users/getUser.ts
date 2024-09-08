@@ -1,4 +1,4 @@
-import { PrismaClient, type User } from '@prisma/client';
+import { PrismaClient, User } from '@prisma/client';
 const prisma = new PrismaClient();
 
 export const getUser = async (id: number | string) => {
@@ -8,14 +8,8 @@ export const getUser = async (id: number | string) => {
     },
   });
 
-  // return exclude(user, ['password']);
-  return user;
+  return exclude(user, ['password']);
 };
 
-// const exclude = <User, Key extends keyof User>(
-//   user: User,
-//   keys: Key[]
-// ): Omit<User, Key> =>
-//   Object.fromEntries(Object.entries(user).filter(([key]) => !keys.includes(key as Key))) as Omit<User, Key>;
-
-// Exclude keys from user
+const exclude = (user: User, keys: string[]) =>
+  Object.fromEntries(Object.entries(user).filter(([key]) => !keys.includes(key)));

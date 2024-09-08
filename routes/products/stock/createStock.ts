@@ -1,10 +1,12 @@
-import { NextFunction, Request, Response } from 'express';
+import { NextFunction, Response } from 'express';
 import { saveStock as saveStockInventoryRepository } from '../../../prisma/repositories/products/';
 import { response } from '../../../lib/response';
 import { messages } from '../../../lib/constants';
+import { AuthenticatedRequest } from '../../../types';
 
-export const createStock = async (req: Request, res: Response, next: NextFunction) => {
+export const createStock = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
   const resp = response();
+  req.body.createdById = req.user?.id ?? 0;
 
   try {
     resp.data = await saveStockInventoryRepository(req.body);

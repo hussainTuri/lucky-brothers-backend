@@ -35,7 +35,7 @@ export const getInvoices = async (req: Request, res: Response, next: NextFunctio
     filters.take = Number(req.query.take);
   }
 
-  if(req.query?.vehicleRegistrationNumber) {
+  if (req.query?.vehicleRegistrationNumber) {
     filters.vehicleRegistrationNumber = req.query.vehicleRegistrationNumber as string;
   }
 

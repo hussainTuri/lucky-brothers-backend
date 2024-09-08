@@ -1,10 +1,12 @@
-import { NextFunction, Request, Response } from 'express';
+import { NextFunction, Response } from 'express';
 import { updateCash as updateCashRepository } from '../../prisma/repositories/cash';
 import { response } from '../../lib/response';
 import { messages } from '../../lib/constants';
+import { AuthenticatedRequest } from '../../types';
 
-export const updateCash = async (req: Request, res: Response, next: NextFunction) => {
+export const updateCash = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
   const resp = response();
+  req.body.updatedById = req.user?.id ?? 0;
 
   try {
     resp.data = await updateCashRepository(req.body);

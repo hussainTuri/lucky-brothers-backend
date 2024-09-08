@@ -1,11 +1,16 @@
-import { NextFunction, Request, Response } from 'express';
+import { NextFunction, Response } from 'express';
 import { updateCustomer as updateCustomerRepository } from '../../prisma/repositories/customers/';
 import { response } from '../../lib/response';
 import { messages } from '../../lib/constants';
-import { Prisma } from '@prisma/client';
+import { AuthenticatedRequest } from '../../types';
 
-export const updateCustomer = async (req: Request, res: Response, next: NextFunction) => {
+export const updateCustomer = async (
+  req: AuthenticatedRequest,
+  res: Response,
+  next: NextFunction,
+) => {
   const resp = response();
+  req.body.updatedById = req.user?.id ?? 0;
 
   try {
     resp.data = await updateCustomerRepository(req.body);

@@ -47,19 +47,18 @@
 
 Note: all of the above has been taken care of through [post-receive](.server/post-receive) script.
 
-
 ## Mysql
 
-``` 
-CREATE USER 'lucky'@'%' IDENTIFIED BY 'EeheLcKcaVlD1qq*/yetIpseee'; 
+```
+CREATE USER 'lucky'@'%' IDENTIFIED BY 'EeheLcKcaVlD1qq*/yetIpseeeIese';
 ```
 
-``` 
+```
 GRANT alter, alter routine, create, create routine, create temporary tables, create view, delete, drop, event, execute, index, insert, lock tables, references, select, show view, trigger, update  ON `lucky_prod`.* TO 'lucky'@'%';
 ```
 
 ```
-FLUSH PRIVILEGES; 
+FLUSH PRIVILEGES;
 ```
 
 ## Mysql Back to Dropbox

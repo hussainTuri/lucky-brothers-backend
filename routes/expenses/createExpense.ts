@@ -1,10 +1,16 @@
-import { NextFunction, Request, Response } from 'express';
+import { NextFunction, Response } from 'express';
 import { saveExpense as saveExpenseRepository } from '../../prisma/repositories/expenses';
 import { response } from '../../lib/response';
 import { messages } from '../../lib/constants';
+import { AuthenticatedRequest } from '../../types';
 
-export const createExpense = async (req: Request, res: Response, next: NextFunction) => {
+export const createExpense = async (
+  req: AuthenticatedRequest,
+  res: Response,
+  next: NextFunction,
+) => {
   const resp = response();
+  req.body.createdById = req.user?.id ?? 0;
 
   try {
     resp.data = await saveExpenseRepository(req.body);

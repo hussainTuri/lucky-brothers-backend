@@ -21,7 +21,7 @@ const prisma = new PrismaClient();
 //   // console.log(`${e.query} duration: ${e.duration/100} s`);
 // });
 
-export const cancelInvoice = async (id: number): Promise<Invoice | null> => {
+export const cancelInvoice = async (id: number, canceledById: number): Promise<Invoice | null> => {
   const dbInvoice = await prisma.invoice.findUnique({
     where: {
       id: id,
@@ -35,12 +35,12 @@ export const cancelInvoice = async (id: number): Promise<Invoice | null> => {
     throw new Error('رسید نہیں ملی');
   }
 
-  const updatedInvoice = await updateInvoiceTransaction(dbInvoice);
+  const updatedInvoice = await updateInvoiceTransaction(dbInvoice, canceledById);
 
   return updatedInvoice;
 };
 
-const updateInvoiceTransaction = async (invoice: InvoiceWithRelations) => {
+const updateInvoiceTransaction = async (invoice: InvoiceWithRelations, updatedById: number) => {
   return prisma.$transaction(async (tx) => {
     // 1. update invoice
     const updatedInvoice = await tx.invoice.update({
@@ -50,6 +50,7 @@ const updateInvoiceTransaction = async (invoice: InvoiceWithRelations) => {
       data: {
         statusId: InvoiceStatusEnum.Cancelled,
         cancelledAt: new Date(),
+        updatedById: updatedById,
       },
     });
 
