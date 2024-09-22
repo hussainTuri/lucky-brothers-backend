@@ -1,4 +1,4 @@
-import { Prisma, PrismaClient, ProductStock } from '@prisma/client';
+import { InvoiceItemProductStock, Prisma, PrismaClient } from '@prisma/client';
 import { QuerySort, QueryOptions } from '../../../types';
 import { InvoiceStatusEnum } from '../../../lib/enums';
 const prisma = new PrismaClient();
@@ -17,28 +17,32 @@ const prisma = new PrismaClient();
 //   // console.log(`${e.query} duration: ${e.duration/100} s`);
 // });
 
-export const getProductStocks = async (
+export const getProductSales = async (
   productId: number | string,
   options: QueryOptions,
   sort?: QuerySort,
 ) => {
-  const productStockIdsResult = await prisma.$queryRaw<ProductStock[]>(
-    Prisma.sql`SELECT SQL_CALC_FOUND_ROWS DISTINCT ps.id
+  let sortSql = 'iips.id DESC';
+  if (sort?.id) {
+    sortSql = `iips.id ${sort.id}`;
+  }
+  if (sort?.createdAt) {
+    sortSql = `iips.createdAt ${sort.id}`;
+  }
+
+  let sql = `SELECT SQL_CALC_FOUND_ROWS DISTINCT iips.id
       FROM
-          ProductStock ps
+          InvoiceItemProductStock iips
       JOIN
-          InvoiceItemProductStock iips ON ps.id = iips.productStockId
-      JOIN
-          InvoiceItem ii ON ii.id = iips.invoiceItemId
+          InvoiceItem ii ON ( ii.id = iips.invoiceItemId AND ii.productId = ${productId})
       JOIN
           Invoice i ON i.id = ii.invoiceId
       WHERE
-          ps.productId = ${productId}
-          AND i.statusId NOT IN (${InvoiceStatusEnum.Cancelled}, ${InvoiceStatusEnum.Refunded})
-      ORDER BY
-          ps.id ASC
-      LIMIT ${options?.take || 0} OFFSET ${options?.skip || 0};`,
-  );
+        i.statusId NOT IN (${InvoiceStatusEnum.Cancelled}, ${InvoiceStatusEnum.Refunded}) `;
+  sql += ` ORDER BY ${sortSql}`;
+  sql += ` LIMIT ${options?.take || 25} OFFSET ${options?.skip || 0};`;
+
+  const productInvoiceItemIdsResult = await prisma.$queryRawUnsafe<InvoiceItemProductStock[]>(sql);
   let totalCountResult = await prisma.$queryRaw<{ totalFound: number }[]>(
     Prisma.sql`SELECT FOUND_ROWS() AS totalFound;`,
   );
@@ -46,30 +50,26 @@ export const getProductStocks = async (
   const totalCount =
     Array.isArray(totalCountResult) && totalCountResult.length ? totalCountResult[0].totalFound : 0;
 
-  if (!Array.isArray(productStockIdsResult) || productStockIdsResult.length < 1) {
+  if (!Array.isArray(productInvoiceItemIdsResult) || productInvoiceItemIdsResult.length < 1) {
     return [];
   }
 
-  let productStockIds = productStockIdsResult?.map((entry) => entry.id);
+  let productInvoiceItemIds = productInvoiceItemIdsResult?.map((entry) => entry.id);
 
-  const productStocks = await prisma.productStock.findMany({
+  const productSales = await prisma.invoiceItemProductStock.findMany({
     orderBy: {
       ...(sort?.id && { id: sort?.id || 'desc' }),
       ...(sort?.createdAt && { createdAt: sort?.createdAt }),
     },
     where: {
       id: {
-        in: productStockIds,
+        in: productInvoiceItemIds,
       },
     },
     include: {
-      invoiceItemProductStocks: {
-        include: {
-          invoiceItem: true,
-        },
-      },
+      invoiceItem: true,
     },
   });
 
-  return { productStocks, totalCount: Number(totalCount) };
+  return { productSales, totalCount: Number(totalCount) };
 };

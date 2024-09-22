@@ -3,9 +3,9 @@ import { response } from '../../lib/response';
 import { QueryOptions, QuerySort, SortOrder } from '../../types';
 import * as Sentry from '@sentry/node';
 import { messages } from '../../lib/constants';
-import { getProductStocks as getProductStocksRepository } from '../../prisma/repositories/products';
+import { getProductSales as getProductSalesRepository } from '../../prisma/repositories/products';
 
-export const getProductStocks = async (req: Request, res: Response) => {
+export const getProductSales = async (req: Request, res: Response) => {
   const resp = response();
 
   const filters = {} as QueryOptions;
@@ -25,7 +25,7 @@ export const getProductStocks = async (req: Request, res: Response) => {
   }
 
   try {
-    resp.data = await getProductStocksRepository(req.params.productId, filters, sort);
+    resp.data = await getProductSalesRepository(req.params.productId, filters, sort);
     console.log('resp', resp);
   } catch (error) {
     console.error('DB Error', error);
