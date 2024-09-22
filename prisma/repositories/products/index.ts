@@ -4,3 +4,4 @@ export * from './saveProduct';
 export * from './updateProduct';
 export * from './stock';
 export * from './common';
+export * from './getProductStocks'

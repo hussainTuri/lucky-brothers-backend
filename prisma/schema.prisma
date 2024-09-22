@@ -144,7 +144,7 @@ model Invoice {
   customerId Int? @db.Int
   totalAmount Int @db.Int
   dueDate DateTime? @db.DateTime
-  statusId Int @db.Int
+  statusId Int @db.Int // 1=Pending, 2=Paid, 3=Cancelled, 4=Refunded
   comment String? @db.VarChar(255)
   cancelledAt DateTime? @db.DateTime
   refundedAt DateTime? @db.DateTime
