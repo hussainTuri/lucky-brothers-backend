@@ -51,7 +51,7 @@ export const getProductSales = async (
     Array.isArray(totalCountResult) && totalCountResult.length ? totalCountResult[0].totalFound : 0;
 
   if (!Array.isArray(productInvoiceItemIdsResult) || productInvoiceItemIdsResult.length < 1) {
-    return [];
+    return { productSales: [], totalCount: 0 };
   }
 
   let productInvoiceItemIds = productInvoiceItemIdsResult?.map((entry) => entry.id);
