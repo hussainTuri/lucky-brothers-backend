@@ -38,7 +38,7 @@ export const getInvoices = async (options: QueryOptions, sort: QuerySort) => {
 
   const whereOverdue = Prisma.validator<Prisma.InvoiceWhereInput>()({
     ...(options?.status && options.status === 'overdue'
-      ? { dueDate: { lt: today, not: null } }
+      ? { dueDate: { lt: today, not: null }, statusId: InvoiceStatusEnum.Pending }
       : {}),
   });
 
