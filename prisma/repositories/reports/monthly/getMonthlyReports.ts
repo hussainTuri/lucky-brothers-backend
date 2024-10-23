@@ -19,7 +19,7 @@ export const getMonthlyReports = async (options: QueryOptions, sort?: QuerySort)
         options?.take || 1000
       };`,
     ) as any,
-    prisma.expense.count(),
+    prisma.monthlyReport.count(),
     prisma.$queryRawUnsafe(
       `SELECT SUM(profit) - sum(expense) totalNetProfit FROM MonthlyReport;`,
     ) as any,
