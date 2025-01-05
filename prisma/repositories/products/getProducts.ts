@@ -8,6 +8,7 @@ export const getProducts = async () => {
     },
     include: {
       priceHistory: true,
+      productStocks: true,
     },
   });
   return products;
