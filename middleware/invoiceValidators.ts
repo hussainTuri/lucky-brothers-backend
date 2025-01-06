@@ -37,7 +37,7 @@ const extractInvoiceData = (payload: Partial<Invoice>) => {
     driverName: UCFirstLCRest(trimSpaces((payload.driverName as string) ?? null)),
     vehicleName: UCFirst(trimSpaces((payload.vehicleName as string) ?? null)),
     vehicleRegistrationNumber: trimSpaces((payload.vehicleRegistrationNumber as string) ?? null),
-    vat: payload.vat ?? 0,
+    vat: payload.vat ?? '0',
     vatClearedAt: payload.vatClearedAt ?? null,
     vatClearingMode: payload.vatClearingMode ?? 0,
   };
