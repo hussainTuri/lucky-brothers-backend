@@ -10,7 +10,7 @@ export const extractCustomerData = (
 ) => {
   return {
     customerName: UCFirstLCRest(trimSpaces((payload.customerName as string) ?? null)),
-    email: payload.email ?? null,
+    trn: payload.trn ?? null,
     phone: trimSpaces((payload.phone as string) ?? null),
     address: payload.address ?? null,
     imagePath: payload.imagePath ?? null,

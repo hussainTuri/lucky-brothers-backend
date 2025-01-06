@@ -1,6 +1,6 @@
 export interface SearchQuery {
   customerName?: string;
-  customerEmail?: string;
+  customerTrn?: string;
   customerPhone?: string;
   take?: number;
   skip?: number;

@@ -13,7 +13,7 @@ export const seedCustomers = async () => {
 const generateFakeCustomer = () => {
   return {
     customerName: `${faker.person.firstName()} ${faker.person.lastName()}`,
-    email: faker.internet.email(),
+    trn: faker.string.numeric,
     phone: faker.phone.number(),
     address: faker.location.streetAddress(),
   };

@@ -71,7 +71,7 @@ CREATE TABLE `ProductStock` (
 CREATE TABLE `Customer` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `customerName` VARCHAR(255) NOT NULL,
-    `email` VARCHAR(255) NULL,
+    `trn` VARCHAR(255) NULL,
     `phone` VARCHAR(255) NOT NULL,
     `address` VARCHAR(255) NULL,
     `imagePath` VARCHAR(255) NULL,

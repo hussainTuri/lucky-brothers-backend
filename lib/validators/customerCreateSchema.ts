@@ -2,7 +2,7 @@ import Joi from 'joi';
 
 export const createCustomerSchema = Joi.object({
   customerName: Joi.string().max(255).required(),
-  email: Joi.string().max(255).allow(null).allow('').optional(),
+  trn: Joi.string().max(255).allow(null).allow('').optional(),
   phone: Joi.string()
     .regex(/^\d{10}$/)
     .message('فون نمبر بالکل 10 ہندسوں کا ہونا چاہیے (0-9)')
