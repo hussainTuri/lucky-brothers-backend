@@ -143,6 +143,7 @@ model Invoice {
   id Int @id @default(autoincrement())
   customerId Int? @db.Int
   totalAmount Int @db.Int
+  totalAmountExcVat Int @db.Int
   dueDate DateTime? @db.DateTime
   statusId Int @db.Int // 1=Pending, 2=Paid, 3=Cancelled, 4=Refunded
   comment String? @db.VarChar(255)
@@ -163,6 +164,10 @@ model Invoice {
   updatedById Int? @db.Int
   createdBy User? @relation("InvoiceCreatedBy", fields: [createdById], references: [id], onDelete: NoAction, onUpdate: NoAction)
   updatedBy User? @relation("InvoiceUpdatedBy", fields: [updatedById], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  vat Decimal? @db.Decimal(10,2) @default(0)
+  vatClearedAt DateTime? @db.DateTime
+  vatClearingMode Int? @db.TinyInt @default(0)  /// 1: cash 2: transfer Whether VAT to government was paid from cash or through bank transfer
+
   @@index([dueDate])
   @@index([createdAt])
   @@index([updatedAt])

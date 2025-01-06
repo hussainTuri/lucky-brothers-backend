@@ -38,6 +38,7 @@ const saveInvoiceTransaction = async (
       data: {
         customerId: invoice?.customerId || createdCustomer?.id || null,
         totalAmount: invoice.totalAmount!,
+        totalAmountExcVat: invoice.totalAmountExcVat!,
         dueDate: invoice.dueDate || null,
         statusId: invoice.statusId!,
         comment: invoice.comment,
@@ -46,6 +47,9 @@ const saveInvoiceTransaction = async (
         vehicleRegistrationNumber: invoice.vehicleRegistrationNumber,
         profit: 0,
         createdById,
+        vat: invoice.vat,
+        vatClearedAt: invoice.vatClearedAt,
+        vatClearingMode: invoice.vatClearingMode,
         items: {
           createMany: {
             data: items.map((item) => ({

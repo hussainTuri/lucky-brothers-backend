@@ -30,12 +30,16 @@ const extractInvoiceData = (payload: Partial<Invoice>) => {
   return {
     customerId: payload.customerId ?? null,
     totalAmount: payload.totalAmount ?? null,
+    totalAmountExcVat: payload.totalAmountExcVat ?? null,
     dueDate: payload.dueDate ?? null,
     statusId: payload.statusId ?? null,
     comment: payload.comment ?? null,
     driverName: UCFirstLCRest(trimSpaces((payload.driverName as string) ?? null)),
     vehicleName: UCFirst(trimSpaces((payload.vehicleName as string) ?? null)),
     vehicleRegistrationNumber: trimSpaces((payload.vehicleRegistrationNumber as string) ?? null),
+    vat: payload.vat ?? 0,
+    vatClearedAt: payload.vatClearedAt ?? null,
+    vatClearingMode: payload.vatClearingMode ?? 0,
   };
 };
 
