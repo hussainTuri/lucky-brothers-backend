@@ -7,12 +7,24 @@ const seedDatabase = async () => {
   try {
     console.log('Database cleaning started...');
     const tables = [
-      'Product',
-      'PriceHistory',
-      'Customer',
-      'Invoice',
-      'InvoiceItem',
-      'InvoicePayment',
+      `Cash`,
+      `CashOut`,
+      `Customer`,
+      `CustomerTransaction`,
+      `DailyReport`,
+      `Expense`,
+      `Inventory`,
+      `Invoice`,
+      `InvoiceItem`,
+      `InvoiceItemProductStock`,
+      `InvoicePayment`,
+      `InvoiceStatus`,
+      `MonthlyReport`,
+      `PriceHistory`,
+      `_prisma_migrations`,
+      `Product`,
+      `ProductStock`,
+      `ProductType`,
     ];
     const transactions: PrismaPromise<any>[] = [];
     transactions.push(prisma.$executeRaw`SET FOREIGN_KEY_CHECKS = 0;`);

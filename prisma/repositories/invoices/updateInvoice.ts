@@ -125,12 +125,16 @@ const updateInvoiceTransaction = async (
       },
       data: {
         totalAmount: invoice.totalAmount,
+        totalAmountExcVat: invoice.totalAmountExcVat,
         dueDate: invoice.dueDate,
         comment: invoice.comment,
         driverName: invoice.driverName,
         vehicleName: invoice.vehicleName,
         vehicleRegistrationNumber: invoice.vehicleRegistrationNumber,
         updatedById,
+        vat: invoice.vat,
+        vatClearedAt: invoice.vatClearedAt,
+        vatClearingMode: invoice.vatClearingMode,
       },
       include: {
         items: true,
