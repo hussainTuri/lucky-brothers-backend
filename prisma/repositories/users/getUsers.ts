@@ -9,6 +9,7 @@ export const getUsers = async () => {
   const cachedUsers = getCache<User[]>(CacheKeys.USERS.key);
   if (cachedUsers) {
     console.log('Returning cached users');
+    timer.stop();
     return exclude(cachedUsers, ['password']);
   }
 

@@ -26,7 +26,7 @@ export const getProductSales = async (req: Request, res: Response) => {
 
   try {
     resp.data = await getProductSalesRepository(req.params.productId, filters, sort);
-    console.log('resp', resp);
+    // console.log('resp', resp);
   } catch (error) {
     console.error('DB Error', error);
     Sentry.captureException(error);
