@@ -4,12 +4,21 @@ import { response } from './lib/response';
 import indexRouter from './routes/index';
 import "./instrument";
 import * as Sentry from "@sentry/node";
+import { Timer } from './lib/utils';
 
 const app: Express = express();
 
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// TODO: Remove or comment out below
+//  Timer middleware to measure total request time
+app.use((req: Request, res: Response, next: NextFunction) => {
+  const timer = new Timer(`${req.method} ${req.url} - total request`);
+  res.on('finish', () => timer.stop()); // Log the duration after response is sent
+  next();
+});
 
 app.use('/api', indexRouter);
 
