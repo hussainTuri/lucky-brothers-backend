@@ -63,14 +63,14 @@ export const seedProducts = async () => {
     const priceHistories = productIds.map((product: any) => generateFakePriceHistory(product.id));
     await prisma.priceHistory.createMany({ data: priceHistories });
 
-    // Seed Inventory
-    const inventory = productIds.map((product: any) => {
-      return {
-        productId: product.id,
-        quantity: faker.number.int({ min: 10, max: 100 }),
-        reason: faker.lorem.sentence(),
-      };
-    });
-    await prisma.inventory.createMany({ data: inventory });
+    // // Seed Inventory
+    // const inventory = productIds.map((product: any) => {
+    //   return {
+    //     productId: product.id,
+    //     quantity: faker.number.int({ min: 10, max: 100 }),
+    //     reason: faker.lorem.sentence(),
+    //   };
+    // });
+    // await prisma.inventory.createMany({ data: inventory });
   }
 };
