@@ -6,9 +6,10 @@ const prisma = new PrismaClient();
 export const getUsers = async () => {
   const cachedUsers = getCache<User[]>(CacheKeys.USERS.key);
   if (cachedUsers) {
-    console.log('Returning cached users');
+    // console.log('[CACHE HIT] getUsers');
     return exclude(cachedUsers, ['password']);
   }
+  // console.log('[CACHE MISS] getUsers');
 
   const users = await prisma.user.findMany();
 
