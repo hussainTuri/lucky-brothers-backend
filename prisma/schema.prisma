@@ -22,17 +22,17 @@ model Product {
   imagePath String? @db.VarChar(255)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  size String? @db.VarChar(255)
-  diameter Int? @db.Int
-  speedIndex String? @db.VarChar(255)
-  loadIndex String? @db.VarChar(255)
-  season String? @db.VarChar(255)
-  width Int? @db.Int
-  height Int? @db.Int
-  length Int? @db.Int
-  startStop Int? @db.Int
-  design String? @db.VarChar(255)
-  threadSize String? @db.VarChar(255)
+  size String? @db.VarChar(255) // @deprecated
+  diameter Int? @db.Int // @deprecated
+  speedIndex String? @db.VarChar(255) // @deprecated
+  loadIndex String? @db.VarChar(255) // @deprecated
+  season String? @db.VarChar(255) // @deprecated
+  width Int? @db.Int // @deprecated
+  height Int? @db.Int // @deprecated
+  length Int? @db.Int // @deprecated
+  startStop Int? @db.Int // @deprecated
+  design String? @db.VarChar(255) // @deprecated
+  threadSize String? @db.VarChar(255) // @deprecated
   buyingPrice Int? @db.Int // @deprecated
   sellingPrice Int? @db.Int
   isActive Boolean @default(true)

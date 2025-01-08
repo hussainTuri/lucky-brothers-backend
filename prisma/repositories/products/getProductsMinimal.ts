@@ -1,7 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
-export const getProducts = async () => {
+export const getMinimalProducts = async () => {
   const products = await prisma.product.findMany({
     where: {
       isActive: true,
@@ -18,9 +18,6 @@ export const getProducts = async () => {
       createdAt: true,
       createdById: true,
       sellingPrice: true,
-
-      priceHistory: true,
-      productStocks: true,
     },
   });
   return products;

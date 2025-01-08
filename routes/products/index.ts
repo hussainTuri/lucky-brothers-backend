@@ -15,6 +15,7 @@ import path from 'path';
 import { authenticate } from '../../middleware/authenticate';
 import stockRoutes from './stock';
 import { getProductSales } from './getProductSales';
+import { getMinimalProducts } from './getProductsMinimal';
 
 const storage = multer.diskStorage({
   destination: (req: Request, file: Express.Multer.File, cb) => {
@@ -35,6 +36,7 @@ router.use('/:productId/stock', stockRoutes);
 router.get('/:productId/sales', authenticate, getProductSales);
 
 router.get('/', authenticate, getProducts);
+router.get('/minimal', authenticate, getMinimalProducts);
 router.post('/', authenticate, normalizeCreateData, validateCreateProduct, createProduct);
 router.post('/image', authenticate, upload.single('image'), uploadImage);
 router.get('/:productId', authenticate, getProduct);
