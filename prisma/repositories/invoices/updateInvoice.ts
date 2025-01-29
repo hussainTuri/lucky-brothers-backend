@@ -135,6 +135,8 @@ const updateInvoiceTransaction = async (
         vat: invoice.vat,
         vatClearedAt: invoice.vatClearedAt,
         vatClearingMode: invoice.vatClearingMode,
+        vatRate: invoice.vatRate,
+        trn: invoice.trn,
       },
       include: {
         items: true,

@@ -40,6 +40,8 @@ const extractInvoiceData = (payload: Partial<Invoice>) => {
     vat: payload.vat ?? '0',
     vatClearedAt: payload.vatClearedAt ?? null,
     vatClearingMode: payload.vatClearingMode ?? 0,
+    vatRate: payload.vatRate ?? 0,
+    trn: trimSpaces((payload.trn as string) ?? null),
   };
 };
 

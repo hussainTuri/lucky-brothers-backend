@@ -50,6 +50,8 @@ const saveInvoiceTransaction = async (
         vat: invoice.vat,
         vatClearedAt: invoice.vatClearedAt,
         vatClearingMode: invoice.vatClearingMode,
+        vatRate: invoice.vatRate,
+        trn: invoice.trn,
         items: {
           createMany: {
             data: items.map((item) => ({

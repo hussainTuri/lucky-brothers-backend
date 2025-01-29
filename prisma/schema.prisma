@@ -167,6 +167,8 @@ model Invoice {
   vat Decimal? @db.Decimal(10,2) @default(0)
   vatClearedAt DateTime? @db.DateTime
   vatClearingMode Int? @db.TinyInt @default(0)  /// 1: cash 2: transfer Whether VAT to government was paid from cash or through bank transfer
+  vatRate Decimal? @db.Decimal(10,2) @default(0)
+  trn String? @db.VarChar(30)
 
   @@index([dueDate])
   @@index([createdAt])

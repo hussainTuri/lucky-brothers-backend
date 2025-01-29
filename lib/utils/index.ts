@@ -35,7 +35,7 @@ export const UCFirst = (inputString: string): string => {
 
 export const trimSpaces = (inputString: string): string => {
   if (typeof inputString !== 'string') return inputString;
-  return inputString.replace(/\s+/g, ' ').trim();
+  return inputString.replace(/\s+/g, '').trim();
 };
 
 export * from './cache';

@@ -18,4 +18,6 @@ export const createInvoiceSchema = Joi.object({
   vat: Joi.number().allow(0).allow(null),
   vatClearedAt: Joi.date().iso().optional().allow(null).allow(''),
   vatClearingMode: Joi.number().integer().optional(),
+  vatRate: Joi.number().allow(0).allow(null),
+  trn: Joi.string().max(255).allow(null).allow(''),
 });
