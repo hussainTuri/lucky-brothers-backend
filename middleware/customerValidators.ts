@@ -9,7 +9,7 @@ export const extractCustomerData = (
   payload: Prisma.CustomerUncheckedUpdateInput | Prisma.CustomerUncheckedCreateInput,
 ) => {
   return {
-    customerName: UCFirstLCRest(trimSpaces((payload.customerName as string) ?? null)),
+    customerName: UCFirstLCRest((payload.customerName as string) ?? null),
     trn: payload.trn ?? null,
     phone: trimSpaces((payload.phone as string) ?? null),
     address: payload.address ?? null,

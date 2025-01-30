@@ -6,7 +6,7 @@ import { UCFirstLCRest, trimSpaces } from '../lib/utils';
 
 export const extractUserData = (payload: Partial<User>) => {
   return {
-    fullName: UCFirstLCRest(trimSpaces((payload.fullName as string) ?? null)),
+    fullName: UCFirstLCRest((payload.fullName as string) ?? null),
     username: trimSpaces((payload.username as string) ?? null),
     password: payload.password ?? null,
     phone: payload.phone ?? null,

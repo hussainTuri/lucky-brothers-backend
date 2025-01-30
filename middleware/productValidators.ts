@@ -8,11 +8,11 @@ const extractProductData = (
   payload: Prisma.ProductUncheckedUpdateInput | Prisma.ProductUncheckedCreateInput,
 ) => {
   return {
-    productName: UCFirst(trimSpaces((payload.productName as string) ?? null)),
+    productName: UCFirst((payload.productName as string) ?? null),
     productTypeId: payload.productTypeId,
     sku: payload.sku ?? null,
     stockQuantity: toNumber(payload.stockQuantity, 0),
-    manufacturer: UCFirst(trimSpaces((payload.manufacturer as string) ?? null)),
+    manufacturer: UCFirst((payload.manufacturer as string) ?? null),
     manufacturingYear: toNumber(payload.manufacturingYear),
     imagePath: payload.imagePath ?? null,
     size: payload.size ?? null,
