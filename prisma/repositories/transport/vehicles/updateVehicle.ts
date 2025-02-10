@@ -1,23 +1,23 @@
-import { Cash, PrismaClient } from '@prisma/client';
+import { TransportVehicle, PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-export const updateCash = async (entry: Cash): Promise<Cash | null> => {
-  return await updateCashEntry(entry);
+export const updateVehicle = async (entry: TransportVehicle): Promise<TransportVehicle | null> => {
+  return await updateVehicleEntry(entry);
 };
 
-const updateCashEntry = async (entry: Cash): Promise<Cash | null> => {
+const updateVehicleEntry = async (entry: TransportVehicle): Promise<TransportVehicle | null> => {
   return prisma.$transaction(async (tx) => {
-    // 1 update cash
-    const entryUpdated = await tx.cash.update({
+    // 1 update vehicle
+    const entryUpdated = await tx.transportVehicle.update({
       where: {
         id: entry.id,
       },
       data: {
-        amount: entry.amount,
-        description: entry.description,
-        cashDate: entry.cashDate,
-        mode: entry.mode,
+        vehicleName: entry.vehicleName,
+        vehicleRegistration: entry.vehicleRegistration,
+        model: entry.model,
+        buyDate: entry.buyDate,
       },
     });
 

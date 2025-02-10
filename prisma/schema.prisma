@@ -376,7 +376,7 @@ model TransportVehicle {
   vehicleName String @db.VarChar(255)
   vehicleRegistration String @db.VarChar(30)
   model String @db.VarChar(255)
-  buyDate DateTime @db.DateTime
+  buyDate DateTime? @db.DateTime
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   createdById Int? @db.Int
