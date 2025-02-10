@@ -371,11 +371,12 @@ model CashOut {
 }
 
 // Transport system
-// id, vehicleName, model, createdAt, updatedAt, createdById, updatedById
 model TransportVehicle {
   id Int @id @default(autoincrement())
   vehicleName String @db.VarChar(255)
+  vehicleRegistration String @db.VarChar(30)
   model String @db.VarChar(255)
+  buyDate DateTime @db.DateTime
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   createdById Int? @db.Int
@@ -388,9 +389,9 @@ model TransportVehicle {
   reservations TransportVehicleReservation[]
   customerTransactions TransportCustomerTransaction[]
   @@fulltext([vehicleName])
+  @@fulltext([vehicleRegistration])
 }
 
-// id, vehicleId, customerTransactionId, transactionTypeId, bankId, amount, balance, comment, createdAt, updatedAt, createdById, updatedById
 model TransportVehicleTransaction {
   id Int @id @default(autoincrement())
   vehicleId Int @db.Int
@@ -415,7 +416,6 @@ model TransportVehicleTransaction {
   @@index([transactionTypeId])
 }
 
-// id, typeName
 model TransportVehicleTransactionType {
   id Int @id @default(autoincrement())
   typeName String @db.VarChar(255)
@@ -424,7 +424,6 @@ model TransportVehicleTransactionType {
   transactions TransportVehicleTransaction[]
 }
 
-//id, bankName, address, phone
 model TransportBank {
   id Int @id @default(autoincrement())
   bankName String @db.VarChar(255)
@@ -433,7 +432,6 @@ model TransportBank {
   transactions TransportVehicleTransaction[]
 }
 
-// id, vehicleId, customerId, reservationStart, reservationEnd, monthlyRate, comment, createdAt, updatedAt, createdById, updatedById
 model TransportVehicleReservation {
   id Int @id @default(autoincrement())
   vehicleId Int @db.Int
@@ -455,7 +453,6 @@ model TransportVehicleReservation {
   @@index([reservationStart, reservationEnd])
 }
 
-// id, customerName, contact1, contact2, contact1Phone, contact2Phone, phone, address, createdAt, updatedAt, createdById, updatedById
 model TransportCustomer {
   id Int @id @default(autoincrement())
   customerName String @db.VarChar(255)
@@ -476,7 +473,6 @@ model TransportCustomer {
   @@fulltext([customerName])
 }
 
-// id, customerId, vehicleId, customerTransactionType, rentFrom, rentTo, amount, balance, comment, createdAt, updatedAt, createdById, updatedById
 model TransportCustomerTransaction {
   id Int @id @default(autoincrement())
   customerId Int @db.Int
@@ -502,7 +498,6 @@ model TransportCustomerTransaction {
   @@index([customerTransactionTypeId])
 }
 
-// id, typeName
 model TransportCustomerTransactionType {
   id Int @id @default(autoincrement())
   typeName String @db.VarChar(255)
