@@ -437,7 +437,7 @@ model TransportVehicleReservation {
   vehicleId Int @db.Int
   customerId Int @db.Int
   reservationStart DateTime @db.DateTime
-  reservationEnd DateTime @db.DateTime
+  reservationEnd DateTime? @db.DateTime
   monthlyRate Int @db.Int
   comment String? @db.VarChar(255)
   createdAt DateTime @default(now())
