@@ -11,12 +11,14 @@ export const getVehicle = async (req: Request, res: Response, next: NextFunction
     const vehicle = await getVehicleRepository(req.params.vehicleId);
 
     // Find the last active reservation (first one that is still active)
-    const activeReservation =   vehicle.reservations?.find((reservation) =>
-      reservation.reservationStart <= new Date() &&
-      (!reservation.reservationEnd || reservation.reservationEnd >= new Date())
-    ) || null;
+    const activeReservation =
+      vehicle.reservations?.find(
+        (reservation) =>
+          reservation.reservationStart <= new Date() &&
+          (!reservation.reservationEnd || reservation.reservationEnd >= new Date()),
+      ) ?? null;
 
-    resp.data = {vehicle, activeReservation};
+    resp.data = { vehicle, activeReservation };
   } catch (error) {
     console.error('DB Error', error);
     Sentry.captureException(error);

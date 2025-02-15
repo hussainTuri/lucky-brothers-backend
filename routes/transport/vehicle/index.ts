@@ -10,9 +10,11 @@ import { createVehicle } from './createVehicle';
 import { getVehicles } from './getVehicles';
 import { getVehicle } from './getVehicle';
 import { updateVehicle } from './updateVehicle';
+import reservationRoutes from './reservation';
 
 const router = express.Router();
 
+router.use('/:vehicleId/reservations', reservationRoutes);
 router.get('/', authenticate, getVehicles);
 router.get('/:vehicleId', authenticate, getVehicle);
 router.post('/', authenticate, normalizeCreateData, validateCreateVehicle, createVehicle);

@@ -23,19 +23,27 @@ export const getVehicle = async (id: number | string) => {
     // add last active reservation
     include: {
       reservations: {
+        include: {
+          customer: true,
+          rentalCycles: {
+            include: {
+              rentalCyclePayments: true,
+            }
+          }
+        },
         orderBy:{
           id: 'desc',
         }
       },
+
     }
   });
   return vehicle;
 };
 
-export const getVehicleActiveReservations = async (vehicleId: number) => {
- //  WHERE vehicleId = ? AND reservationStart <= ? AND (reservationEnd >= ? OR reservationEnd IS NULL)
+export const getVehicleActiveReservation = async (vehicleId: number) => {
   const reservations = await prisma.transportVehicleReservation.findMany({
-    where: {
+    where: { //  WHERE vehicleId = ? AND reservationStart <= ? AND (reservationEnd >= ? OR reservationEnd IS NULL)
       vehicleId,
       reservationStart: {
         lte: new Date(),
@@ -58,5 +66,8 @@ export const getVehicleActiveReservations = async (vehicleId: number) => {
     },
     take: 1,
   });
-  return reservations;
+  if (reservations.length) {
+    return reservations[0];
+  }
+  return null;
 };

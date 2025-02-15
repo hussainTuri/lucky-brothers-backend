@@ -1,5 +1,6 @@
 import { Prisma, PrismaClient } from '@prisma/client';
 import { QueryOptions, QuerySort } from '../../../../types';
+import { TransportVehicleWithReservations } from '../../../../types/transport/vehicle';
 
 // const prisma = new PrismaClient();
 const prisma = new PrismaClient({
@@ -13,9 +14,8 @@ const prisma = new PrismaClient({
 prisma.$on('query', async (e: Prisma.QueryEvent) => {
   console.log(`${e.query} ${e.params} duration: ${e.duration / 100}s`);
   console.log('------------------------------------------------------\n');
-  console.log(`${e.query} duration: ${e.duration/100} s`);
+  console.log(`${e.query} duration: ${e.duration / 100} s`);
 });
-
 
 export const getVehicles = async (options: QueryOptions, sort?: QuerySort) => {
   let orderBy: { [key: string]: 'asc' | 'desc' }[] = [];
@@ -52,7 +52,7 @@ export const getVehicles = async (options: QueryOptions, sort?: QuerySort) => {
                 },
               },
             ],
-          }
+          },
         },
       },
       orderBy,
@@ -61,6 +61,11 @@ export const getVehicles = async (options: QueryOptions, sort?: QuerySort) => {
     }),
     prisma.transportVehicle.count(),
   ]);
+  console.log('vehicles', vehicles);
+  vehicles.forEach((vehicle: TransportVehicleWithReservations) => {
+    vehicle.activeReservation = vehicle.reservations?.length ? vehicle.reservations[0] : undefined;
+    delete vehicle.reservations;
+  });
 
   return { vehicles, totalCount };
 };

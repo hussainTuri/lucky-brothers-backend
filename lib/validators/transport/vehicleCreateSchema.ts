@@ -6,3 +6,12 @@ export const createVehicleSchema = Joi.object({
   model: Joi.string().max(255).required(),
   buyDate: Joi.date().optional().allow(null).allow(''),
 });
+
+export const createVehicleReservationSchema = Joi.object({
+  vehicleId: Joi.number().integer().positive().required(),
+  customerId: Joi.number().integer().positive().required(),
+  reservationStart: Joi.date().required(),
+  reservationEnd: Joi.date().optional().allow(null).allow(''),
+  monthlyRate: Joi.number().required().integer().positive(),
+  comment: Joi.string().max(255).optional().allow(null).allow(''),
+});

@@ -462,7 +462,7 @@ model TransportVehicleReservationRentalCycle {
   customerId Int @db.Int
   rentFrom DateTime @db.DateTime
   rentTo DateTime? @db.DateTime
-  amountDue Int @db.Int
+  amount Int @db.Int
   amountPaid Int @db.Int
   comment String? @db.VarChar(255)
   createdAt DateTime @default(now())
@@ -498,8 +498,6 @@ model TransportCustomer {
   customerName String @db.VarChar(255)
   contact1 String? @db.VarChar(255)
   contact2 String? @db.VarChar(255)
-  contact1Phone String? @db.VarChar(255)
-  contact2Phone String? @db.VarChar(255)
   phone String? @db.VarChar(255)
   address String? @db.VarChar(255)
   createdAt DateTime @default(now())
@@ -512,15 +510,15 @@ model TransportCustomer {
   transactions TransportCustomerTransaction[]
   reservations TransportVehicleReservation[]
   @@fulltext([customerName])
+  @@index([phone])
 }
 
 model TransportCustomerTransaction {
   id Int @id @default(autoincrement())
   customerId Int @db.Int
   vehicleId Int @db.Int
+  reservationRentalCycleId Int? @db.Int // Right now payments and rent types are alway connected to reservationRentalCycleId, but lets not restrict it and keep it optional
   customerTransactionTypeId Int @db.Int
-  rentFrom DateTime? @db.DateTime
-  rentTo DateTime? @db.DateTime
   amount Int @db.Int
   balance Int @db.Int
   comment String? @db.VarChar(255)
