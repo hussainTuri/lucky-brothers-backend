@@ -14,7 +14,6 @@ const prisma = new PrismaClient();
 //   // console.log(`${e.query} duration: ${e.duration/100} s`);
 // });
 
-
 export const getVehicle = async (id: number | string) => {
   const vehicle = await prisma.transportVehicle.findFirstOrThrow({
     where: {
@@ -28,22 +27,27 @@ export const getVehicle = async (id: number | string) => {
           rentalCycles: {
             include: {
               rentalCyclePayments: true,
-            }
-          }
+            },
+          },
         },
-        orderBy:{
-          id: 'desc',
-        }
+        orderBy: [
+          {
+            reservationEnd: 'desc',
+          },
+          {
+            reservationStart: 'desc',
+          },
+        ],
       },
-
-    }
+    },
   });
   return vehicle;
 };
 
 export const getVehicleActiveReservation = async (vehicleId: number) => {
   const reservations = await prisma.transportVehicleReservation.findMany({
-    where: { //  WHERE vehicleId = ? AND reservationStart <= ? AND (reservationEnd >= ? OR reservationEnd IS NULL)
+    where: {
+      //  WHERE vehicleId = ? AND reservationStart <= ? AND (reservationEnd >= ? OR reservationEnd IS NULL)
       vehicleId,
       reservationStart: {
         lte: new Date(),
