@@ -40,3 +40,4 @@ export const trimSpaces = (inputString: string): string => {
 
 export * from './cache';
 export * from './timer';
+export * from './transportVehicle';
