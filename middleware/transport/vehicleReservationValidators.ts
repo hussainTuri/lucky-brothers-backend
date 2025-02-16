@@ -5,8 +5,9 @@ import {
   createVehicleReservationSchema,
   updateVehicleReservationSchema,
 } from '../../lib/validators/transport';
-import { getReservationsByVehicleId } from '../../prisma/repositories/transport';
+import { getReservation, getReservationsByVehicleId } from '../../prisma/repositories/transport';
 import { isReservationOverlapping } from '../../lib/utils';
+import { messages } from '../../lib/constants';
 
 const extractVehicleReservationData = (payload: Partial<TransportVehicleReservation>) => {
   return {
@@ -54,9 +55,9 @@ export const validateCreateVehicleReservation = async (
   // Check if it will create an overlapping reservation
   const invalid = await checkReservationPeriod(req.body as TransportVehicleReservation);
   if (invalid) {
-      resp.message = 'Reservation overlaps with existing reservations';
-      resp.success = false;
-      return res.status(400).json(resp);
+    resp.message = 'Reservation overlaps with existing reservations';
+    resp.success = false;
+    return res.status(400).json(resp);
   }
 
   next();
@@ -78,9 +79,9 @@ export const validateUpdateVehicleReservation = async (
   // Check if it will create an overlapping reservation
   const invalid = await checkReservationPeriod(req.body as TransportVehicleReservation);
   if (invalid) {
-      resp.message = 'Reservation overlaps with existing reservations';
-      resp.success = false;
-      return res.status(400).json(resp);
+    resp.message = 'Reservation overlaps with existing reservations';
+    resp.success = false;
+    return res.status(400).json(resp);
   }
 
   next();
@@ -89,4 +90,35 @@ export const validateUpdateVehicleReservation = async (
 const checkReservationPeriod = async (reservation: TransportVehicleReservation) => {
   const existingReservations = await getReservationsByVehicleId(reservation.vehicleId);
   return isReservationOverlapping(reservation, existingReservations);
+};
+
+export const validateDeleteVehicleReservation = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  const resp = response();
+
+  const reservationId = Number(req.params.reservationId);
+  if (!reservationId) {
+    resp.message = messages.RESERVATION_ID_REQUIRED;
+    resp.success = false;
+    return res.status(400).json(resp);
+  }
+
+  // make sure that the transaction is a customer payment ie type is payment and invoice is null
+  try {
+    const reservation = await getReservation(reservationId);
+    if (reservation.rentalCycles.length > 0) {
+      resp.message = messages.RESERVATION_DELETE_NOT_ALLOWED;
+      resp.success = false;
+      return res.status(400).json(resp);
+    }
+  } catch (error) {
+    resp.success = false;
+    resp.message = messages.INTERNAL_SERVER_ERROR;
+    return res.status(500).json(resp);
+  }
+
+  next();
 };

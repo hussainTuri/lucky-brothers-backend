@@ -22,4 +22,8 @@ export const messages = {
   INSUFFICIENT_STOCK: 'پروڈکٹ کے لیے اسٹاک دستیاب نہیں ہے۔',
   INVOICE_NOT_FOUND: 'انوائس نہیں ملا',
   PRODUCT_STOCK_NOT_FOUND: 'پروڈکٹ کی اسٹاک نہیں ملی',
+  RESERVATION_ID_REQUIRED: 'ریزرویشن آئی ڈی درکار ہے۔',
+  RESERVATION_ID_NOT_FOUND: 'ریزرویشن آئی ڈی نہیں ملا',
+  VEHICLE_ID_REQUIRED: ' گاڑی کی آئی ڈی درکار ہے۔',
+  RESERVATION_DELETE_NOT_ALLOWED: 'ریزرویشن ہٹانے کی اجازت نہیں ہے۔ اس ریزرویشن سے متعلق متعدد ادائیگیاں ہیں۔',
 };

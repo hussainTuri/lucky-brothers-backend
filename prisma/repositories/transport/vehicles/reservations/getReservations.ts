@@ -1,4 +1,3 @@
-
 import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
@@ -20,4 +19,22 @@ export const getReservationsByVehicleId = async (vehicleId: number) => {
     },
   });
   return reservations;
+};
+
+export const getReservation = async (id: number) => {
+  const reservation = await prisma.transportVehicleReservation.findUniqueOrThrow({
+    where: {
+      id,
+    },
+    include: {
+      customer: true,
+      rentalCycles: {
+        include: {
+          rentalCyclePayments: true,
+        },
+      },
+    },
+  });
+
+  return reservation;
 };
