@@ -15,3 +15,12 @@ export const createVehicleReservationSchema = Joi.object({
   monthlyRate: Joi.number().required().integer().positive(),
   comment: Joi.string().max(255).optional().allow(null).allow(''),
 });
+
+export const createVehicleReservationCycleSchema = Joi.object({
+  vehicleReservationId: Joi.number().integer().positive().required(),
+  customerId: Joi.number().integer().positive().required(),
+  rentFrom: Joi.date().required(),
+  rentTo: Joi.date().optional().allow(null).allow(''),
+  amount: Joi.number().required().integer().positive(),
+  comment: Joi.string().max(255).optional().allow(null).allow(''),
+});

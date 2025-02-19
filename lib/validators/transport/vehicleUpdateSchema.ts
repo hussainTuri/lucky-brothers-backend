@@ -8,3 +8,7 @@ export const updateVehicleSchema = createVehicleSchema.keys({
 export const updateVehicleReservationSchema = createVehicleReservationSchema.keys({
   id: Joi.number().integer().positive().required(),
 });
+
+export const updateVehicleReservationCycleSchema = Joi.object({
+  id: Joi.number().integer().positive().required(),
+});

@@ -11,13 +11,16 @@ import { getVehicles } from './getVehicles';
 import { getVehicle } from './getVehicle';
 import { updateVehicle } from './updateVehicle';
 import reservationRoutes from './reservation';
+import reservationCycleRoutes from './reservationCycle';
 
 const router = express.Router();
 
-router.use('/:vehicleId/reservations', reservationRoutes);
+router.use('/:vehicleId(\\d+)/reservations', reservationRoutes);
+router.use('/reservations/:reservationId(\\d+)/cycles', reservationCycleRoutes);
 router.get('/', authenticate, getVehicles);
-router.get('/:vehicleId', authenticate, getVehicle);
 router.post('/', authenticate, normalizeCreateData, validateCreateVehicle, createVehicle);
-router.put('/:vehicleId', authenticate, normalizeUpdateData, validateUpdateVehicle, updateVehicle);
+router.put('/:vehicleId(\\d+)', authenticate, normalizeUpdateData, validateUpdateVehicle, updateVehicle);
+router.get('/:vehicleId(\\d+)', authenticate, getVehicle);
+
 
 export default router;

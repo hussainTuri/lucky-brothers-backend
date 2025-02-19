@@ -5,7 +5,7 @@
   "scripts": {
     "build": "tsc",
     "start": "node ./dist/app.js",
-    "dev": "nodemon app.ts",
+    "dev": "DEBUG=express:* nodemon app.ts",
     "seed": "ts-node prisma/seed/seed.ts",
     "migrate:dev": "prisma migrate dev --name init",
     "migrate:deploy": "prisma migrate deploy",

@@ -8,6 +8,6 @@ import { deleteVehicleReservation } from './deleteReservation';
 const router = express.Router();
 
 router.post('/', authenticate, normalizeCreateData, validateCreateVehicleReservation, createVehicleReservation);
-router.put('/:reservationId/update', authenticate, normalizeUpdateData, validateUpdateVehicleReservation, updateVehicleReservation);
-router.delete('/:reservationId/delete', authenticate, validateDeleteVehicleReservation, deleteVehicleReservation);
+router.put('/:reservationId(\\d+)/update', authenticate, normalizeUpdateData, validateUpdateVehicleReservation, updateVehicleReservation);
+router.delete('/:reservationId(\\d+)/delete', authenticate, validateDeleteVehicleReservation, deleteVehicleReservation);
 export default router;

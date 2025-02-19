@@ -23,7 +23,6 @@ export const normalizeUpdateData = (req: Request, res: Response, next: NextFunct
   const payload = req.body as Partial<TransportVehicle>;
   const vehicleEntry = extractVehicleData(payload) as Partial<TransportVehicle>;
   vehicleEntry.id = payload.id ?? undefined;
-  console.log('payload', vehicleEntry);
 
   req.body = vehicleEntry;
   next();
