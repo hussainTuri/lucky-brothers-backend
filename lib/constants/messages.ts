@@ -30,4 +30,6 @@ export const messages = {
   RESERVATION_CYCLE_ID_REQUIRED: 'ریزرویشن سائیکل آئی ڈی درکار ہے۔',
   RESERVATION_CYCLE_DELETION_NOT_ALLOWED: 'ریزرویشن سائیکل کو ہٹانے کی اجازت نہیں ہے۔ اس سائیکل کے لیے ادا کی گئی رقم ہے۔',
   VEHICLE_TRANSACTION_ID_REQUIRED: ' گاڑی کی ٹرانزیکشن آئی ڈی درکار ہے۔',
+  VEHICLE_TRANSACTION_OF_TYPE_CUSTOMER_PAYMENT_DELETE_NOT_ALLOWED: 'کسٹمر ادائیگی کی ٹرانزیکشن کو ہٹانے کی اجازت نہیں ہے۔',
+  VEHICLE_TRANSACTION_NOT_FOUND: 'ٹرانزیکشن نہیں ملا',
 };

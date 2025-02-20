@@ -5,6 +5,8 @@ import {
   validateCreateVehicleTransaction,
   validateUpdateVehicleTransaction,
   validateDeleteVehicleTransaction,
+  normalizeCreateData,
+  normalizeUpdateData,
 } from '../../../../middleware/transport/vehicleTransactionValidators';
 import { createVehicleTransaction } from './createTransaction';
 import { updateVehicleTransaction } from './updateTransaction';
@@ -13,10 +15,11 @@ import { deleteTransaction } from './deleteTransaction';
 const router = express.Router({ mergeParams: true });
 
 router.get('/', authenticate, getTransactions);
-router.post('/', authenticate, validateCreateVehicleTransaction, createVehicleTransaction);
+router.post('/', authenticate,normalizeCreateData, validateCreateVehicleTransaction, createVehicleTransaction);
 router.put(
   '/:transactionId(\\d+)/update',
   authenticate,
+  normalizeUpdateData,
   validateUpdateVehicleTransaction,
   updateVehicleTransaction,
 );
