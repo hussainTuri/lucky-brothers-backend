@@ -9,7 +9,6 @@ export const updateProduct = async (product: Product): Promise<Product | null> =
   delete updateData.createdAt;
   delete updateData.updatedAt;
   delete updateData.sku;
-  product.productName = product.productName;
 
   const result = await prisma.product.update({
     where: {

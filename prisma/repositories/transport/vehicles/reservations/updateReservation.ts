@@ -6,8 +6,8 @@ const prisma = new PrismaClient();
 export const updateVehicleReservation = async (
   entry: TransportVehicleReservation,
 ): Promise<TransportVehicleReservation | null> => {
-  const entryCreated = await prisma.transportVehicleReservation.update({
-    where:{
+  const entryUpdated = await prisma.transportVehicleReservation.update({
+    where: {
       id: entry.id,
     },
     data: {
@@ -18,15 +18,15 @@ export const updateVehicleReservation = async (
       monthlyRate: entry.monthlyRate,
       comment: entry.comment,
     },
-    include:{
+    include: {
       customer: true,
       rentalCycles: {
         include: {
           rentalCyclePayments: true,
-        }
-      }
-    }
+        },
+      },
+    },
   });
 
-  return entryCreated;
+  return entryUpdated;
 };

@@ -29,4 +29,5 @@ export const messages = {
   RESERVATION_CYCLE_AMOUNT_ERROR: 'رقم کی غلطی۔ ادا کی گئی رقم کل رقم سے زیادہ ہے۔',
   RESERVATION_CYCLE_ID_REQUIRED: 'ریزرویشن سائیکل آئی ڈی درکار ہے۔',
   RESERVATION_CYCLE_DELETION_NOT_ALLOWED: 'ریزرویشن سائیکل کو ہٹانے کی اجازت نہیں ہے۔ اس سائیکل کے لیے ادا کی گئی رقم ہے۔',
+  VEHICLE_TRANSACTION_ID_REQUIRED: ' گاڑی کی ٹرانزیکشن آئی ڈی درکار ہے۔',
 };

@@ -12,3 +12,7 @@ export const updateVehicleReservationSchema = createVehicleReservationSchema.key
 export const updateVehicleReservationCycleSchema = Joi.object({
   id: Joi.number().integer().positive().required(),
 });
+
+export const updateVehicleTransactionSchema = Joi.object({
+  id: Joi.number().integer().positive().required(),
+});

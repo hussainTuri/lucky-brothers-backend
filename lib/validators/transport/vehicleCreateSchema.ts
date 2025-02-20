@@ -24,3 +24,12 @@ export const createVehicleReservationCycleSchema = Joi.object({
   amount: Joi.number().required().integer().positive(),
   comment: Joi.string().max(255).optional().allow(null).allow(''),
 });
+
+export const createVehicleTransactionSchema = Joi.object({
+  vehicleId: Joi.number().integer().positive().required(),
+  transactionTypeId: Joi.number().integer().positive().required(),
+  bankId: Joi.number().integer().positive().optional().allow(null),
+  amount: Joi.number().required().integer(),
+  balance: Joi.number().required().integer(),
+  comment: Joi.string().max(255).optional().allow(null).allow(''),
+});
