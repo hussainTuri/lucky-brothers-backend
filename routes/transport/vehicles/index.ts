@@ -10,8 +10,8 @@ import { createVehicle } from './createVehicle';
 import { getVehicles } from './getVehicles';
 import { getVehicle } from './getVehicle';
 import { updateVehicle } from './updateVehicle';
-import reservationRoutes from './reservation';
-import reservationCycleRoutes from './reservationCycle';
+import reservationRoutes from './reservations';
+import reservationCycleRoutes from './reservationCycles';
 
 const router = express.Router();
 

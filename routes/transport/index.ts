@@ -1,6 +1,6 @@
 import express from 'express';
-import vehicleRoutes from './vehicle';
-import customerRoutes from './customer';
+import vehicleRoutes from './vehicles';
+import customerRoutes from './customers';
 
 const router = express.Router();
 
