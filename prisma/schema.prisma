@@ -80,6 +80,7 @@ model ProductStock {
   remainingQuantity Int @db.Int
   comment String? @db.VarChar(255)
   receiptNumber String? @db.VarChar(45)
+  mode Int @db.TinyInt @default(1) // 1: cash 2: transfer
   product Product @relation(fields: [productId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
