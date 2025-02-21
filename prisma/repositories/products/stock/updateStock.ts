@@ -27,6 +27,7 @@ const updateStockEntry = async (entry: ProductStock): Promise<ProductStock | nul
         remainingQuantity: entry.remainingQuantity,
         receiptNumber: entry.receiptNumber,
         updatedById: entry.updatedById,
+        mode: entry.mode,
       },
     });
 

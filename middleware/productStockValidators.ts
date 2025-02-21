@@ -2,6 +2,7 @@ import { ProductStock } from '@prisma/client';
 import { Request, Response, NextFunction } from 'express';
 import { response } from '../lib/response';
 import { createProductStockSchema, updateProductStockSchema } from '../lib/validators/';
+import { TransactionModeEnum } from '../lib/enums';
 
 const extractStockData = (payload: Partial<ProductStock>) => {
   return {
@@ -10,6 +11,7 @@ const extractStockData = (payload: Partial<ProductStock>) => {
     pricePerItem: payload.pricePerItem ?? null,
     comment: payload.comment ?? null,
     receiptNumber: payload.receiptNumber ?? null,
+    mode: payload.mode ?? TransactionModeEnum.Cash,
   };
 };
 
