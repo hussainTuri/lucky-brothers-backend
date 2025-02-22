@@ -1,8 +1,11 @@
 {
   "name": "lucky-brothers-backend",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
+    "bump-version-patch": "npm version patch --no-git-tag-version",
+    "bump-version-minor": "npm version minor --no-git-tag-version",
+    "bump-version-major": "npm version major --no-git-tag-version",
     "build": "tsc",
     "start": "node ./dist/app.js",
     "dev": "DEBUG=express:* nodemon app.ts",
