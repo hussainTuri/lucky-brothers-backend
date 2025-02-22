@@ -70,4 +70,6 @@ See your [Github repo](https://github.com/hussainTuri/dropbox-backups)
 
 1. Make code changes and commit
 2. Make sure to run `npm run bump-version-patch`, `npm run bump-version-minor` or `npm run bump-version-major` to update package.json file with new version.
-2. Use npm script `npm run deploy`
+3. Commit version bump changes
+4. Use npm script `npm run deploy`
+5. Money++
