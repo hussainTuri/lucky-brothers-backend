@@ -67,5 +67,8 @@ export const getVehicles = async (options: QueryOptions, sort?: QuerySort) => {
     delete vehicle.reservations;
   });
 
-  return { vehicles, totalCount };
+  const banks = await prisma.transportBank.findMany();
+  const transactionTypes = await prisma.transportVehicleTransactionType.findMany();
+
+  return { vehicles, totalCount, additionalData: { banks, transactionTypes } };
 };

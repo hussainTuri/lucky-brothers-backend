@@ -22,7 +22,7 @@ export const getVehicleTransactions = async (
   options: QueryOptions,
   sort: QuerySort,
 ) => {
-  if (_.isEmpty(vehicleId)) {
+  if (!vehicleId) {
     throw new Error('Vehicle ID is required');
   }
   const [transactions, totalCount] = await Promise.all([
@@ -33,6 +33,7 @@ export const getVehicleTransactions = async (
             customer: true,
           },
         },
+        bank: true,
       },
       where: {
         vehicleId,

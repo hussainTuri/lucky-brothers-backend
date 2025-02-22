@@ -9,7 +9,7 @@ export const deleteTransaction = async (req: AuthenticatedRequest, res: Response
   const resp = response();
 
   try {
-    resp.data = await deleteVehicleTransactionRepository(req.params.transactionId);
+    resp.data = await deleteVehicleTransactionRepository(req.params.vehicleId, req.params.transactionId);
   } catch (error) {
     console.error('DB Error', error);
     Sentry.captureException(error);
