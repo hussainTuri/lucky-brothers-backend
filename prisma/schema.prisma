@@ -463,7 +463,7 @@ model TransportVehicleReservationRentalCycle {
   rentFrom DateTime @db.DateTime
   rentTo DateTime? @db.DateTime
   amount Int @db.Int
-  amountPaid Int @db.Int
+  amountPaid Int @db.Int // try and not use this, delete it if possible
   comment String? @db.VarChar(255)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

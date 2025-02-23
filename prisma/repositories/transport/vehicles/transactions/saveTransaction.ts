@@ -1,6 +1,6 @@
 import { TransportVehicleTransaction, PrismaClient } from '@prisma/client';
 import { OmitPrismaClient } from '../../../../../types';
-import { getBalanceForTransaction } from './common';
+import { getCurrentBalance } from './common';
 
 const prisma = new PrismaClient();
 
@@ -8,12 +8,13 @@ export const saveVehicleTransaction = async (
   entry: TransportVehicleTransaction,
 ): Promise<TransportVehicleTransaction | null> => {
   return prisma.$transaction(async (tx) => {
-    entry.balance = await getBalanceForTransaction(entry, tx);
+    const balance = await getCurrentBalance(entry.vehicleId, tx);
+    entry.balance = balance + entry.amount
     return saveTransaction(entry, tx);
   });
 };
 
-const saveTransaction = async (entry: TransportVehicleTransaction, tx: OmitPrismaClient): Promise<TransportVehicleTransaction|null> => {
+export const saveTransaction = async (entry: TransportVehicleTransaction, tx: OmitPrismaClient): Promise<TransportVehicleTransaction|null> => {
   const entryCreated = await tx.transportVehicleTransaction.create({
     data: entry,
   });

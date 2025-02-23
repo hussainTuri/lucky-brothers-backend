@@ -8,13 +8,12 @@ import {
 import { messages } from '../../lib/constants';
 import { getVehicleTransaction, getVehicleTransactionByVehicle } from '../../prisma/repositories/transport/vehicles/transactions/common';
 import { TransportVehicleTransactionTypes } from '../../lib/enums/transportVehicle';
-import { VehicleTransactionTypes } from '../../types/transport';
 
 const extractVehicleTransactionData = (payload: Partial<TransportVehicleTransaction>) => {
   let amount = payload.amount ?? null;
   if (amount !== null) {
     if (
-      [VehicleTransactionTypes.BankLoan, VehicleTransactionTypes.Expense].includes(
+      [TransportVehicleTransactionTypes.BankLoan, TransportVehicleTransactionTypes.Expense].includes(
         payload?.transactionTypeId ?? 0,
       )
     ) {
