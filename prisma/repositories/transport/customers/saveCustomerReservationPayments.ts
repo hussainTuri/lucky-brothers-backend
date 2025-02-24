@@ -5,7 +5,6 @@ import type {
   TransportVehicleTransaction,
 } from '@prisma/client';
 
-import { getCustomerCurrentTransactionBalance } from './common';
 import {
   getCurrentBalance as getVehicleCurrentBalance,
   saveTransaction as saveVehicleTransaction,
@@ -13,6 +12,7 @@ import {
 import { saveVehicleReservationCyclePaymentEntry } from '../vehicles/reservationCycles/saveReservationCyclePayment';
 import { CustomerReservationPayment, OmitPrismaClient } from '../../../../types';
 import { TransportVehicleTransactionTypes } from '../../../../lib/enums/transportVehicle';
+import { getCustomerCurrentTransactionBalance } from './';
 
 const prisma = new PrismaClient();
 
