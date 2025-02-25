@@ -474,6 +474,7 @@ model TransportVehicleReservationRentalCycle {
   createdBy User? @relation("TransportVehicleReservationRentalCycleCreatedBy", fields: [createdById], references: [id], onDelete: NoAction, onUpdate: NoAction)
   updatedBy User? @relation("TransportVehicleReservationRentalCycleUpdatedBy", fields: [updatedById], references: [id], onDelete: NoAction, onUpdate: NoAction)
   rentalCyclePayments TransportVehicleReservationRentalCyclePayment[]
+  customerTransactions TransportCustomerTransaction[]
   @@index([vehicleReservationId])
   @@index([customerId])
   @@index([rentFrom, rentTo])
@@ -534,6 +535,7 @@ model TransportCustomerTransaction {
   updatedBy User? @relation("TransportCustomerTransactionUpdatedBy", fields: [updatedById], references: [id], onDelete: NoAction, onUpdate: NoAction)
   transactionType TransportCustomerTransactionType @relation(fields: [customerTransactionTypeId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   vehicleTransaction  TransportVehicleTransaction? @relation("TransportCustomerToVehicleTransaction")
+  rentalCycle TransportVehicleReservationRentalCycle? @relation(fields: [reservationRentalCycleId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   reservationRentalCyclePayment TransportVehicleReservationRentalCyclePayment[]
   @@index([customerId])
   @@index([vehicleId])

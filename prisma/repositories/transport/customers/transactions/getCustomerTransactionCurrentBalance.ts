@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client';
-import { OmitPrismaClient } from '../../../../types';
+import { OmitPrismaClient } from '../../../../../types';
 const prisma = new PrismaClient();
 
 /**
@@ -8,7 +8,7 @@ const prisma = new PrismaClient();
  * @param tx
  * @returns
  */
-export const getCustomerCurrentTransactionBalance = async (
+export const getCustomerTransactionCurrentBalance = async (
   customerId: number,
   tx: OmitPrismaClient,
 ) => {

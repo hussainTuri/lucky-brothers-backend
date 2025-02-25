@@ -13,7 +13,7 @@ export const updateVehicleTransaction = async (
 
     // 2. Update balance in all transactions after this transaction
     let balance = entry.balance;
-    const transactions = await getTransactionsAfterId(entry.id, tx);
+    const transactions = await getTransactionsAfterId(entry.vehicleId, entry.id, tx);
 
     transactions.forEach((transaction) => {
       transaction.balance = balance + transaction.amount;

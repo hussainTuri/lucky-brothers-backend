@@ -45,12 +45,17 @@ export const getVehicleTransactionByVehicle = async (vehicleId: number, transact
   return transaction;
 };
 
-export const getPreviousTransaction = async (id: number, tx: OmitPrismaClient) => {
+export const getPreviousTransaction = async (
+  vehicleId: number,
+  id: number,
+  tx: OmitPrismaClient,
+) => {
   const lastTransaction = await tx.transportVehicleTransaction.findFirst({
     where: {
       id: {
         lt: id,
       },
+      vehicleId,
     },
     orderBy: {
       id: 'desc',
@@ -61,6 +66,7 @@ export const getPreviousTransaction = async (id: number, tx: OmitPrismaClient) =
 };
 
 export const getTransactionsAfterId = async (
+  vehicleId: number,
   id: number,
   tx: OmitPrismaClient,
 ): Promise<TransportVehicleTransaction[]> => {
@@ -69,6 +75,7 @@ export const getTransactionsAfterId = async (
       id: {
         gt: id,
       },
+      vehicleId,
     },
   });
 };
@@ -106,7 +113,7 @@ export const getBalanceForTransaction = async (
   entry: TransportVehicleTransaction,
   tx: OmitPrismaClient,
 ) => {
-  const lastTransaction = await getPreviousTransaction(entry.id, tx);
+  const lastTransaction = await getPreviousTransaction(entry.vehicleId, entry.id, tx);
 
   if (lastTransaction) {
     return lastTransaction.balance + entry.amount;

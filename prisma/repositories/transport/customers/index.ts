@@ -4,6 +4,5 @@ export * from './getCustomer';
 export * from './saveCustomerReservationPayments';
 export * from './saveCustomer';
 export * from './updateCustomer';
-export * from './getCustomerBalanceForTransaction';
-export * from './getCustomerCurrentTransactionBalance';
-export * from './getCustomerPreviousTransaction';
+export * from './transactions/getCustomerBalanceForTransaction';
+export * from './transactions';

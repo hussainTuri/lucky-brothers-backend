@@ -1,22 +1,19 @@
 import { PrismaClient } from '@prisma/client';
-import { OmitPrismaClient } from '../../../../types';
+import { OmitPrismaClient } from '../../../../../types';
+
 const prisma = new PrismaClient();
 
-/**
- * Get the previous transaction
- * @param transactionId number
- * @param tx
- * @returns
- */
-export const getCustomerPreviousTransaction = async (
-  transactionId: number,
+export const getTransportCustomerPreviousTransaction = async (
+  customerId: number,
+  id: number,
   tx: OmitPrismaClient,
 ) => {
   const lastTransaction = await tx.transportCustomerTransaction.findFirst({
     where: {
       id: {
-        lt: transactionId,
+        lt: id,
       },
+      customerId,
     },
     orderBy: {
       id: 'desc',

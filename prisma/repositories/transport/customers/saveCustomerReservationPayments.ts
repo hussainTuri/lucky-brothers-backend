@@ -12,7 +12,7 @@ import {
 import { saveVehicleReservationCyclePaymentEntry } from '../vehicles/reservationCycles/saveReservationCyclePayment';
 import { CustomerReservationPayment, OmitPrismaClient } from '../../../../types';
 import { TransportVehicleTransactionTypes } from '../../../../lib/enums/transportVehicle';
-import { getCustomerCurrentTransactionBalance } from './';
+import { getCustomerTransactionCurrentBalance } from './transactions/getCustomerTransactionCurrentBalance';
 
 const prisma = new PrismaClient();
 
@@ -83,7 +83,7 @@ const saveCustomerTransaction = async (
   entry: Partial<TransportCustomerTransaction>,
   tx: OmitPrismaClient,
 ) => {
-  const balance = await getCustomerCurrentTransactionBalance(entry.customerId!, tx);
+  const balance = await getCustomerTransactionCurrentBalance(entry.customerId!, tx);
   entry.balance = balance + (entry?.amount ?? 0);
 
   const entryCreated = await tx.transportCustomerTransaction.create({

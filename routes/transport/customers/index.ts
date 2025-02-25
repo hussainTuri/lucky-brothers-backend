@@ -13,9 +13,11 @@ import { getCustomer } from './getCustomer';
 import reservationRoutes from './reservations';
 import { updateTransportCustomer } from './updateCustomer';
 import { createTransportCustomer } from './createCustomer';
+import transactionRoutes from './transactions';
 
 const router = express.Router();
 
+router.use('/:customerId(\\d+)/transactions', transactionRoutes);
 router.get('/', authenticate, getTransportCustomers);
 router.post('/search', authenticate, cleanTransportCustomerSearchInput, searchCustomers);
 router.get('/:customerId(\\d+)', authenticate, getCustomer);

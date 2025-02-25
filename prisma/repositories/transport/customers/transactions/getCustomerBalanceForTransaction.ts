@@ -1,6 +1,6 @@
 import { PrismaClient, TransportCustomerTransaction } from '@prisma/client';
-import { OmitPrismaClient } from '../../../../types';
-import { getCustomerPreviousTransaction } from './';
+import { OmitPrismaClient } from '../../../../../types';
+import { getTransportCustomerPreviousTransaction } from '.';
 const prisma = new PrismaClient();
 
 /**
@@ -14,7 +14,7 @@ export const getCustomerBalanceForTransaction = async (
   transaction: TransportCustomerTransaction,
   tx: OmitPrismaClient,
 ) => {
-  const lastTransaction = await getCustomerPreviousTransaction(transaction.id, tx);
+  const lastTransaction = await getTransportCustomerPreviousTransaction(transaction.customerId, transaction.id, tx);
 
   if (lastTransaction) {
     return lastTransaction.balance + transaction.amount;
