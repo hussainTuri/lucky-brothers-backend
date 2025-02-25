@@ -1,5 +1,5 @@
 import { QuerySort, QueryOptions } from '../../../types';
-import prisma from '../prismaClient';
+import prisma from '../../../middleware/prisma';
 
 export const getCustomers = async (options: QueryOptions, sort?: QuerySort) => {
   const [customers, totalCount] = await Promise.all([

@@ -1,4 +1,4 @@
-import prisma from "../../../../../middleware/prisma";
+import prisma from '../../../../../middleware/prisma';
 
 export const getReservationCyclePaidAmount = async (id: string) => {
   const payments = await prisma.transportVehicleReservationRentalCyclePayment.findMany({
@@ -8,4 +8,4 @@ export const getReservationCyclePaidAmount = async (id: string) => {
   });
 
   return payments.reduce((acc, payment) => acc + payment.amount, 0);
-}
+};

@@ -1,7 +1,7 @@
 import { Prisma } from '@prisma/client';
 import { QueryOptions, QuerySort } from '../../../types';
 import { InvoiceStatusEnum } from '../../../lib/enums/invoice';
-import prisma from '../prismaClient';
+import prisma from '../../../middleware/prisma';
 
 export const getInvoices = async (options: QueryOptions, sort: QuerySort) => {
   const today = new Date();

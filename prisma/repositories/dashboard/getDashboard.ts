@@ -1,5 +1,5 @@
 import { InvoiceStatusEnum } from '../../../lib/enums';
-import prisma from '../prismaClient';
+import prisma from '../../../middleware/prisma';
 
 export const getDashboard = async () => {
   // current stock value

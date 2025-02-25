@@ -1,6 +1,6 @@
 import type { ProductStock } from '@prisma/client';
 import { getRemainingStockQuantity } from '../';
-import prisma from '../../prismaClient';
+import prisma from '../../../../middleware/prisma';
 
 export const updateStock = async (entry: ProductStock): Promise<ProductStock | null> => {
   return await updateStockEntry(entry);

@@ -1,7 +1,7 @@
 import { InvoiceItemProductStock, Prisma } from '@prisma/client';
 import { QuerySort, QueryOptions } from '../../../types';
 import { InvoiceStatusEnum } from '../../../lib/enums';
-import prisma from '../prismaClient';
+import prisma from '../../../middleware/prisma';
 
 export const getProductSales = async (
   productId: number | string,

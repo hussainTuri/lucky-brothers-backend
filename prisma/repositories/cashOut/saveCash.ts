@@ -1,5 +1,5 @@
 import { CashOut } from '@prisma/client';
-import prisma from '../prismaClient';
+import prisma from '../../../middleware/prisma';
 
 export const saveCashOut = async (entry: CashOut): Promise<CashOut | null> => {
   return await saveCashOutEntry(entry);

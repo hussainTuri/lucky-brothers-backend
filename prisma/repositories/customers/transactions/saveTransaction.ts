@@ -4,7 +4,7 @@ import { saveInvoicePayment } from '../../invoices';
 import { InvoiceWithRelations } from '../../../../types';
 import { InvoiceStatusEnum } from '../../../../lib/enums/invoice';
 import { updateCustomerBalance } from '../common';
-import prisma from '../../prismaClient';
+import prisma from '../../../../middleware/prisma';
 
 export const saveTransaction = async (
   transaction: CustomerTransaction,

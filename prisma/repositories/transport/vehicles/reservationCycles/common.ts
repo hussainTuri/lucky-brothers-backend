@@ -1,4 +1,4 @@
-import prisma from "../../../../../middleware/prisma";
+import prisma from '../../../../../middleware/prisma';
 
 export const getReservationCyclesDueAmounts = async (vehicleReservationIds: number[]) => {
   const reservationCycles = await prisma.transportVehicleReservationRentalCycle.findMany({

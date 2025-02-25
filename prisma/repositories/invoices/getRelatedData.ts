@@ -1,7 +1,7 @@
 import { InvoiceRelatedData } from '../../../types/';
 import { getCache, setCache } from '../../../lib/utils';
 import { CacheKeys } from '../../../lib/constants';
-import prisma from '../prismaClient';
+import prisma from '../../../middleware/prisma';
 
 export const getRelatedData = async () => {
   const cachedData = getCache<InvoiceRelatedData>(CacheKeys.INVOICE_RELATED_DATA.key);

@@ -1,5 +1,5 @@
 import type { Product } from '@prisma/client';
-import prisma from '../prismaClient';
+import prisma from '../../../middleware/prisma';
 
 export const updateProduct = async (product: Product): Promise<Product | null> => {
   const updateData = JSON.parse(JSON.stringify(product));

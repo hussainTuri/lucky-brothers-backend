@@ -5,7 +5,7 @@ import { CustomerTransactionTypesEnum, TransactionModeEnum } from '../../../lib/
 import { InvoiceStatusEnum } from '../../../lib/enums/invoice';
 import { updateCustomerBalance } from '../customers/common';
 import { removeFromStock } from '../products';
-import prisma from '../prismaClient';
+import prisma from '../../../middleware/prisma';
 
 export const saveInvoice = async (payload: InvoicePayload): Promise<Invoice | null> => {
   const { invoice, items, customer, mode, createdById } = payload;

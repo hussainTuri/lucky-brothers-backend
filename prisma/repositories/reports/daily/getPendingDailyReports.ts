@@ -1,6 +1,6 @@
 import { DailyReport } from '@prisma/client';
 import { InvoiceStatusEnum, TransactionModeEnum } from '../../../../lib/enums';
-import prisma from '../../prismaClient';
+import prisma from '../../../../middleware/prisma';
 
 export const getPendingDailyReports = async () => {
   const registries = await prisma.dailyReport.findMany({

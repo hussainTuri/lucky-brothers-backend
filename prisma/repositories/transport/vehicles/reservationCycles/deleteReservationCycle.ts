@@ -1,4 +1,4 @@
-import prisma from "../../../../../middleware/prisma";
+import prisma from '../../../../../middleware/prisma';
 
 export const deleteReservationCycle = async (id: string) => {
   const cycle = await prisma.transportVehicleReservationRentalCycle.delete({

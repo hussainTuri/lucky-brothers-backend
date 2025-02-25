@@ -1,5 +1,5 @@
 import type { Cash } from '@prisma/client';
-import prisma from '../prismaClient';
+import prisma from '../../../middleware/prisma';
 
 export const saveCash = async (entry: Cash): Promise<Cash | null> => {
   return await saveCashEntry(entry);

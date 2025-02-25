@@ -3,7 +3,7 @@ import { saveInvoicePayment } from '../common';
 import { getInvoice } from '../getInvoice';
 import { CustomerTransactionTypesEnum } from '../../../../lib/enums';
 import { updateCustomerBalance } from '../../customers/common';
-import prisma from '../../prismaClient';
+import prisma from '../../../../middleware/prisma';
 
 // Only non-customer invoice payments use this
 export const savePayment = async (payment: InvoicePayment): Promise<InvoicePayment> => {

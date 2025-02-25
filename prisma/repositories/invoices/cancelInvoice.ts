@@ -4,7 +4,7 @@ import { InvoiceWithRelations } from '../../../types';
 import { InvoiceStatusEnum } from '../../../lib/enums/invoice';
 import { updateCustomerBalance } from '../customers/common';
 import { CustomerTransactionTypesEnum } from '../../../lib/enums';
-import prisma from '../prismaClient';
+import prisma from '../../../middleware/prisma';
 
 export const cancelInvoice = async (id: number, canceledById: number): Promise<Invoice | null> => {
   const dbInvoice = await prisma.invoice.findUnique({

@@ -1,6 +1,6 @@
 import { Prisma } from '@prisma/client';
 import { QueryOptions, QuerySort } from '../../../../types';
-import prisma from '../../prismaClient';
+import prisma from '../../../../middleware/prisma';
 
 export const getTransactions = async (options: QueryOptions, sort: QuerySort) => {
   const where: Prisma.CustomerTransactionWhereInput = {

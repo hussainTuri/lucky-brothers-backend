@@ -1,5 +1,5 @@
 import { Cash } from '@prisma/client';
-import prisma from '../prismaClient';
+import prisma from '../../../middleware/prisma';
 
 export const updateCash = async (entry: Cash): Promise<Cash | null> => {
   return await updateCashEntry(entry);

@@ -1,5 +1,5 @@
 import type { Expense } from '@prisma/client';
-import prisma from '../prismaClient';
+import prisma from '../../../middleware/prisma';
 
 export const saveExpense = async (entry: Expense): Promise<Expense | null> => {
   return await saveExpenseEntry(entry);

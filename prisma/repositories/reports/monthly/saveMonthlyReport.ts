@@ -1,5 +1,5 @@
 import type { MonthlyReport } from '@prisma/client';
-import prisma from '../../prismaClient';
+import prisma from '../../../../middleware/prisma';
 
 export const saveMonthlyReport = async (entry: MonthlyReport): Promise<MonthlyReport | null> => {
   return await saveMonthlyReportEntry(entry);

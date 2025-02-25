@@ -1,6 +1,6 @@
 import { QueryOptions } from '../../../types';
 import { CustomerTransactionTypesEnum, InvoiceStatusEnum } from '../../../lib/enums';
-import prisma from '../prismaClient';
+import prisma from '../../../middleware/prisma';
 
 export const getJournal = async (options: QueryOptions) => {
   const whereCreated = {

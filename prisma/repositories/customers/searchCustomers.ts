@@ -1,6 +1,6 @@
 import { Prisma } from '@prisma/client';
 import { SearchQuery } from '../../../types';
-import prisma from '../prismaClient';
+import prisma from '../../../middleware/prisma';
 
 export const searchCustomers = async (query: SearchQuery) => {
   const whereNameContains = Prisma.validator<Prisma.CustomerWhereInput>()({

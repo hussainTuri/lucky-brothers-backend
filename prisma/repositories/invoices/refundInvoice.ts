@@ -4,7 +4,7 @@ import { addToStock } from '../products';
 import { CustomerTransactionTypesEnum } from '../../../lib/enums';
 import { InvoiceStatusEnum } from '../../../lib/enums/invoice';
 import { updateCustomerBalance } from '../customers/common';
-import prisma from '../prismaClient';
+import prisma from '../../../middleware/prisma';
 
 export const refundInvoice = async (id: number, refundedById: number): Promise<Invoice | null> => {
   const dbInvoice = await prisma.invoice.findUnique({

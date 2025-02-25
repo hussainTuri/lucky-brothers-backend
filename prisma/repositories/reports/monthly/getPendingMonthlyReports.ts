@@ -1,6 +1,6 @@
 import { MonthlyReport } from '@prisma/client';
 import { InvoiceStatusEnum } from '../../../../lib/enums';
-import prisma from '../../prismaClient';
+import prisma from '../../../../middleware/prisma';
 
 export const getPendingMonthlyReports = async () => {
   const profits = await prisma.monthlyReport.findMany({

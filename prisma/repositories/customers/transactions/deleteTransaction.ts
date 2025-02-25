@@ -1,6 +1,6 @@
 import { InvoiceStatusEnum } from '../../../../lib/enums/invoice';
 import { updateInvoiceStatus } from '../../invoices';
-import prisma from '../../prismaClient';
+import prisma from '../../../../middleware/prisma';
 import { updateCustomerBalance } from '../common';
 
 export const deleteTransaction = async (id: number) => {

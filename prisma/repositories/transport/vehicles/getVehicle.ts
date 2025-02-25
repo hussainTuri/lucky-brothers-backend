@@ -1,4 +1,4 @@
-import prisma from "../../../../middleware/prisma";
+import prisma from '../../../../middleware/prisma';
 
 export const getVehicle = async (id: number | string) => {
   const vehicle = await prisma.transportVehicle.findFirstOrThrow({

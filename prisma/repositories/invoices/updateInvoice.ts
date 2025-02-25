@@ -3,7 +3,7 @@ import { InvoicePayload, InvoiceWithRelations } from '../../../types';
 import { updateInvoiceStatus, updateProfit } from './common';
 import { addToStock, removeFromStock } from '../products';
 import { updateCustomerBalance } from '../customers/common';
-import prisma from '../prismaClient';
+import prisma from '../../../middleware/prisma';
 
 export const updateInvoice = async (payload: InvoicePayload): Promise<PrismaInvoice | null> => {
   const { invoice, items, updatedById } = payload;

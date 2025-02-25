@@ -1,5 +1,5 @@
 import { QueryOptions, QuerySort } from '../../../types';
-import prisma from '../prismaClient';
+import prisma from '../../../middleware/prisma';
 
 export const getCashesOut = async (options: QueryOptions, sort?: QuerySort) => {
   let orderBy: { [key: string]: 'asc' | 'desc' }[] = [];

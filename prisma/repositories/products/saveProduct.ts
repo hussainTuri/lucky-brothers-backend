@@ -1,7 +1,7 @@
 import { ProductSkuPrefixEnum } from '../../../lib/enums';
 import { incrementSku } from '../../../lib/utils';
 import type { Product } from '@prisma/client';
-import prisma from '../prismaClient';
+import prisma from '../../../middleware/prisma';
 
 export const saveProduct = async (product: Product): Promise<Product | null> => {
   product.sku = await getSku(product.productTypeId);
