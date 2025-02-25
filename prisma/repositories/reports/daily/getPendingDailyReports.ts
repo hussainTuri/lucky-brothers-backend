@@ -76,6 +76,7 @@ export const getPendingDailyReports = async () => {
     SUM(originalQuantity * pricePerItem) AS totalAmount
     FROM
       ProductStock
+    WHERE mode = ${TransactionModeEnum.Cash}
     GROUP BY
     DATE_FORMAT(createdAt, '%Y-%m-%d');`)) as any;
 
