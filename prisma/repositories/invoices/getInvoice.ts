@@ -1,6 +1,5 @@
-import { PrismaClient } from '@prisma/client';
 import { InvoiceIncludeOptions, InvoiceItemIncludeOptions } from '../../../types/includeOptions';
-const prisma = new PrismaClient();
+import prisma from '../prismaClient';
 
 export const getInvoice = async (id: number | string, includeOptions?: InvoiceIncludeOptions) => {
   const includeItems = includeOptions?.items

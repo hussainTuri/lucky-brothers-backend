@@ -1,8 +1,7 @@
-import { PrismaClient, TransportVehicleTransaction } from '@prisma/client';
+import { TransportVehicleTransaction } from '@prisma/client';
 import { OmitPrismaClient } from '../../../../../types';
-import _ from 'lodash';
+import prisma from '../../../../../middleware/prisma';
 
-const prisma = new PrismaClient();
 
 export const getVehicleTransaction = async (transactionId: number) => {
   if (!transactionId) {

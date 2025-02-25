@@ -1,7 +1,5 @@
-import { PrismaClient } from '@prisma/client';
 import type { Expense } from '@prisma/client';
-
-const prisma = new PrismaClient();
+import prisma from '../prismaClient';
 
 export const saveExpense = async (entry: Expense): Promise<Expense | null> => {
   return await saveExpenseEntry(entry);

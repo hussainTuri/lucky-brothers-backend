@@ -1,21 +1,6 @@
-import { Prisma, PrismaClient } from '@prisma/client';
+import prisma from '../../../../middleware/prisma';
 import { QueryOptions, QuerySort } from '../../../../types';
 import { TransportVehicleWithReservations } from '../../../../types/transport/vehicle';
-
-const prisma = new PrismaClient();
-// const prisma = new PrismaClient({
-//   log: [
-//     {
-//       emit: 'event',
-//       level: 'query',
-//     },
-//   ],
-// });
-// prisma.$on('query', async (e: Prisma.QueryEvent) => {
-//   console.log(`${e.query} ${e.params} duration: ${e.duration / 100}s`);
-//   console.log('------------------------------------------------------\n');
-//   console.log(`${e.query} duration: ${e.duration / 100} s`);
-// });
 
 export const getVehicles = async (options: QueryOptions, sort?: QuerySort) => {
   let orderBy: { [key: string]: 'asc' | 'desc' }[] = [];

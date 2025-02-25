@@ -1,24 +1,10 @@
-import { PrismaClient } from '@prisma/client';
 import type { Invoice } from '@prisma/client';
 import { InvoiceWithRelations } from '../../../types';
 import { addToStock } from '../products';
 import { CustomerTransactionTypesEnum } from '../../../lib/enums';
 import { InvoiceStatusEnum } from '../../../lib/enums/invoice';
 import { updateCustomerBalance } from '../customers/common';
-
-const prisma = new PrismaClient();
-// const prisma = new PrismaClient({
-//   log: [
-//     {
-//       emit: 'event',
-//       level: 'query',
-//     },
-//   ],
-// });
-// prisma.$on('query', async (e: Prisma.QueryEvent) => {
-//   console.log(`${e.query} ${e.params} duration: ${e.duration / 100}s`);
-//   // console.log(`${e.query} duration: ${e.duration/100} s`);
-// });
+import prisma from '../prismaClient';
 
 export const refundInvoice = async (id: number, refundedById: number): Promise<Invoice | null> => {
   const dbInvoice = await prisma.invoice.findUnique({

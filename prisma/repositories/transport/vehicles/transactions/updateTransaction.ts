@@ -1,7 +1,6 @@
-import { PrismaClient, TransportVehicleTransaction } from '@prisma/client';
+import { TransportVehicleTransaction } from '@prisma/client';
 import { getBalanceForTransaction, getTransactionsAfterId, updateTransaction } from './common';
-
-const prisma = new PrismaClient();
+import prisma from '../../../../../middleware/prisma';
 
 export const updateVehicleTransaction = async (
   entry: TransportVehicleTransaction,

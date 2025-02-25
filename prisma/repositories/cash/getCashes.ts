@@ -1,7 +1,5 @@
-import { PrismaClient } from '@prisma/client';
 import { QueryOptions, QuerySort } from '../../../types';
-
-const prisma = new PrismaClient();
+import prisma from '../prismaClient';
 
 export const getCashes = async (options: QueryOptions, sort?: QuerySort) => {
   let orderBy: { [key: string]: 'asc' | 'desc' }[] = [];
@@ -22,8 +20,8 @@ export const getCashes = async (options: QueryOptions, sort?: QuerySort) => {
   const [cashes, totalCount] = await Promise.all([
     await prisma.cash.findMany({
       orderBy,
-      skip: options?.skip || 0,
-      take: options?.take || 1000,
+      skip: options?.skip ?? 0,
+      take: options?.take ?? 1000,
     }),
     prisma.cash.count(),
   ]);

@@ -1,4 +1,3 @@
-import { PrismaClient } from '@prisma/client';
 import type {
   TransportCustomerTransaction,
   TransportVehicleReservationRentalCyclePayment,
@@ -13,8 +12,7 @@ import { saveVehicleReservationCyclePaymentEntry } from '../vehicles/reservation
 import { CustomerReservationPayment, OmitPrismaClient } from '../../../../types';
 import { TransportVehicleTransactionTypes } from '../../../../lib/enums/transportVehicle';
 import { getCustomerTransactionCurrentBalance } from './transactions/getCustomerTransactionCurrentBalance';
-
-const prisma = new PrismaClient();
+import prisma from '../../../../middleware/prisma';
 
 /**
  * When we add a customer reservation payment, we need to do the following:

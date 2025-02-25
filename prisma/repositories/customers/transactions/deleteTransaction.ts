@@ -1,20 +1,7 @@
-import { PrismaClient } from '@prisma/client';
 import { InvoiceStatusEnum } from '../../../../lib/enums/invoice';
 import { updateInvoiceStatus } from '../../invoices';
+import prisma from '../../prismaClient';
 import { updateCustomerBalance } from '../common';
-const prisma = new PrismaClient();
-// const prisma = new PrismaClient({
-//   log: [
-//     {
-//       emit: 'event',
-//       level: 'query',
-//     },
-//   ],
-// });
-// prisma.$on('query', async (e: Prisma.QueryEvent) => {
-//   console.log(`${e.query} ${e.params} duration: ${e.duration / 100}s`);
-//   // console.log(`${e.query} duration: ${e.duration/100} s`);
-// });
 
 export const deleteTransaction = async (id: number) => {
   return prisma.$transaction(async (tx) => {

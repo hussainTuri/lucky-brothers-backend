@@ -1,4 +1,3 @@
-import { PrismaClient } from '@prisma/client';
 import { OmitPrismaClient } from '../../../../../types';
 import _ from 'lodash';
 import {
@@ -7,21 +6,7 @@ import {
   getVehicleTransactionByVehicle,
   updateTransaction,
 } from './common';
-
-const prisma = new PrismaClient();
-// const prisma = new PrismaClient({
-//   log: [
-//     {
-//       emit: 'event',
-//       level: 'query',
-//     },
-//   ],
-// });
-// prisma.$on('query', async (e: Prisma.QueryEvent) => {
-//   console.log(`${e.query} ${e.params} duration: ${e.duration / 100}s`);
-//   console.log('------------------------------------------------------\n');
-//   console.log(`${e.query} duration: ${e.duration / 100} s`);
-// });
+import prisma from '../../../../../middleware/prisma';
 
 export const deleteVehicleTransaction = async (
   vehicleIdentifier: string | number,

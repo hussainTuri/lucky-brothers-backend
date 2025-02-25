@@ -1,21 +1,7 @@
-import { Prisma, PrismaClient } from '@prisma/client';
+import { Prisma } from '@prisma/client';
 import { QueryOptions, QuerySort } from '../../../types';
 import { InvoiceStatusEnum } from '../../../lib/enums/invoice';
-
-const prisma = new PrismaClient();
-// const prisma = new PrismaClient({
-//   log: [
-//     {
-//       emit: 'event',
-//       level: 'query',
-//     },
-//   ],
-// });
-// prisma.$on('query', async (e: Prisma.QueryEvent) => {
-//   console.log(`${e.query} ${e.params} duration: ${e.duration / 100}s`);
-//   console.log('------------------------------------------------------\n');
-//   // console.log(`${e.query} duration: ${e.duration/100} s`);
-// });
+import prisma from '../prismaClient';
 
 export const getInvoices = async (options: QueryOptions, sort: QuerySort) => {
   const today = new Date();

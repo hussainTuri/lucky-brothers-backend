@@ -1,7 +1,6 @@
-import { PrismaClient, TransportVehicleReservationRentalCyclePayment } from '@prisma/client';
+import { TransportVehicleReservationRentalCyclePayment } from '@prisma/client';
 import { OmitPrismaClient } from '../../../../../types';
-
-const prisma = new PrismaClient();
+import prisma from '../../../../../middleware/prisma';
 
 export const saveVehicleReservationCyclePayment = async (
   entry: TransportVehicleReservationRentalCyclePayment,

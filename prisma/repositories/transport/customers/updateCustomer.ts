@@ -1,6 +1,5 @@
-import { PrismaClient, TransportCustomer } from '@prisma/client';
-
-const prisma = new PrismaClient();
+import { TransportCustomer } from '@prisma/client';
+import prisma from '../../../../middleware/prisma';
 
 export const updateTransportCustomer = async (
   entry: TransportCustomer,

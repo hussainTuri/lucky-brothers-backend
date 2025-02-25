@@ -1,6 +1,5 @@
-import { Cash, PrismaClient } from '@prisma/client';
-
-const prisma = new PrismaClient();
+import { Cash } from '@prisma/client';
+import prisma from '../prismaClient';
 
 export const updateCash = async (entry: Cash): Promise<Cash | null> => {
   return await updateCashEntry(entry);

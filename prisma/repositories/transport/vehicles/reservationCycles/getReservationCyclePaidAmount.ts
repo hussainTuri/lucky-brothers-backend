@@ -1,6 +1,4 @@
-import { PrismaClient } from '@prisma/client';
-
-const prisma = new PrismaClient();
+import prisma from "../../../../../middleware/prisma";
 
 export const getReservationCyclePaidAmount = async (id: string) => {
   const payments = await prisma.transportVehicleReservationRentalCyclePayment.findMany({

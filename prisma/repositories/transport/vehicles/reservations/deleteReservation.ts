@@ -1,5 +1,4 @@
-import { PrismaClient } from '@prisma/client';
-const prisma = new PrismaClient();
+import prisma from "../../../../../middleware/prisma";
 
 export const deleteReservation = async (id: string) => {
   const reservation = await prisma.transportVehicleReservation.delete({

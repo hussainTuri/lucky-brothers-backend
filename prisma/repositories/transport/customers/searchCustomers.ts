@@ -1,19 +1,6 @@
-import { Prisma, PrismaClient } from '@prisma/client';
+import { Prisma } from '@prisma/client';
 import { SearchQuery } from '../../../../types';
-
-const prisma = new PrismaClient();
-// const prisma = new PrismaClient({
-//   log: [
-//     {
-//       emit: 'event',
-//       level: 'query',
-//     },
-//   ],
-// });
-// prisma.$on('query', async (e: Prisma.QueryEvent) => {
-//   console.log(`${e.query} ${e.params} duration: ${e.duration / 100}s`);
-//   console.log(`${e.query} duration: ${e.duration/100} s`);
-// });
+import prisma from '../../../../middleware/prisma';
 
 export const searchTransportCustomers = async (query: SearchQuery) => {
   const whereNameContains: Prisma.TransportCustomerWhereInput = query.customerName

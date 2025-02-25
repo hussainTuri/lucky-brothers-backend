@@ -1,7 +1,5 @@
-import { PrismaClient } from '@prisma/client';
 import type { TransportVehicleReservation } from '@prisma/client';
-
-const prisma = new PrismaClient();
+import prisma from '../../../../../middleware/prisma';
 
 export const saveVehicleReservation = async (
   entry: TransportVehicleReservation,
