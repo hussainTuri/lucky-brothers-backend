@@ -1,21 +1,5 @@
-import { Prisma, PrismaClient } from '@prisma/client';
 import { QuerySort, QueryOptions } from '../../../../../types';
-const prisma = new PrismaClient();
-import _ from 'lodash';
-
-// const prisma = new PrismaClient({
-//   log: [
-//     {
-//       emit: 'event',
-//       level: 'query',
-//     },
-//   ],
-// });
-// prisma.$on('query', async (e: Prisma.QueryEvent) => {
-//   console.log(`${e.query} ${e.params} duration: ${e.duration / 100}s`);
-//   console.log('------------------------------------------------------\n');
-//   // console.log(`${e.query} duration: ${e.duration/100} s`);
-// });
+import prisma from '../../../../../middleware/prisma';
 
 export const getTransportCustomerTransactions = async (
   customerId: number,

@@ -1,8 +1,9 @@
-import { PrismaClient } from '@prisma/client';
+import prisma from '../../../../../middleware/prisma';
 
-const prisma = new PrismaClient();
-
-export const getCustomerTransactionByCustomer = async (customerId: number, transactionId: number) => {
+export const getCustomerTransactionByCustomer = async (
+  customerId: number,
+  transactionId: number,
+) => {
   if (!transactionId) {
     throw new Error('Transaction ID is required');
   }

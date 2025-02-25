@@ -403,6 +403,7 @@ model TransportVehicleTransaction {
   amount Int @db.Int
   balance Int @db.Int
   comment String? @db.VarChar(255)
+  deleted DateTime? @db.DateTime
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   createdById Int? @db.Int
@@ -442,6 +443,7 @@ model TransportVehicleReservation {
   reservationEnd DateTime? @db.DateTime
   monthlyRate Int @db.Int
   comment String? @db.VarChar(255)
+  deleted DateTime? @db.DateTime
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   createdById Int? @db.Int
@@ -465,6 +467,7 @@ model TransportVehicleReservationRentalCycle {
   amount Int @db.Int
   amountPaid Int @db.Int // try and not use this, delete it if possible
   comment String? @db.VarChar(255)
+  deleted DateTime? @db.DateTime
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   createdById Int? @db.Int
@@ -487,6 +490,7 @@ model TransportVehicleReservationRentalCyclePayment {
   paymentDate DateTime @db.DateTime
   amount Int @db.Int
   comment String? @db.VarChar(255)
+  deleted DateTime? @db.DateTime
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   vehicleReservationRentalCycle TransportVehicleReservationRentalCycle @relation(fields: [vehicleReservationRentalCycleId], references: [id], onDelete: NoAction, onUpdate: NoAction)
@@ -525,6 +529,7 @@ model TransportCustomerTransaction {
   amount Int @db.Int
   balance Int @db.Int
   comment String? @db.VarChar(255)
+  deleted DateTime? @db.DateTime
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   createdById Int? @db.Int

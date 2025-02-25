@@ -1,7 +1,4 @@
-import { PrismaClient } from '@prisma/client';
 import { OmitPrismaClient } from '../../../../../types';
-
-const prisma = new PrismaClient();
 
 export const getTransportCustomerPreviousTransaction = async (
   customerId: number,

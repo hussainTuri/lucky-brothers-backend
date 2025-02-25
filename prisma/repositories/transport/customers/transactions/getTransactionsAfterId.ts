@@ -1,7 +1,5 @@
-import { PrismaClient, TransportCustomerTransaction } from '@prisma/client';
+import {  TransportCustomerTransaction } from '@prisma/client';
 import { OmitPrismaClient } from '../../../../../types';
-
-const prisma = new PrismaClient();
 
 export const getTransportCustomerTransactionsAfterId = async (
   customerId: number,

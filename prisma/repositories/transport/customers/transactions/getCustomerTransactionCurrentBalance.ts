@@ -1,6 +1,4 @@
-import { PrismaClient } from '@prisma/client';
 import { OmitPrismaClient } from '../../../../../types';
-const prisma = new PrismaClient();
 
 /**
  * Get the current balance of the customer
