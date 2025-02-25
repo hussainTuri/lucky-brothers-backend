@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { response } from '../../lib/response';
 import { messages } from '../../lib/constants';
+import { TransportCustomerTransactionTypes } from '../../lib/enums/transportCustomer';
 
 export const validateDeleteTransportCustomerTransaction = async (
   req: Request,
@@ -17,7 +18,12 @@ export const validateDeleteTransportCustomerTransaction = async (
     return res.status(400).json(resp);
   }
 
-  // TODO: Do not allow deletions of Rent transactions
+  // Do not allow deletions of Rent transactions
+  if (req.body.customerTransactionTypeId === TransportCustomerTransactionTypes.Rent) {
+    resp.message = messages.TRANSPORT_CUSTOMER_TRANSACTION_DELETE_NOT_ALLOWED;
+    resp.success = false;
+    return res.status(400).json(resp);
+  }
 
   next();
 };

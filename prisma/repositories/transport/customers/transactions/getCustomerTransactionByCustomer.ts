@@ -12,6 +12,10 @@ export const getCustomerTransactionByCustomer = async (
       id: transactionId,
       customerId,
     },
+    include: {
+      reservationRentalCyclePayment: true,
+      vehicleTransaction: true,
+    }
   });
 
   return transaction;

@@ -1,26 +1,12 @@
-import { PrismaClient } from '@prisma/client';
 import { OmitPrismaClient } from '../../../../../types';
 import _ from 'lodash';
 import { getCustomerTransactionByCustomer } from './getCustomerTransactionByCustomer';
 import { getTransportCustomerPreviousTransaction } from './getPreviousTransaction';
 import { updateTransportCustomerTransaction } from './updateTransaction';
 import { getTransportCustomerTransactionsAfterId } from './getTransactionsAfterId';
-
-
-const prisma = new PrismaClient();
-// const prisma = new PrismaClient({
-//   log: [
-//     {
-//       emit: 'event',
-//       level: 'query',
-//     },
-//   ],
-// });
-// prisma.$on('query', async (e: Prisma.QueryEvent) => {
-//   console.log(`${e.query} ${e.params} duration: ${e.duration / 100}s`);
-//   console.log('------------------------------------------------------\n');
-//   console.log(`${e.query} duration: ${e.duration / 100} s`);
-// });
+import prisma from '../../../../../middleware/prisma';
+import { deleteReservationCyclePayment } from '../../vehicles/reservationCycles/deleteReservationCyclePayment';
+import { deleteVehicleTransactionDbTransaction } from '../../vehicles';
 
 export const deleteTransportCustomerTransaction = async (
   customerIdentifier: string | number,
@@ -35,22 +21,38 @@ export const deleteTransportCustomerTransaction = async (
   }
 
   return prisma.$transaction(async (tx) => {
-
-    // TODO: I didn't think much on the process of deleting a transaction. Give it a thought if what other records should be deleted or updated
-    // Here is a rough idea of what I think should be done:
-    // 1. Do not allow deletions of Rent transactions
-    // 2. For a customer Payment transaction type, records are added to customerTransaction, rentalCyclePayment and vehicleTransaction tables
+    // Do not allow deletions of Rent transactions (Done at validation level)
+    // For a customer Payment transaction type, records are added to customerTransaction, rentalCyclePayment and vehicleTransaction tables
     // therefore a deletion should cause removal of these records
 
-    // 1. get previous transaction
-    const previousTransaction = await getTransportCustomerPreviousTransaction(customerId, transactionId, tx);
+    // 1. delete reservation cycle payment entry.
+    // With a payment transaction, there is always a reservation cycle payment associated with it
+    if (entry.reservationRentalCyclePayment?.id) {
+      await deleteReservationCyclePayment(entry.reservationRentalCyclePayment.id, tx);
+    }
 
-    // 2. delete intended transaction
+    // 2. delete vehicle transaction entry
+    // With a payment transaction, there is always a vehicle transaction associated with it
+    if (entry.vehicleTransaction?.id) {
+      await deleteVehicleTransactionDbTransaction(entry.vehicleId, entry.vehicleTransaction.id, tx);
+    }
+
+    // 3. delete customer transaction entry
+    // get previous transaction
+    const previousTransaction = await getTransportCustomerPreviousTransaction(
+      customerId,
+      transactionId,
+      tx,
+    );
+    // delete intended transaction
     await deleteTransaction(customerId, transactionId, tx);
-
-    // 3. Update balance in all transactions after this transaction
+    // Update balance in all transactions after this transaction
     let balance = previousTransaction?.balance ?? 0;
-    const transactions = await getTransportCustomerTransactionsAfterId(customerId, transactionId, tx);
+    const transactions = await getTransportCustomerTransactionsAfterId(
+      customerId,
+      transactionId,
+      tx,
+    );
     transactions.forEach((transaction) => {
       transaction.balance = balance + transaction.amount;
       balance = transaction.balance;
