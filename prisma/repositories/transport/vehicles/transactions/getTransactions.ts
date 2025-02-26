@@ -13,6 +13,9 @@ export const getVehicleTransactions = async (
     prisma.transportVehicleTransaction.findMany({
       include: {
         customerTransaction: {
+          where: {
+            deleted: null, // Exclude soft-deleted reservations as they are applied by our middleware only to top level entities
+          },
           include: {
             customer: true,
           },

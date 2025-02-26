@@ -18,7 +18,11 @@ const saveVehicleReservationEntry = async (
         customer: true,
         rentalCycles: {
           include: {
-            rentalCyclePayments: true,
+            rentalCyclePayments: {
+              where: {
+                deleted: null, // Exclude soft-deleted reservations as they are applied by our middleware only to top level entities
+              },
+            },
           }
         }
       }

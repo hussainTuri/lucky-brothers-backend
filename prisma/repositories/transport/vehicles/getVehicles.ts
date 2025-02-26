@@ -22,6 +22,7 @@ export const getVehicles = async (options: QueryOptions, sort?: QuerySort) => {
             id: 'desc',
           },
           where: {
+            deleted: null, // Exclude soft-deleted reservations as they are applied by our middleware only to top level entities
             reservationStart: {
               lte: new Date(),
             },

@@ -12,7 +12,11 @@ export const getTransportCustomerTransactions = async (
   const [transactions, totalCount] = await Promise.all([
     prisma.transportCustomerTransaction.findMany({
       include: {
-        rentalCycle: true,
+        rentalCycle: {
+          where: {
+            deleted: null, // Exclude soft-deleted reservations as they are applied by our middleware only to top level entities
+          },
+        },
       },
       where: {
         customerId,

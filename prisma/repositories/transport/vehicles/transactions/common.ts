@@ -13,6 +13,9 @@ export const getVehicleTransaction = async (transactionId: number) => {
     },
     include: {
       customerTransaction: {
+        where: {
+          deleted: null, // Exclude soft-deleted reservations as they are applied by our middleware only to top level entities
+        },
         include: {
           customer: true,
         },
@@ -34,6 +37,9 @@ export const getVehicleTransactionByVehicle = async (vehicleId: number, transact
     },
     include: {
       customerTransaction: {
+        where: {
+          deleted: null, // Exclude soft-deleted reservations as they are applied by our middleware only to top level entities
+        },
         include: {
           customer: true,
         },

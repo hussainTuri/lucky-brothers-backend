@@ -8,8 +8,15 @@ export const getReservationsByVehicleId = async (vehicleId: number) => {
     include: {
       customer: true,
       rentalCycles: {
+        where: {
+          deleted: null, // Exclude soft-deleted reservations as they are applied by our middleware only to top level entities
+        },
         include: {
-          rentalCyclePayments: true,
+          rentalCyclePayments: {
+            where: {
+              deleted: null, // Exclude soft-deleted reservations as they are applied by our middleware only to top level entities
+            },
+          },
         },
       },
     },
@@ -28,8 +35,15 @@ export const getReservation = async (id: number) => {
     include: {
       customer: true,
       rentalCycles: {
+        where: {
+          deleted: null, // Exclude soft-deleted reservations as they are applied by our middleware only to top level entities
+        },
         include: {
-          rentalCyclePayments: true,
+          rentalCyclePayments: {
+            where: {
+              deleted: null, // Exclude soft-deleted reservations as they are applied by our middleware only to top level entities
+            },
+          },
         },
       },
     },
