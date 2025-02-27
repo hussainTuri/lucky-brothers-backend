@@ -12,6 +12,7 @@ export const getCustomer = async (id: number | string) => {
         },
         include: {
           customer: true,
+          vehicle: true,
           rentalCycles: {
             where: {
               deleted: null, // Exclude soft-deleted reservations as they are applied by our middleware only to top level entities

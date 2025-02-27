@@ -248,6 +248,7 @@ model User {
   password                                        String                                   @db.VarChar(255)
   phone                                           String?                                  @db.VarChar(255)
   address                                         String?                                  @db.VarChar(255)
+  userType                                        Int                                      @default(1) @db.TinyInt
   createdAt                                       DateTime                                 @default(now())
   updatedAt                                       DateTime                                 @updatedAt
   createdById                                     Int?                                     @db.Int
@@ -480,7 +481,6 @@ model TransportVehicleReservationRentalCycle {
   rentFrom             DateTime                                        @db.DateTime
   rentTo               DateTime?                                       @db.DateTime
   amount               Int                                             @db.Int
-  amountPaid           Int                                             @db.Int // try and not use this, delete it if possible
   comment              String?                                         @db.VarChar(255)
   deleted              DateTime?                                       @db.DateTime
   createdAt            DateTime                                        @default(now())

@@ -14,13 +14,8 @@ export const updateVehicleReservationCycle = async (
       rentFrom: entry.rentFrom,
       rentTo: entry.rentTo,
       amount: entry.amount,
-      amountPaid: entry.amountPaid,
       comment: entry.comment,
     },
-    include:{
-      customer: true,
-      rentalCyclePayments: true,
-    }
   });
 
   return entryCreated;

@@ -16,21 +16,6 @@ export const updateVehicleReservation = async (
       monthlyRate: entry.monthlyRate,
       comment: entry.comment,
     },
-    include: {
-      customer: true,
-      rentalCycles: {
-        where: {
-          deleted: null, // Exclude soft-deleted reservations as they are applied by our middleware only to top level entities
-        },
-        include: {
-          rentalCyclePayments: {
-            where: {
-              deleted: null, // Exclude soft-deleted reservations as they are applied by our middleware only to top level entities
-            },
-          },
-        },
-      },
-    },
   });
 
   return entryUpdated;
