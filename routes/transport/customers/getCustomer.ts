@@ -8,9 +8,7 @@ export const getCustomer = async (req: Request, res: Response, next: NextFunctio
   const resp = response();
 
   try {
-    const customer = await getCustomerRepository(req.params.customerId);
-
-    resp.data = { customer };
+    resp.data = await getCustomerRepository(req.params.customerId);
   } catch (error) {
     console.error('DB Error', error);
     Sentry.captureException(error);

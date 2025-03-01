@@ -1,5 +1,5 @@
 import { Response } from 'express';
-import { updateVehicleReservationCycle as updateVehicleReservationCycleRepository } from '../../../../prisma/repositories/transport/vehicles/reservationCycles/updateReservationCycle';
+import { updateVehicleReservationCycleWithRelations as updateVehicleReservationCycleRepository } from '../../../../prisma/repositories/transport/vehicles/reservationCycles/updateReservationCycle';
 import { response } from '../../../../lib/response';
 import { messages } from '../../../../lib/constants';
 import { AuthenticatedRequest } from '../../../../types';

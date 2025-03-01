@@ -13,7 +13,7 @@ export const updateVehicleReservation = async (
       vehicleId: entry.vehicleId,
       reservationStart: entry.reservationStart,
       reservationEnd: entry.reservationEnd,
-      monthlyRate: entry.monthlyRate,
+      monthlyRate: Math.abs(entry.monthlyRate),
       comment: entry.comment,
     },
   });

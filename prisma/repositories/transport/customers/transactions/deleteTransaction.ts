@@ -8,7 +8,7 @@ import prisma from '../../../../../middleware/prisma';
 import { deleteReservationCyclePayment } from '../../vehicles/reservationCycles/deleteReservationCyclePayment';
 import { deleteVehicleTransactionDbTransaction } from '../../vehicles';
 
-export const deleteTransportCustomerTransaction = async (
+export const deleteTransportCustomerTransactionWithRelation = async (
   customerIdentifier: string | number,
   id: string | number,
 ) => {
@@ -45,7 +45,7 @@ export const deleteTransportCustomerTransaction = async (
       tx,
     );
     // delete intended transaction
-    await deleteTransaction(customerId, transactionId, tx);
+    await deleteCustomerTransaction(customerId, transactionId, tx);
     // Update balance in all transactions after this transaction
     let balance = previousTransaction?.balance ?? 0;
     const transactions = await getTransportCustomerTransactionsAfterId(
@@ -63,7 +63,7 @@ export const deleteTransportCustomerTransaction = async (
   });
 };
 
-const deleteTransaction = async (customerId: number, id: number, tx: OmitPrismaClient) => {
+export const deleteCustomerTransaction = async (customerId: number, id: number, tx: OmitPrismaClient) => {
   return await tx.transportCustomerTransaction.delete({
     where: {
       id,

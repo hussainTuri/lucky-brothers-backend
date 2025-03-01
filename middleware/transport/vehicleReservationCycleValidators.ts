@@ -1,4 +1,4 @@
-import {  TransportVehicleReservationRentalCycle } from '@prisma/client';
+import { TransportVehicleReservationRentalCycle } from '@prisma/client';
 import { Request, Response, NextFunction } from 'express';
 import { response } from '../../lib/response';
 import {
@@ -14,7 +14,7 @@ const extractReservationCycleData = (payload: Partial<TransportVehicleReservatio
     customerId: payload?.customerId ?? null,
     rentFrom: payload?.rentFrom ? new Date(payload.rentFrom) : null,
     rentTo: payload?.rentTo ? new Date(payload?.rentTo) : null,
-    amount: payload?.amount ?? null,
+    amount: payload?.amount ? Math.abs(payload.amount) : null,
     comment: payload?.comment ?? null,
   };
 };
@@ -38,7 +38,7 @@ export const normalizeUpdateData = (req: Request, res: Response, next: NextFunct
   next();
 };
 
-export const validateCreateReservationCycle= async (
+export const validateCreateReservationCycle = async (
   req: Request,
   res: Response,
   next: NextFunction,
@@ -70,7 +70,12 @@ export const validateUpdateReservationCycle = async (
   // Check if it paid amount is greater than amount, then return error
   const paidAmount = await getReservationCyclePaidAmount(req.body.id);
   if (paidAmount > req.body.amount) {
-    resp.message = messages.RESERVATION_CYCLE_AMOUNT_ERROR
+    resp.message = messages.RESERVATION_CYCLE_AMOUNT_ERROR;
+    resp.success = false;
+    return res.status(400).json(resp);
+  }
+  if (paidAmount === req.body.amount) {
+    resp.message = messages.RESERVATION_CYCLE_AMOUNT_FULLY_PAID;
     resp.success = false;
     return res.status(400).json(resp);
   }

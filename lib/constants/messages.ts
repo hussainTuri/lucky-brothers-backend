@@ -26,6 +26,7 @@ export const messages = {
   RESERVATION_ID_NOT_FOUND: 'ریزرویشن آئی ڈی نہیں ملا',
   VEHICLE_ID_REQUIRED: ' گاڑی کی آئی ڈی درکار ہے۔',
   RESERVATION_DELETE_NOT_ALLOWED: 'ریزرویشن ہٹانے کی اجازت نہیں ہے۔ اس ریزرویشن سے متعلق متعدد ادائیگیاں ہیں۔',
+  RESERVATION_CYCLE_AMOUNT_FULLY_PAID: 'ریزرویشن سائیکل کی تمام رقم ادا کر دی گئی ہے۔',
   RESERVATION_CYCLE_AMOUNT_ERROR: 'رقم کی غلطی۔ ادا کی گئی رقم کل رقم سے زیادہ ہے۔',
   RESERVATION_CYCLE_ID_REQUIRED: 'ریزرویشن سائیکل آئی ڈی درکار ہے۔',
   RESERVATION_CYCLE_DELETION_NOT_ALLOWED: 'ریزرویشن سائیکل کو ہٹانے کی اجازت نہیں ہے۔ اس سائیکل کے لیے ادا کی گئی رقم ہے۔',

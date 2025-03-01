@@ -1,4 +1,5 @@
 import prisma from '../../../../middleware/prisma';
+import { getCustomerTransactionCurrentBalance } from './transactions/getCustomerTransactionCurrentBalance';
 
 export const getCustomer = async (id: number | string) => {
   const customer = await prisma.transportCustomer.findFirstOrThrow({
@@ -37,5 +38,10 @@ export const getCustomer = async (id: number | string) => {
       },
     },
   });
-  return customer;
+
+  const balance = await getCustomerTransactionCurrentBalance(Number(id), prisma);
+  return {
+    customer,
+    balance
+  };
 };

@@ -77,7 +77,7 @@ export const saveCustomerReservationPayments = async (
   });
 };
 
-const saveCustomerTransaction = async (
+export const saveCustomerTransaction = async (
   entry: Partial<TransportCustomerTransaction>,
   tx: OmitPrismaClient,
 ) => {

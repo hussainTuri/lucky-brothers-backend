@@ -564,6 +564,7 @@ model TransportCustomerTransaction {
   @@index([customerId])
   @@index([vehicleId])
   @@index([customerTransactionTypeId])
+  @@unique([reservationRentalCycleId, customerTransactionTypeId])
 }
 
 model TransportCustomerTransactionType {

@@ -10,7 +10,7 @@ import { getVehicleTransaction, getVehicleTransactionByVehicle } from '../../pri
 import { TransportVehicleTransactionTypes } from '../../lib/enums/transportVehicle';
 
 const extractVehicleTransactionData = (payload: Partial<TransportVehicleTransaction>) => {
-  let amount = payload.amount ?? null;
+  let amount = payload?.amount ?? null;
   if (amount !== null) {
     if (
       [TransportVehicleTransactionTypes.BankLoan, TransportVehicleTransactionTypes.Expense].includes(

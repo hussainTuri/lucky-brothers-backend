@@ -1,6 +1,6 @@
 import { Response } from 'express';
 import { response } from '../../../../lib/response';
-import { deleteReservationCycle as deleteReservationCycleRepository } from '../../../../prisma/repositories/transport/vehicles/reservationCycles/deleteReservationCycle';
+import { deleteReservationCycleWithRelations as deleteReservationCycleRepository } from '../../../../prisma/repositories/transport/vehicles/reservationCycles/deleteReservationCycle';
 import { AuthenticatedRequest } from '../../../../types';
 import * as Sentry from '@sentry/node';
 import { messages } from '../../../../lib/constants';

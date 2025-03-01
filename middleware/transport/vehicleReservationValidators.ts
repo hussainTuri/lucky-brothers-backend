@@ -15,7 +15,7 @@ const extractVehicleReservationData = (payload: Partial<TransportVehicleReservat
     customerId: payload?.customerId ?? null,
     reservationStart: payload?.reservationStart ? new Date(payload.reservationStart) : null,
     reservationEnd: payload?.reservationEnd ? new Date(payload?.reservationEnd) : null,
-    monthlyRate: payload?.monthlyRate ?? null,
+    monthlyRate: payload?.monthlyRate ? Math.abs(payload?.monthlyRate) : null,
     comment: payload?.comment ?? null,
   };
 };
@@ -106,7 +106,7 @@ export const validateDeleteVehicleReservation = async (
     return res.status(400).json(resp);
   }
 
-  // make sure that the transaction is a customer payment ie type is payment and invoice is null
+  // make sure that the reservation has no rental cycles
   try {
     const reservation = await getReservation(reservationId);
     if (reservation.rentalCycles.length > 0) {

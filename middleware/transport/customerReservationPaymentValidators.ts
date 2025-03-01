@@ -58,7 +58,6 @@ export const validateCreateCustomerReservationPayments = async (
       req.body.map((entry: CustomerReservationPayment) => entry.reservationCycleId),
     );
 
-    // req?.body?.forEach((entry: CustomerReservationPayment) => {
     for (const entry of req.body) {
       const cycle = reservationCycles.find((cycle) => cycle.id === entry.reservationCycleId);
 

@@ -1,5 +1,6 @@
 import { QuerySort, QueryOptions } from '../../../../../types';
 import prisma from '../../../../../middleware/prisma';
+import { TransportCustomerTransactionTypes } from '../../../../../lib/enums/transportCustomer';
 
 export const getTransportCustomerTransactions = async (
   customerId: number,
@@ -35,5 +36,34 @@ export const getTransportCustomerTransactions = async (
     }),
   ]);
 
-  return { transactions, totalCount };
+  // get customer payments sum
+  const paymentSum = await prisma.transportCustomerTransaction.aggregate({
+    where: {
+      customerId: customerId,
+      customerTransactionTypeId: TransportCustomerTransactionTypes.Payment,
+      deleted: null,
+    },
+    _sum: { amount: true },
+  });
+
+  // get customer rent sum
+  const rentSum = await prisma.transportCustomerTransaction.aggregate({
+    where: {
+      customerId: customerId,
+      customerTransactionTypeId: TransportCustomerTransactionTypes.Rent,
+      deleted: null,
+    },
+    _sum: { amount: true },
+  });
+
+  // customer transactions balance
+  const balance = (rentSum._sum.amount ?? 0) + (paymentSum._sum.amount ?? 0);
+
+  return {
+    transactions,
+    totalCount,
+    paymentSum: paymentSum._sum.amount ?? 0,
+    rentSum: rentSum._sum.amount ?? 0,
+    balance,
+  };
 };
