@@ -1,5 +1,4 @@
-import { InvoicePayment, PrismaClient } from '@prisma/client';
-import { DefaultArgs, PrismaClientOptions } from '@prisma/client/runtime/library';
+import { InvoicePayment, Prisma } from '@prisma/client';
 import { getInvoice } from './getInvoice';
 import { InvoiceIncludeOptions } from '../../../types/includeOptions';
 import { InvoiceStatusEnum } from '../../../lib/enums/invoice';
@@ -96,10 +95,7 @@ export const saveInvoicePayment = async (
 };
 
 export const updateInvoiceStatus = async (
-  tx: Omit<
-    PrismaClient<PrismaClientOptions, never, DefaultArgs>,
-    '$connect' | '$disconnect' | '$on' | '$transaction' | '$use' | '$extends'
-  >,
+  tx: OmitPrismaClient,
   invoiceId: number,
 ) => {
   const invoice = await tx.invoice.findUnique({

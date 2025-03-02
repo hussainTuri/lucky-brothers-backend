@@ -1,10 +1,14 @@
 {
   "name": "lucky-brothers-backend",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
+    "bump-version-patch": "npm version patch --no-git-tag-version",
+    "bump-version-minor": "npm version minor --no-git-tag-version",
+    "bump-version-major": "npm version major --no-git-tag-version",
     "build": "tsc",
     "start": "node ./dist/app.js",
+    "dev-debug": "DEBUG=express:* nodemon app.ts",
     "dev": "nodemon app.ts",
     "seed": "ts-node prisma/seed/seed.ts",
     "migrate:dev": "prisma migrate dev --name init",
@@ -13,7 +17,7 @@
     "deploy": "git push && git push live main"
   },
   "dependencies": {
-    "@prisma/client": "^5.8.1",
+    "@prisma/client": "^5.22.0",
     "@sentry/node": "^8.28.0",
     "@sentry/profiling-node": "^8.28.0",
     "bcrypt": "^5.1.1",
@@ -23,6 +27,7 @@
     "http-errors": "~1.6.3",
     "joi": "^17.11.0",
     "jsonwebtoken": "^9.0.2",
+    "lodash": "^4.17.21",
     "morgan": "~1.9.1",
     "multer": "^1.4.5-lts.1",
     "node-cache": "^5.1.2",
@@ -36,6 +41,7 @@
     "@types/debug": "^4.1.12",
     "@types/express": "^4.17.21",
     "@types/jsonwebtoken": "^9.0.5",
+    "@types/lodash": "^4.17.15",
     "@types/multer": "^1.4.11",
     "@types/node": "^20.10.5",
     "@typescript-eslint/eslint-plugin": "^6.16.0",
@@ -44,9 +50,11 @@
     "eslint-config-airbnb-typescript": "^17.1.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-import": "^2.29.1",
+    "i": "^0.3.7",
     "nodemon": "^3.0.2",
+    "npm": "^11.1.0",
     "prettier": "^3.1.1",
-    "prisma": "^5.8.1",
+    "prisma": "^5.22.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.3.3"
   },

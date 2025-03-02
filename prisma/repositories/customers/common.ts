@@ -1,12 +1,9 @@
-import { PrismaClient } from '@prisma/client';
-import { DefaultArgs, PrismaClientOptions } from '@prisma/client/runtime/library';
+import { OmitPrismaClient } from '../../../types';
+// import { DefaultArgs, PrismaClientOptions } from '@prisma/client/runtime/library';
 // import { InvoiceStatusEnum } from '../../../lib/enums';
 
 export const updateCustomerBalance = async (
-  tx: Omit<
-    PrismaClient<PrismaClientOptions, never, DefaultArgs>,
-    '$connect' | '$disconnect' | '$on' | '$transaction' | '$use' | '$extends'
-  >,
+  tx: OmitPrismaClient,
   customerId: number,
 ) => {
   const result = await tx.customerTransaction.aggregate({

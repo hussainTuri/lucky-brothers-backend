@@ -1,14 +1,12 @@
-import { PrismaClient } from '@prisma/client';
 import { InvoiceRelatedData } from '../../../types/';
 import { getCache, setCache } from '../../../lib/utils';
 import { CacheKeys } from '../../../lib/constants';
-
-const prisma = new PrismaClient();
+import prisma from '../../../middleware/prisma';
 
 export const getRelatedData = async () => {
   const cachedData = getCache<InvoiceRelatedData>(CacheKeys.INVOICE_RELATED_DATA.key);
   if (cachedData) {
-    return cachedData;  
+    return cachedData;
   }
   const data = {} as InvoiceRelatedData;
   data.statuses = await prisma.invoiceStatus.findMany();

@@ -1,4 +1,4 @@
-import { NextFunction, Response } from 'express';
+import { Response } from 'express';
 import { updateExpense as updateExpenseRepository } from '../../prisma/repositories/expenses';
 import { response } from '../../lib/response';
 import { messages } from '../../lib/constants';
@@ -8,7 +8,6 @@ import * as Sentry from '@sentry/node';
 export const updateExpense = async (
   req: AuthenticatedRequest,
   res: Response,
-  next: NextFunction,
 ) => {
   const resp = response();
   req.body.updatedById = req.user?.id ?? 0;

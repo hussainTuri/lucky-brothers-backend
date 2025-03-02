@@ -1,12 +1,10 @@
-import { PrismaClient } from '@prisma/client';
 import type { CustomerTransaction, Invoice, InvoicePayment, Prisma } from '@prisma/client';
 import { getCustomer } from '../getCustomer';
 import { saveInvoicePayment } from '../../invoices';
 import { InvoiceWithRelations } from '../../../../types';
 import { InvoiceStatusEnum } from '../../../../lib/enums/invoice';
 import { updateCustomerBalance } from '../common';
-
-const prisma = new PrismaClient();
+import prisma from '../../../../middleware/prisma';
 
 export const saveTransaction = async (
   transaction: CustomerTransaction,
