@@ -31,6 +31,8 @@ export const messages = {
   RESERVATION_CYCLE_ID_REQUIRED: 'ریزرویشن سائیکل آئی ڈی درکار ہے۔',
   RESERVATION_CYCLE_DELETION_NOT_ALLOWED: 'ریزرویشن سائیکل کو ہٹانے کی اجازت نہیں ہے۔ اس سائیکل کے لیے ادا کی گئی رقم ہے۔',
   RESERVATION_CYCLE_DATES_SHOULD_BE_IN_SAME_MONTH_AS_BEFORE: 'تاریخیں پہلے کی طرح اسی مہینے میں ہونی چاہئیں۔',
+  RESERVATION_CYCLE_DATES_SHOULD_BE_IN_SAME_MONTH: 'تاریخیں ایک ہی مہینے میں ہونی چاہئیں۔',
+  RESERVATION_CYCLE_ANOTHER_CYCLE_EXISTS_FOR_THIS_MONTH_UPDATE_INSTEAD: 'اس مہینے کے لیے ایک اور سائیکل موجود ہے۔ بجائے اسے اپ ڈیٹ کریں۔',
   VEHICLE_TRANSACTION_ID_REQUIRED: 'گاڑی کی ٹرانزیکشن آئی ڈی درکار ہے۔',
   VEHICLE_TRANSACTION_AND_VEHICLE_ID_REQUIRED: 'گاڑی کی ٹرانزیکشن اور گاڑی کی آئی ڈی درکار ہے۔',
   VEHICLE_TRANSACTION_OF_TYPE_CUSTOMER_PAYMENT_DELETE_NOT_ALLOWED: 'کسٹمر ادائیگی کی ٹرانزیکشن کو ہٹانے کی اجازت نہیں ہے۔',
