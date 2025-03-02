@@ -3,7 +3,7 @@ import _ from 'lodash';
 import { Request, Response, NextFunction } from 'express';
 import { response } from '../../lib/response';
 import { createCustomerReservationPaymentsSchema } from '../../lib/validators/transport/customerCreateSchema';
-import { getReservationCyclesDueAmounts } from '../../prisma/repositories/transport/vehicles/reservationCycles/common';
+import { getReservationCyclesDueAmounts } from '../../prisma/repositories/transport/vehicles/reservationCycles/';
 import * as Sentry from '@sentry/node';
 import { messages } from '../../lib/constants';
 

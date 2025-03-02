@@ -6,7 +6,10 @@ import {
   updateVehicleReservationCycleSchema,
 } from '../../lib/validators/transport';
 import { messages } from '../../lib/constants';
-import { getReservationCyclePaidAmount } from '../../prisma/repositories/transport/vehicles/reservationCycles';
+import {
+  getReservationCycle,
+  getReservationCyclePaidAmount,
+} from '../../prisma/repositories/transport/vehicles/reservationCycles';
 
 const extractReservationCycleData = (payload: Partial<TransportVehicleReservationRentalCycle>) => {
   return {
@@ -76,6 +79,20 @@ export const validateUpdateReservationCycle = async (
   }
   if (paidAmount === req.body.amount) {
     resp.message = messages.RESERVATION_CYCLE_AMOUNT_FULLY_PAID;
+    resp.success = false;
+    return res.status(400).json(resp);
+  }
+
+  // Check that start and end dates are in the same month as before. This check also
+  // covers the case where user choose one month for start date but another month for end date.
+  const cycle = await getReservationCycle(req.body.id);
+  console.log('--> startMonth', cycle.rentFrom.getMonth());
+
+  if (
+    cycle.rentFrom.getMonth() !== req.body.rentFrom.getMonth() ||
+    cycle.rentTo.getMonth() !== req.body.rentTo.getMonth()
+  ) {
+    resp.message = messages.RESERVATION_CYCLE_DATES_SHOULD_BE_IN_SAME_MONTH_AS_BEFORE;
     resp.success = false;
     return res.status(400).json(resp);
   }

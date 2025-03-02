@@ -479,7 +479,7 @@ model TransportVehicleReservationRentalCycle {
   vehicleReservationId Int                                             @db.Int
   customerId           Int                                             @db.Int
   rentFrom             DateTime                                        @db.DateTime
-  rentTo               DateTime?                                       @db.DateTime
+  rentTo               DateTime                                       @db.DateTime
   amount               Int                                             @db.Int
   comment              String?                                         @db.VarChar(255)
   deleted              DateTime?                                       @db.DateTime

@@ -15,7 +15,11 @@ export const updateVehicleReservationCycleWithRelations = async (
     const entryUpdated = await updateVehicleReservationCycle(entry, tx);
 
     // Update customer transaction
-    const customerTransaction = await getCustomerTransactionByCycleId(entry.id,TransportCustomerTransactionTypes.Rent,tx);
+    const customerTransaction = await getCustomerTransactionByCycleId(
+      entry.id,
+      TransportCustomerTransactionTypes.Rent,
+      tx,
+    );
     if (!customerTransaction) {
       throw new Error('Customer transaction not found');
     }
