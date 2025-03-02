@@ -477,6 +477,7 @@ model TransportVehicleReservation {
 model TransportVehicleReservationRentalCycle {
   id                   Int                                             @id @default(autoincrement())
   vehicleReservationId Int                                             @db.Int
+  customerTransactionId           Int                                  @unique @db.Int
   customerId           Int                                             @db.Int
   rentFrom             DateTime                                        @db.DateTime
   rentTo               DateTime                                       @db.DateTime
@@ -542,7 +543,6 @@ model TransportCustomerTransaction {
   id                            Int                                            @id @default(autoincrement())
   customerId                    Int                                            @db.Int
   vehicleId                     Int                                            @db.Int
-  reservationRentalCycleId      Int?                                           @db.Int // Right now payments and rent types are alway connected to reservationRentalCycleId, but lets not restrict it and keep it optional
   customerTransactionTypeId     Int                                            @db.Int
   amount                        Int                                            @db.Int
   balance                       Int                                            @db.Int
@@ -558,13 +558,12 @@ model TransportCustomerTransaction {
   updatedBy                     User?                                          @relation("TransportCustomerTransactionUpdatedBy", fields: [updatedById], references: [id], onDelete: NoAction, onUpdate: NoAction)
   transactionType               TransportCustomerTransactionType               @relation(fields: [customerTransactionTypeId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   vehicleTransaction            TransportVehicleTransaction?                   @relation("TransportCustomerToVehicleTransaction")
-  rentalCycle                   TransportVehicleReservationRentalCycle?        @relation(fields: [reservationRentalCycleId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  rentalCycle                   TransportVehicleReservationRentalCycle?        @relation(fields: [id], references: [customerTransactionId], onDelete: NoAction, onUpdate: NoAction)
   reservationRentalCyclePayment TransportVehicleReservationRentalCyclePayment? @relation("TransportCustomerToRentalCyclePayment")
 
   @@index([customerId])
   @@index([vehicleId])
   @@index([customerTransactionTypeId])
-  @@unique([reservationRentalCycleId, customerTransactionTypeId])
 }
 
 model TransportCustomerTransactionType {

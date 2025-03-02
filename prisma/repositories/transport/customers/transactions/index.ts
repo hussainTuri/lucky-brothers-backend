@@ -5,4 +5,4 @@ export * from './getCustomerTransactionByCustomer';
 export * from './getPreviousTransaction';
 export * from './updateTransaction';
 export * from './getCustomerBalanceForTransaction';
-export * from './getCustomerTransactionByCycleId';
+export * from './getCustomerTransaction';

@@ -36,7 +36,6 @@ export const saveCustomerReservationPayments = async (
       // 1. Add customer transaction entry
       const customerTransaction: Partial<TransportCustomerTransaction> = {
         customerId: entry.customerId,
-        reservationRentalCycleId: entry.reservationCycleId,
         vehicleId: entry.vehicleId,
         customerTransactionTypeId: entry.customerTransactionTypeId,
         amount: entry.amount,

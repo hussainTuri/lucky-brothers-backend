@@ -15,6 +15,7 @@ import {
 const extractReservationCycleData = (payload: Partial<TransportVehicleReservationRentalCycle>) => {
   return {
     vehicleReservationId: payload?.vehicleReservationId ?? null,
+    customerTransactionId: payload?.customerTransactionId ?? null,
     customerId: payload?.customerId ?? null,
     rentFrom: payload?.rentFrom ? new Date(payload.rentFrom) : null,
     rentTo: payload?.rentTo ? new Date(payload?.rentTo) : null,
@@ -105,7 +106,6 @@ export const validateUpdateReservationCycle = async (
   // Check that start and end dates are in the same month as before. This check also
   // covers the case where user choose one month for start date but another month for end date.
   const cycle = await getReservationCycle(req.body.id);
-
   if (
     cycle.rentFrom.getMonth() !== req.body.rentFrom.getMonth() ||
     cycle.rentTo.getMonth() !== req.body.rentTo.getMonth()

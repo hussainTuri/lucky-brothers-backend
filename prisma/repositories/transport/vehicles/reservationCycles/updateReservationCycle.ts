@@ -1,11 +1,10 @@
 import type { TransportVehicleReservationRentalCycle } from '@prisma/client';
 import prisma from '../../../../../middleware/prisma';
 import {
-  getCustomerTransactionByCycleId,
+  getTransportCustomerTransaction,
   updateTransportCustomerTransactionWithBalances,
 } from '../../customers';
 import { OmitPrismaClient } from '../../../../../types';
-import { TransportCustomerTransactionTypes } from '../../../../../lib/enums/transportCustomer';
 
 export const updateVehicleReservationCycleWithRelations = async (
   entry: TransportVehicleReservationRentalCycle,
@@ -15,9 +14,8 @@ export const updateVehicleReservationCycleWithRelations = async (
     const entryUpdated = await updateVehicleReservationCycle(entry, tx);
 
     // Update customer transaction
-    const customerTransaction = await getCustomerTransactionByCycleId(
-      entry.id,
-      TransportCustomerTransactionTypes.Rent,
+    const customerTransaction = await getTransportCustomerTransaction(
+      entry.customerTransactionId,
       tx,
     );
     if (!customerTransaction) {

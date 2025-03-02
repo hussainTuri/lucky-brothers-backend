@@ -1,25 +1,29 @@
-import { TransportCustomerTransactionTypes } from '../../../../../lib/enums/transportCustomer';
 import prisma from '../../../../../middleware/prisma';
 import { OmitPrismaClient } from '../../../../../types';
-import { deleteCustomerTransaction, getCustomerTransactionByCycleId } from '../../customers';
+import { deleteCustomerTransaction, getTransportCustomerTransaction } from '../../customers';
+import { getReservationCycle } from './getReservationCycle';
 
 export const deleteReservationCycleWithRelations = async (id: string) => {
   return prisma.$transaction(async (tx) => {
-    // 1. Delete reservation cycle
-    const affected = await deleteReservationCycle(id, tx);
+    const cycle = await getReservationCycle(Number(id));
 
-    // 2. Delete customer transaction
-    const customerTransaction = await getCustomerTransactionByCycleId(Number(id), TransportCustomerTransactionTypes.Rent, tx);
+    // 1. Delete customer transaction
+    const customerTransaction = await getTransportCustomerTransaction(
+      cycle.customerTransactionId,
+      tx,
+    );
     if (!customerTransaction) {
-      return { affected, message: 'Reservation cycle deleted, no customer transaction found.' };
+      throw new Error(`Customer transaction with id ${cycle.customerTransactionId} not found.`);
     }
-    await deleteCustomerTransaction(customerTransaction.customerId, customerTransaction.id, tx);
+    await deleteCustomerTransaction(customerTransaction.id, tx);
 
+    // 2. Delete reservation cycle
+    const affected = await deleteReservationCycle(cycle.id, tx);
     return { affected, message: 'Reservation cycle and customer transaction deleted.' };
   });
 };
 
-export const deleteReservationCycle = async (id: string, tx: OmitPrismaClient) => {
+export const deleteReservationCycle = async (id: string | number, tx: OmitPrismaClient) => {
   const cycle = await tx.transportVehicleReservationRentalCycle.delete({
     where: {
       id: Number(id),
