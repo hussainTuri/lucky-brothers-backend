@@ -20,7 +20,7 @@ export const createVehicleReservationCycleSchema = Joi.object({
   vehicleReservationId: Joi.number().integer().positive().required(),
   customerId: Joi.number().integer().positive().required(),
   rentFrom: Joi.date().required(),
-  rentTo: Joi.date().optional().allow(null).allow(''),
+  rentTo: Joi.date().required(),
   amount: Joi.number().required().integer().positive(),
   comment: Joi.string().max(255).optional().allow(null).allow(''),
 });

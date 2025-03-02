@@ -45,7 +45,7 @@ export const deleteTransportCustomerTransactionWithRelation = async (
       tx,
     );
     // delete intended transaction
-    await deleteCustomerTransaction(customerId, transactionId, tx);
+    await deleteCustomerTransaction(transactionId, tx);
     // Update balance in all transactions after this transaction
     let balance = previousTransaction?.balance ?? 0;
     const transactions = await getTransportCustomerTransactionsAfterId(
@@ -63,11 +63,10 @@ export const deleteTransportCustomerTransactionWithRelation = async (
   });
 };
 
-export const deleteCustomerTransaction = async (customerId: number, id: number, tx: OmitPrismaClient) => {
+export const deleteCustomerTransaction = async ( id: number, tx: OmitPrismaClient) => {
   return await tx.transportCustomerTransaction.delete({
     where: {
       id,
-      customerId,
     },
   });
 };

@@ -7,6 +7,7 @@ import {
 } from '../../lib/validators/transport';
 import { messages } from '../../lib/constants';
 import {
+  checkIfReservationCycleByMonthExists,
   getReservationCycle,
   getReservationCyclePaidAmount,
 } from '../../prisma/repositories/transport/vehicles/reservationCycles';
@@ -14,6 +15,7 @@ import {
 const extractReservationCycleData = (payload: Partial<TransportVehicleReservationRentalCycle>) => {
   return {
     vehicleReservationId: payload?.vehicleReservationId ?? null,
+    customerTransactionId: payload?.customerTransactionId ?? null,
     customerId: payload?.customerId ?? null,
     rentFrom: payload?.rentFrom ? new Date(payload.rentFrom) : null,
     rentTo: payload?.rentTo ? new Date(payload?.rentTo) : null,
@@ -54,6 +56,24 @@ export const validateCreateReservationCycle = async (
     return res.status(400).json(resp);
   }
 
+  // rentFrom and rentTo should be in the same month
+  if (req.body.rentFrom.getMonth() !== req.body.rentTo.getMonth()) {
+    resp.message = messages.RESERVATION_CYCLE_DATES_SHOULD_BE_IN_SAME_MONTH;
+    resp.success = false;
+    return res.status(400).json(resp);
+  }
+
+  // If a cycle for this month already exists, Ask the user to check the existing one and update it instead of creating a new one.
+  const exists = await checkIfReservationCycleByMonthExists(
+    req.body.vehicleReservationId,
+    req.body.rentFrom,
+  );
+  if (exists) {
+    resp.message = messages.RESERVATION_CYCLE_ANOTHER_CYCLE_EXISTS_FOR_THIS_MONTH_UPDATE_INSTEAD;
+    resp.success = false;
+    return res.status(400).json(resp);
+  }
+
   next();
 };
 
@@ -86,8 +106,6 @@ export const validateUpdateReservationCycle = async (
   // Check that start and end dates are in the same month as before. This check also
   // covers the case where user choose one month for start date but another month for end date.
   const cycle = await getReservationCycle(req.body.id);
-  console.log('--> startMonth', cycle.rentFrom.getMonth());
-
   if (
     cycle.rentFrom.getMonth() !== req.body.rentFrom.getMonth() ||
     cycle.rentTo.getMonth() !== req.body.rentTo.getMonth()

@@ -18,6 +18,15 @@ export const getTransportCustomerTransactions = async (
             deleted: null, // Exclude soft-deleted reservations as they are applied by our middleware only to top level entities
           },
         },
+        reservationRentalCyclePayment: {
+          where: {
+            deleted: null,
+          },
+          include: {
+            vehicleReservationRentalCycle: true,
+          }
+        },
+        vehicle: true,
       },
       where: {
         customerId,
