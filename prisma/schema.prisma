@@ -82,6 +82,7 @@ model ProductStock {
   remainingQuantity        Int                       @db.Int
   comment                  String?                   @db.VarChar(255)
   receiptNumber            String?                   @db.VarChar(45)
+  mode                     Int                       @default(1) @db.TinyInt // 1: cash 2: transfer
   product                  Product                   @relation(fields: [productId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   createdAt                DateTime                  @default(now())
   updatedAt                DateTime                  @updatedAt
@@ -475,25 +476,25 @@ model TransportVehicleReservation {
 }
 
 model TransportVehicleReservationRentalCycle {
-  id                   Int                                             @id @default(autoincrement())
-  vehicleReservationId Int                                             @db.Int
-  customerTransactionId           Int                                  @unique @db.Int
-  customerId           Int                                             @db.Int
-  rentFrom             DateTime                                        @db.DateTime
-  rentTo               DateTime                                       @db.DateTime
-  amount               Int                                             @db.Int
-  comment              String?                                         @db.VarChar(255)
-  deleted              DateTime?                                       @db.DateTime
-  createdAt            DateTime                                        @default(now())
-  updatedAt            DateTime                                        @updatedAt
-  createdById          Int?                                            @db.Int
-  updatedById          Int?                                            @db.Int
-  vehicleReservation   TransportVehicleReservation                     @relation(fields: [vehicleReservationId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  customer             TransportCustomer                               @relation(fields: [customerId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  createdBy            User?                                           @relation("TransportVehicleReservationRentalCycleCreatedBy", fields: [createdById], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  updatedBy            User?                                           @relation("TransportVehicleReservationRentalCycleUpdatedBy", fields: [updatedById], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  rentalCyclePayments  TransportVehicleReservationRentalCyclePayment[]
-  customerTransactions TransportCustomerTransaction[]
+  id                    Int                                             @id @default(autoincrement())
+  vehicleReservationId  Int                                             @db.Int
+  customerTransactionId Int                                             @unique @db.Int
+  customerId            Int                                             @db.Int
+  rentFrom              DateTime                                        @db.DateTime
+  rentTo                DateTime                                        @db.DateTime
+  amount                Int                                             @db.Int
+  comment               String?                                         @db.VarChar(255)
+  deleted               DateTime?                                       @db.DateTime
+  createdAt             DateTime                                        @default(now())
+  updatedAt             DateTime                                        @updatedAt
+  createdById           Int?                                            @db.Int
+  updatedById           Int?                                            @db.Int
+  vehicleReservation    TransportVehicleReservation                     @relation(fields: [vehicleReservationId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  customer              TransportCustomer                               @relation(fields: [customerId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  createdBy             User?                                           @relation("TransportVehicleReservationRentalCycleCreatedBy", fields: [createdById], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  updatedBy             User?                                           @relation("TransportVehicleReservationRentalCycleUpdatedBy", fields: [updatedById], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  rentalCyclePayments   TransportVehicleReservationRentalCyclePayment[]
+  customerTransactions  TransportCustomerTransaction[]
 
   @@index([vehicleReservationId])
   @@index([customerId])
