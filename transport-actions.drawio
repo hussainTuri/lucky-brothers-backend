@@ -1,0 +1,347 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36" version="26.0.16">
+  <diagram id="prtHgNgQTEPvFCAcTncT" name="Page-1">
+    <mxGraphModel dx="2074" dy="1121" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="dNxyNK7c78bLwvsdeMH5-11" value="Vehicle &amp;gt; Rservation cycle" style="swimlane;html=1;startSize=30;horizontal=1;containerType=tree;glass=0;fillColor=#fad7ac;strokeColor=#b46504;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;" parent="1" vertex="1">
+          <mxGeometry x="40" y="100" width="1780" height="970" as="geometry" />
+        </mxCell>
+        <mxCell id="MT_8CDk_X4ysUxicGTOP-2" value="Add Vehicle Reservation Cycle" style="rounded=1;whiteSpace=wrap;html=1;fontStyle=1;fillColor=light-dark(#99FF99,var(--ge-dark-color, #121212));movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;" parent="dNxyNK7c78bLwvsdeMH5-11" vertex="1">
+          <mxGeometry x="29" y="110" width="490" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="MT_8CDk_X4ysUxicGTOP-5" value="2. Add customer transaction (Rent)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=light-dark(#99FF99,var(--ge-dark-color, #121212));movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;" parent="dNxyNK7c78bLwvsdeMH5-11" vertex="1">
+          <mxGeometry x="789" y="170" width="500" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="MT_8CDk_X4ysUxicGTOP-12" value="Update Vehicle Reservation Cycle" style="rounded=1;whiteSpace=wrap;html=1;fontStyle=1;fillColor=light-dark(#FFE6CC,var(--ge-dark-color, #121212));movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;" parent="dNxyNK7c78bLwvsdeMH5-11" vertex="1">
+          <mxGeometry x="30" y="370" width="490" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="MT_8CDk_X4ysUxicGTOP-14" value="1.&amp;nbsp;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;Paid Amount &amp;lt; cycle amount&lt;/span&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=light-dark(#FFE6CC,var(--ge-dark-color, #121212));movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;" parent="dNxyNK7c78bLwvsdeMH5-11" vertex="1">
+          <mxGeometry x="787" y="290" width="503" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="MT_8CDk_X4ysUxicGTOP-15" value="3. Update reservationcycle&lt;div&gt;&lt;br&gt;&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=light-dark(#FFE6CC,var(--ge-dark-color, #121212));movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;" parent="dNxyNK7c78bLwvsdeMH5-11" vertex="1">
+          <mxGeometry x="790" y="455" width="500" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="MT_8CDk_X4ysUxicGTOP-22" value="2. Update customer transaction&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&amp;nbsp;(Rent)&lt;/span&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=light-dark(#FFE6CC,var(--ge-dark-color, #121212));movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;" parent="dNxyNK7c78bLwvsdeMH5-11" vertex="1">
+          <mxGeometry x="787" y="370" width="503" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="MT_8CDk_X4ysUxicGTOP-28" value="&lt;font style=&quot;color: light-dark(rgb(255, 255, 255), rgb(255, 255, 255));&quot;&gt;Delete Vehicle Reservation cycle&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fontStyle=1;fillColor=light-dark(#FF6666,var(--ge-dark-color, #121212));movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;" parent="dNxyNK7c78bLwvsdeMH5-11" vertex="1">
+          <mxGeometry x="30" y="720" width="490" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="MT_8CDk_X4ysUxicGTOP-29" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fillColor=light-dark(#FF6666,var(--ge-dark-color, #121212));entryX=0;entryY=0.5;entryDx=0;entryDy=0;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;" parent="dNxyNK7c78bLwvsdeMH5-11" source="MT_8CDk_X4ysUxicGTOP-28" target="MT_8CDk_X4ysUxicGTOP-30" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="640" y="750" />
+              <mxPoint x="640" y="640" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="MT_8CDk_X4ysUxicGTOP-30" value="&lt;span&gt;&lt;font style=&quot;color: light-dark(rgb(255, 255, 255), rgb(255, 255, 255));&quot;&gt;1.Paid amount &amp;lt; 1&lt;/font&gt;&lt;/span&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=light-dark(#FF6666,var(--ge-dark-color, #121212));movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;" parent="dNxyNK7c78bLwvsdeMH5-11" vertex="1">
+          <mxGeometry x="790" y="610" width="500" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="MT_8CDk_X4ysUxicGTOP-31" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fillColor=light-dark(#FF6666,var(--ge-dark-color, #121212));movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="dNxyNK7c78bLwvsdeMH5-11" source="MT_8CDk_X4ysUxicGTOP-28" target="MT_8CDk_X4ysUxicGTOP-32" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="640" y="750" />
+              <mxPoint x="640" y="810" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="MT_8CDk_X4ysUxicGTOP-32" value="&lt;font style=&quot;color: light-dark(rgb(255, 255, 255), rgb(255, 255, 255));&quot;&gt;3. Delete Vehicle Reservation cycle&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=light-dark(#FF6666,var(--ge-dark-color, #121212));movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;" parent="dNxyNK7c78bLwvsdeMH5-11" vertex="1">
+          <mxGeometry x="789" y="780" width="500" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="MT_8CDk_X4ysUxicGTOP-33" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;fillColor=light-dark(#FF6666,var(--ge-dark-color, #121212));entryX=0;entryY=0.5;entryDx=0;entryDy=0;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;" parent="dNxyNK7c78bLwvsdeMH5-11" source="MT_8CDk_X4ysUxicGTOP-28" target="MT_8CDk_X4ysUxicGTOP-34" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="640" y="750" />
+              <mxPoint x="640" y="720" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="MT_8CDk_X4ysUxicGTOP-34" value="&lt;font style=&quot;color: light-dark(rgb(255, 255, 255), rgb(255, 255, 255));&quot;&gt;2. Delete customer transaction(Rent)&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=light-dark(#FF6666,var(--ge-dark-color, #121212));movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;" parent="dNxyNK7c78bLwvsdeMH5-11" vertex="1">
+          <mxGeometry x="787" y="690" width="500" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="MT_8CDk_X4ysUxicGTOP-47" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" parent="dNxyNK7c78bLwvsdeMH5-11" source="MT_8CDk_X4ysUxicGTOP-12" target="MT_8CDk_X4ysUxicGTOP-15" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1070" y="585" as="targetPoint" />
+            <mxPoint x="520" y="485" as="sourcePoint" />
+            <Array as="points">
+              <mxPoint x="600" y="400" />
+              <mxPoint x="600" y="485" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="MT_8CDk_X4ysUxicGTOP-51" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;" parent="dNxyNK7c78bLwvsdeMH5-11" source="MT_8CDk_X4ysUxicGTOP-12" target="MT_8CDk_X4ysUxicGTOP-14" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="600" y="300" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="600" y="400" />
+              <mxPoint x="600" y="320" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="MT_8CDk_X4ysUxicGTOP-53" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;" parent="dNxyNK7c78bLwvsdeMH5-11" source="MT_8CDk_X4ysUxicGTOP-12" target="MT_8CDk_X4ysUxicGTOP-22" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="780" y="380" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="520" y="400" />
+            </Array>
+            <mxPoint x="520" y="290" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="MT_8CDk_X4ysUxicGTOP-4" value="1. Add reservation cycle" style="rounded=1;whiteSpace=wrap;html=1;fillColor=light-dark(#99FF99,var(--ge-dark-color, #121212));movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;" parent="dNxyNK7c78bLwvsdeMH5-11" vertex="1">
+          <mxGeometry x="790" y="60" width="500" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="MT_8CDk_X4ysUxicGTOP-138" value="" style="endArrow=classic;html=1;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;" parent="dNxyNK7c78bLwvsdeMH5-11" source="MT_8CDk_X4ysUxicGTOP-2" target="MT_8CDk_X4ysUxicGTOP-4" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="810" y="70" as="sourcePoint" />
+            <mxPoint x="860" y="20" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="600" y="140" />
+              <mxPoint x="600" y="90" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="MT_8CDk_X4ysUxicGTOP-139" value="" style="endArrow=classic;html=1;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;" parent="dNxyNK7c78bLwvsdeMH5-11" source="MT_8CDk_X4ysUxicGTOP-2" target="MT_8CDk_X4ysUxicGTOP-5" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="810" y="70" as="sourcePoint" />
+            <mxPoint x="860" y="20" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="600" y="140" />
+              <mxPoint x="600" y="200" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="MT_8CDk_X4ysUxicGTOP-181" value="TransportCustomerTransaction" style="rounded=1;arcSize=10;whiteSpace=wrap;html=1;align=center;fillColor=#60a917;fontColor=#ffffff;strokeColor=#2D7600;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;" parent="dNxyNK7c78bLwvsdeMH5-11" vertex="1">
+          <mxGeometry x="1300" y="170" width="300" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="MT_8CDk_X4ysUxicGTOP-182" value="TransportVehicleReservationRentalCycle" style="rounded=1;arcSize=10;whiteSpace=wrap;html=1;align=center;fillColor=#1ba1e2;fontColor=#ffffff;strokeColor=#006EAF;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;" parent="dNxyNK7c78bLwvsdeMH5-11" vertex="1">
+          <mxGeometry x="1300" y="60" width="300" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="MT_8CDk_X4ysUxicGTOP-185" value="TransportVehicleReservationRentalCycle" style="rounded=1;arcSize=10;whiteSpace=wrap;html=1;align=center;fillColor=#1ba1e2;fontColor=#ffffff;strokeColor=#006EAF;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;" parent="dNxyNK7c78bLwvsdeMH5-11" vertex="1">
+          <mxGeometry x="1300" y="455" width="300" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="MT_8CDk_X4ysUxicGTOP-186" value="TransportCustomerTransaction" style="rounded=1;arcSize=10;whiteSpace=wrap;html=1;align=center;fillColor=#60a917;fontColor=#ffffff;strokeColor=#2D7600;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;" parent="dNxyNK7c78bLwvsdeMH5-11" vertex="1">
+          <mxGeometry x="1300" y="370" width="300" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="MT_8CDk_X4ysUxicGTOP-187" value="TransportVehicleReservationRentalCycle" style="rounded=1;arcSize=10;whiteSpace=wrap;html=1;align=center;fillColor=#1ba1e2;fontColor=#ffffff;strokeColor=#006EAF;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;" parent="dNxyNK7c78bLwvsdeMH5-11" vertex="1">
+          <mxGeometry x="1300" y="780" width="300" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="MT_8CDk_X4ysUxicGTOP-188" value="TransportCustomerTransaction" style="rounded=1;arcSize=10;whiteSpace=wrap;html=1;align=center;fillColor=#60a917;fontColor=#ffffff;strokeColor=#2D7600;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;" parent="dNxyNK7c78bLwvsdeMH5-11" vertex="1">
+          <mxGeometry x="1300" y="690" width="300" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="MT_8CDk_X4ysUxicGTOP-55" value="&lt;font style=&quot;font-size: 23px;&quot;&gt;Following daigrams shows how data changes with user actions. Only listing those that affect more than one tables&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;fontStyle=1;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;" parent="1" vertex="1">
+          <mxGeometry x="40" y="30" width="1780" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="MT_8CDk_X4ysUxicGTOP-96" value="Customer &amp;gt; Reservation cycle payment" style="swimlane;html=1;startSize=30;horizontal=1;containerType=tree;glass=0;fillColor=#b0e3e6;strokeColor=#0e8088;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;" parent="1" vertex="1">
+          <mxGeometry x="40" y="1150" width="1790" height="530" as="geometry" />
+        </mxCell>
+        <mxCell id="MT_8CDk_X4ysUxicGTOP-97" value="Add&amp;nbsp;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;Reservatio Cycle Payment&lt;/span&gt;" style="rounded=1;whiteSpace=wrap;html=1;fontStyle=1;fillColor=light-dark(#99FF99,var(--ge-dark-color, #121212));movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;" parent="MT_8CDk_X4ysUxicGTOP-96" vertex="1">
+          <mxGeometry x="30" y="250" width="490" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="MT_8CDk_X4ysUxicGTOP-98" value="1. paymentAmount &amp;lt;= dueAmount" style="rounded=1;whiteSpace=wrap;html=1;fillColor=light-dark(#99FF99,var(--ge-dark-color, #121212));movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;" parent="MT_8CDk_X4ysUxicGTOP-96" vertex="1">
+          <mxGeometry x="801" y="70" width="490" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="MT_8CDk_X4ysUxicGTOP-99" value="2. Add customer transaction (Payment)&amp;nbsp;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=light-dark(#99FF99,var(--ge-dark-color, #121212));movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;" parent="MT_8CDk_X4ysUxicGTOP-96" vertex="1">
+          <mxGeometry x="801" y="200" width="490" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="MT_8CDk_X4ysUxicGTOP-111" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;" parent="MT_8CDk_X4ysUxicGTOP-96" source="MT_8CDk_X4ysUxicGTOP-97" target="MT_8CDk_X4ysUxicGTOP-98" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="550" y="280" as="sourcePoint" />
+            <mxPoint x="1111" y="110" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="661" y="280" />
+              <mxPoint x="661" y="100" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="MT_8CDk_X4ysUxicGTOP-112" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;" parent="MT_8CDk_X4ysUxicGTOP-96" source="MT_8CDk_X4ysUxicGTOP-97" target="MT_8CDk_X4ysUxicGTOP-99" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="761" y="220" as="sourcePoint" />
+            <mxPoint x="1131" y="230" as="targetPoint" />
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="MT_8CDk_X4ysUxicGTOP-120" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;" parent="MT_8CDk_X4ysUxicGTOP-96" source="MT_8CDk_X4ysUxicGTOP-97" target="MT_8CDk_X4ysUxicGTOP-121" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="560" y="230" as="sourcePoint" />
+            <Array as="points">
+              <mxPoint x="661" y="280" />
+              <mxPoint x="661" y="340" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="MT_8CDk_X4ysUxicGTOP-121" value="&lt;span style=&quot;font-weight: 400;&quot;&gt;3. Add vehicle transaction&lt;/span&gt;" style="rounded=1;whiteSpace=wrap;html=1;fontStyle=1;fillColor=light-dark(#99FF99,var(--ge-dark-color, #121212));movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;" parent="MT_8CDk_X4ysUxicGTOP-96" vertex="1">
+          <mxGeometry x="801" y="310" width="490" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="MT_8CDk_X4ysUxicGTOP-122" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;" parent="MT_8CDk_X4ysUxicGTOP-96" source="MT_8CDk_X4ysUxicGTOP-97" target="MT_8CDk_X4ysUxicGTOP-123" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="580" y="280" as="sourcePoint" />
+            <mxPoint x="751" y="430" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="661" y="280" />
+              <mxPoint x="661" y="450" />
+              <mxPoint x="801" y="450" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="MT_8CDk_X4ysUxicGTOP-123" value="&lt;span style=&quot;font-weight: 400;&quot;&gt;4. Add cycle payment&lt;/span&gt;" style="rounded=1;whiteSpace=wrap;html=1;fontStyle=1;fillColor=light-dark(#99FF99,var(--ge-dark-color, #121212));movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;" parent="MT_8CDk_X4ysUxicGTOP-96" vertex="1">
+          <mxGeometry x="801" y="419" width="490" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="MT_8CDk_X4ysUxicGTOP-189" value="TransportCustomerTransaction" style="rounded=1;arcSize=10;whiteSpace=wrap;html=1;align=center;fillColor=#60a917;fontColor=#ffffff;strokeColor=#2D7600;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;" parent="MT_8CDk_X4ysUxicGTOP-96" vertex="1">
+          <mxGeometry x="1305" y="200" width="300" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="MT_8CDk_X4ysUxicGTOP-184" value="TransportVehicleTransaction" style="rounded=1;arcSize=10;whiteSpace=wrap;html=1;align=center;fillColor=#e3c800;fontColor=#000000;strokeColor=#B09500;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;" parent="MT_8CDk_X4ysUxicGTOP-96" vertex="1">
+          <mxGeometry x="1305" y="310" width="300" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="MT_8CDk_X4ysUxicGTOP-183" value="TransportVehicleReservationRentalCyclePayment" style="rounded=1;arcSize=10;whiteSpace=wrap;html=1;align=center;fillColor=#fad9d5;strokeColor=#ae4132;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;" parent="MT_8CDk_X4ysUxicGTOP-96" vertex="1">
+          <mxGeometry x="1305" y="419" width="300" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="MT_8CDk_X4ysUxicGTOP-146" value="Customer &amp;gt; Transactions" style="swimlane;html=1;startSize=30;horizontal=1;containerType=tree;glass=0;fillColor=#b0e3e6;strokeColor=#0e8088;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;" parent="1" vertex="1">
+          <mxGeometry x="40" y="1760" width="1795" height="540" as="geometry">
+            <mxRectangle x="35" y="2740" width="170" height="30" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="MT_8CDk_X4ysUxicGTOP-156" value="&lt;font style=&quot;color: light-dark(rgb(255, 255, 255), rgb(255, 255, 255));&quot;&gt;Delete Cutomr Payment&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fontStyle=1;fillColor=light-dark(#FF6666,var(--ge-dark-color, #121212));movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;" parent="MT_8CDk_X4ysUxicGTOP-146" vertex="1">
+          <mxGeometry x="35" y="253" width="490" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="MT_8CDk_X4ysUxicGTOP-157" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;" parent="MT_8CDk_X4ysUxicGTOP-146" source="MT_8CDk_X4ysUxicGTOP-156" target="MT_8CDk_X4ysUxicGTOP-158" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="665" y="283" />
+              <mxPoint x="665" y="123" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="MT_8CDk_X4ysUxicGTOP-158" value="&lt;font color=&quot;#ffffff&quot;&gt;1. Transaction Type is &quot;Payment&quot;&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fontStyle=1;fillColor=light-dark(#FF6666,var(--ge-dark-color, #121212));movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;" parent="MT_8CDk_X4ysUxicGTOP-146" vertex="1">
+          <mxGeometry x="815" y="93" width="490" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="MT_8CDk_X4ysUxicGTOP-159" value="&lt;font style=&quot;color: light-dark(rgb(255, 255, 255), rgb(255, 255, 255));&quot;&gt;2. Delete cycle payment&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fontStyle=1;fillColor=light-dark(#FF6666,var(--ge-dark-color, #121212));movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;" parent="MT_8CDk_X4ysUxicGTOP-146" vertex="1">
+          <mxGeometry x="815" y="203" width="490" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="MT_8CDk_X4ysUxicGTOP-160" value="&lt;font style=&quot;color: light-dark(rgb(255, 255, 255), rgb(255, 255, 255));&quot;&gt;3. Delete vehicle transaction&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fontStyle=1;fillColor=light-dark(#FF6666,var(--ge-dark-color, #121212));movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;" parent="MT_8CDk_X4ysUxicGTOP-146" vertex="1">
+          <mxGeometry x="815" y="313" width="490" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="MT_8CDk_X4ysUxicGTOP-161" value="&lt;font style=&quot;color: light-dark(rgb(255, 255, 255), rgb(255, 255, 255));&quot;&gt;3. Delete customer transaction (Payment)&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fontStyle=1;fillColor=light-dark(#FF6666,var(--ge-dark-color, #121212));movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;" parent="MT_8CDk_X4ysUxicGTOP-146" vertex="1">
+          <mxGeometry x="815" y="413" width="490" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="MT_8CDk_X4ysUxicGTOP-162" value="" style="endArrow=classic;html=1;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;" parent="MT_8CDk_X4ysUxicGTOP-146" source="MT_8CDk_X4ysUxicGTOP-156" target="MT_8CDk_X4ysUxicGTOP-159" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="795" y="303" as="sourcePoint" />
+            <mxPoint x="845" y="253" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="665" y="283" />
+              <mxPoint x="665" y="233" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="MT_8CDk_X4ysUxicGTOP-163" value="" style="endArrow=classic;html=1;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;" parent="MT_8CDk_X4ysUxicGTOP-146" source="MT_8CDk_X4ysUxicGTOP-156" target="MT_8CDk_X4ysUxicGTOP-160" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="795" y="193" as="sourcePoint" />
+            <mxPoint x="845" y="143" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="665" y="283" />
+              <mxPoint x="665" y="343" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="MT_8CDk_X4ysUxicGTOP-164" value="" style="endArrow=classic;html=1;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;" parent="MT_8CDk_X4ysUxicGTOP-146" source="MT_8CDk_X4ysUxicGTOP-156" target="MT_8CDk_X4ysUxicGTOP-161" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="795" y="193" as="sourcePoint" />
+            <mxPoint x="845" y="143" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="665" y="283" />
+              <mxPoint x="665" y="443" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="MT_8CDk_X4ysUxicGTOP-190" value="TransportVehicleReservationRentalCyclePayment" style="rounded=1;arcSize=10;whiteSpace=wrap;html=1;align=center;fillColor=#fad9d5;strokeColor=#ae4132;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;" parent="MT_8CDk_X4ysUxicGTOP-146" vertex="1">
+          <mxGeometry x="1315" y="203" width="300" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="MT_8CDk_X4ysUxicGTOP-191" value="TransportVehicleTransaction" style="rounded=1;arcSize=10;whiteSpace=wrap;html=1;align=center;fillColor=#e3c800;fontColor=#000000;strokeColor=#B09500;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;" parent="MT_8CDk_X4ysUxicGTOP-146" vertex="1">
+          <mxGeometry x="1315" y="313" width="300" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="MT_8CDk_X4ysUxicGTOP-192" value="TransportCustomerTransaction" style="rounded=1;arcSize=10;whiteSpace=wrap;html=1;align=center;fillColor=#60a917;fontColor=#ffffff;strokeColor=#2D7600;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;" parent="MT_8CDk_X4ysUxicGTOP-146" vertex="1">
+          <mxGeometry x="1315" y="413" width="300" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="MT_8CDk_X4ysUxicGTOP-165" value="Cron &amp;gt; Reservation Cycles" style="swimlane;html=1;startSize=30;horizontal=1;containerType=tree;glass=0;fillColor=#b0e3e6;strokeColor=#0e8088;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;" parent="1" vertex="1">
+          <mxGeometry x="40" y="2430" width="1790" height="610" as="geometry" />
+        </mxCell>
+        <mxCell id="MT_8CDk_X4ysUxicGTOP-166" value="Run every first day of month - early morning" style="rounded=1;whiteSpace=wrap;html=1;fontStyle=1;fillColor=light-dark(#99FF99,var(--ge-dark-color, #121212));movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;" parent="MT_8CDk_X4ysUxicGTOP-165" vertex="1">
+          <mxGeometry x="30" y="260" width="490" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="MT_8CDk_X4ysUxicGTOP-167" value="1. Collect all reservations&amp;nbsp;&amp;nbsp;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=light-dark(#99FF99,var(--ge-dark-color, #121212));movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;" parent="MT_8CDk_X4ysUxicGTOP-165" vertex="1">
+          <mxGeometry x="801" y="70" width="490" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="MT_8CDk_X4ysUxicGTOP-168" value="2. For reach reservation, build periods and map them to a cycle row object&amp;nbsp; &amp;nbsp;&amp;nbsp;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=light-dark(#99FF99,var(--ge-dark-color, #121212));movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;" parent="MT_8CDk_X4ysUxicGTOP-165" vertex="1">
+          <mxGeometry x="801" y="160" width="490" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="MT_8CDk_X4ysUxicGTOP-169" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;" parent="MT_8CDk_X4ysUxicGTOP-165" source="MT_8CDk_X4ysUxicGTOP-166" target="MT_8CDk_X4ysUxicGTOP-167" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="550" y="280" as="sourcePoint" />
+            <mxPoint x="1111" y="110" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="661" y="290" />
+              <mxPoint x="661" y="100" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="MT_8CDk_X4ysUxicGTOP-170" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;" parent="MT_8CDk_X4ysUxicGTOP-165" source="MT_8CDk_X4ysUxicGTOP-166" target="MT_8CDk_X4ysUxicGTOP-168" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="761" y="220" as="sourcePoint" />
+            <mxPoint x="1131" y="230" as="targetPoint" />
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="MT_8CDk_X4ysUxicGTOP-172" value="&lt;span style=&quot;font-weight: 400;&quot;&gt;3. Check a cycle object against cycle table for its existence&lt;/span&gt;" style="rounded=1;whiteSpace=wrap;html=1;fontStyle=1;fillColor=light-dark(#99FF99,var(--ge-dark-color, #121212));movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;" parent="MT_8CDk_X4ysUxicGTOP-165" vertex="1">
+          <mxGeometry x="801" y="250" width="490" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="MT_8CDk_X4ysUxicGTOP-173" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;" parent="MT_8CDk_X4ysUxicGTOP-165" source="MT_8CDk_X4ysUxicGTOP-166" target="MT_8CDk_X4ysUxicGTOP-174" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="580" y="280" as="sourcePoint" />
+            <mxPoint x="751" y="430" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="661" y="290" />
+              <mxPoint x="661" y="370" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="MT_8CDk_X4ysUxicGTOP-174" value="&lt;span style=&quot;font-weight: 400;&quot;&gt;4.1&lt;/span&gt;&lt;span style=&quot;font-weight: 400; background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&amp;nbsp;Add non existing periods to cycle table&lt;/span&gt;" style="rounded=1;whiteSpace=wrap;html=1;fontStyle=1;fillColor=light-dark(#99FF99,var(--ge-dark-color, #121212));movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;" parent="MT_8CDk_X4ysUxicGTOP-165" vertex="1">
+          <mxGeometry x="801" y="340" width="490" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="MT_8CDk_X4ysUxicGTOP-178" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;" parent="MT_8CDk_X4ysUxicGTOP-165" source="MT_8CDk_X4ysUxicGTOP-166" target="MT_8CDk_X4ysUxicGTOP-172" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="530" y="290" as="sourcePoint" />
+            <mxPoint x="811" y="190" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="660" y="290" />
+              <mxPoint x="660" y="280" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="MT_8CDk_X4ysUxicGTOP-179" value="&lt;span style=&quot;font-weight: 400;&quot;&gt;4.2&lt;/span&gt;&lt;span style=&quot;font-weight: 400; background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&amp;nbsp;Add a Rent transaction to customer transaction table&lt;/span&gt;" style="rounded=1;whiteSpace=wrap;html=1;fontStyle=1;fillColor=light-dark(#99FF99,var(--ge-dark-color, #121212));movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;" parent="MT_8CDk_X4ysUxicGTOP-165" vertex="1">
+          <mxGeometry x="801" y="432.5" width="490" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="MT_8CDk_X4ysUxicGTOP-180" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;" parent="MT_8CDk_X4ysUxicGTOP-165" source="MT_8CDk_X4ysUxicGTOP-166" target="MT_8CDk_X4ysUxicGTOP-179" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="530" y="250" as="sourcePoint" />
+            <mxPoint x="811" y="380" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="660" y="290" />
+              <mxPoint x="660" y="463" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="MT_8CDk_X4ysUxicGTOP-193" value="TransportVehicleReservationRentalCycle" style="rounded=1;arcSize=10;whiteSpace=wrap;html=1;align=center;fillColor=#1ba1e2;fontColor=#ffffff;strokeColor=#006EAF;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;" parent="MT_8CDk_X4ysUxicGTOP-165" vertex="1">
+          <mxGeometry x="1300" y="250" width="300" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="MT_8CDk_X4ysUxicGTOP-194" value="TransportVehicleReservationRentalCycle" style="rounded=1;arcSize=10;whiteSpace=wrap;html=1;align=center;fillColor=#1ba1e2;fontColor=#ffffff;strokeColor=#006EAF;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;" parent="MT_8CDk_X4ysUxicGTOP-165" vertex="1">
+          <mxGeometry x="1300" y="340" width="300" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="MT_8CDk_X4ysUxicGTOP-195" value="TransportCustomerTransaction" style="rounded=1;arcSize=10;whiteSpace=wrap;html=1;align=center;fillColor=#60a917;fontColor=#ffffff;strokeColor=#2D7600;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;" parent="MT_8CDk_X4ysUxicGTOP-165" vertex="1">
+          <mxGeometry x="1300" y="432.5" width="300" height="40" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

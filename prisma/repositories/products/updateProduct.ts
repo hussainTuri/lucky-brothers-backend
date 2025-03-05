@@ -1,7 +1,5 @@
-import { PrismaClient } from '@prisma/client';
 import type { Product } from '@prisma/client';
-
-const prisma = new PrismaClient();
+import prisma from '../../../middleware/prisma';
 
 export const updateProduct = async (product: Product): Promise<Product | null> => {
   const updateData = JSON.parse(JSON.stringify(product));
@@ -9,7 +7,6 @@ export const updateProduct = async (product: Product): Promise<Product | null> =
   delete updateData.createdAt;
   delete updateData.updatedAt;
   delete updateData.sku;
-  product.productName = product.productName;
 
   const result = await prisma.product.update({
     where: {

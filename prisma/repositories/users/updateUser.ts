@@ -1,9 +1,7 @@
-import { PrismaClient } from '@prisma/client';
 import type { User } from '@prisma/client';
 import { clearCache } from '../../../lib/utils';
 import { CacheKeys } from '../../../lib/constants';
-
-const prisma = new PrismaClient();
+import prisma from '../../../middleware/prisma';
 
 export const updateUser = async (user: User): Promise<User | null> => {
   const updateData = JSON.parse(JSON.stringify(user));

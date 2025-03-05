@@ -2,7 +2,7 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
   previewFeatures = ["fullTextSearch", "fullTextIndex"]
 }
 
@@ -12,83 +12,86 @@ datasource db {
 }
 
 model Product {
-  id Int @id @default(autoincrement())
-  sku String? @db.VarChar(50) @unique
-  productName String @db.VarChar(255)
-  productTypeId Int @db.Int
-  stockQuantity Int? @db.Int @default(0)
-  manufacturer String? @db.VarChar(255)
-  manufacturingYear Int? @db.Int
-  imagePath String? @db.VarChar(255)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  size String? @db.VarChar(255) // @deprecated
-  diameter Int? @db.Int // @deprecated
-  speedIndex String? @db.VarChar(255) // @deprecated
-  loadIndex String? @db.VarChar(255) // @deprecated
-  season String? @db.VarChar(255) // @deprecated
-  width Int? @db.Int // @deprecated
-  height Int? @db.Int // @deprecated
-  length Int? @db.Int // @deprecated
-  startStop Int? @db.Int // @deprecated
-  design String? @db.VarChar(255) // @deprecated
-  threadSize String? @db.VarChar(255) // @deprecated
-  buyingPrice Int? @db.Int // @deprecated
-  sellingPrice Int? @db.Int
-  isActive Boolean @default(true)
-  priceHistory PriceHistory[]
-  productType ProductType @relation(fields: [productTypeId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  invoiceItems InvoiceItem[]
-  productStocks ProductStock[]
-  createdById Int? @db.Int
-  updatedById Int? @db.Int
-  createdBy User? @relation("ProductCreatedBy", fields: [createdById], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  updatedBy User? @relation("ProductUpdatedBy", fields: [updatedById], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  id                Int            @id @default(autoincrement())
+  sku               String?        @unique @db.VarChar(50)
+  productName       String         @db.VarChar(255)
+  productTypeId     Int            @db.Int
+  stockQuantity     Int?           @default(0) @db.Int
+  manufacturer      String?        @db.VarChar(255)
+  manufacturingYear Int?           @db.Int
+  imagePath         String?        @db.VarChar(255)
+  createdAt         DateTime       @default(now())
+  updatedAt         DateTime       @updatedAt
+  size              String?        @db.VarChar(255) // @deprecated
+  diameter          Int?           @db.Int // @deprecated
+  speedIndex        String?        @db.VarChar(255) // @deprecated
+  loadIndex         String?        @db.VarChar(255) // @deprecated
+  season            String?        @db.VarChar(255) // @deprecated
+  width             Int?           @db.Int // @deprecated
+  height            Int?           @db.Int // @deprecated
+  length            Int?           @db.Int // @deprecated
+  startStop         Int?           @db.Int // @deprecated
+  design            String?        @db.VarChar(255) // @deprecated
+  threadSize        String?        @db.VarChar(255) // @deprecated
+  buyingPrice       Int?           @db.Int // @deprecated
+  sellingPrice      Int?           @db.Int
+  isActive          Boolean        @default(true)
+  priceHistory      PriceHistory[]
+  productType       ProductType    @relation(fields: [productTypeId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  invoiceItems      InvoiceItem[]
+  productStocks     ProductStock[]
+  createdById       Int?           @db.Int
+  updatedById       Int?           @db.Int
+  createdBy         User?          @relation("ProductCreatedBy", fields: [createdById], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  updatedBy         User?          @relation("ProductUpdatedBy", fields: [updatedById], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
   @@index([createdById])
   @@index([updatedById])
 }
 
 model ProductType {
-  id Int @id @default(autoincrement())
-  typeName String @db.VarChar(255)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  products Product[]
+  id        Int       @id @default(autoincrement())
+  typeName  String    @db.VarChar(255)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  products  Product[]
 }
 
 model PriceHistory {
-  id Int @id @default(autoincrement())
-  productId Int @db.Int
-  buyingPrice Int @db.Int
-  sellingPrice Int @db.Int
-  product Product @relation(fields: [productId], references: [id], onDelete: Cascade, onUpdate: NoAction)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  createdById Int? @db.Int
-  updatedById Int? @db.Int
-  createdBy User? @relation("PriceHistoryCreatedBy", fields: [createdById], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  updatedBy User? @relation("PriceHistoryUpdatedBy", fields: [updatedById], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  id           Int      @id @default(autoincrement())
+  productId    Int      @db.Int
+  buyingPrice  Int      @db.Int
+  sellingPrice Int      @db.Int
+  product      Product  @relation(fields: [productId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  createdById  Int?     @db.Int
+  updatedById  Int?     @db.Int
+  createdBy    User?    @relation("PriceHistoryCreatedBy", fields: [createdById], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  updatedBy    User?    @relation("PriceHistoryUpdatedBy", fields: [updatedById], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
   @@index([createdById])
   @@index([updatedById])
 }
 
 model ProductStock {
-  id Int @id @default(autoincrement())
-  productId Int @db.Int
-  pricePerItem Decimal @db.Decimal(10, 2) // buying price
-  originalQuantity Int @db.Int
-  remainingQuantity Int @db.Int
-  comment String? @db.VarChar(255)
-  receiptNumber String? @db.VarChar(45)
-  mode Int @db.TinyInt @default(1) // 1: cash 2: transfer
-  product Product @relation(fields: [productId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id                       Int                       @id @default(autoincrement())
+  productId                Int                       @db.Int
+  pricePerItem             Decimal                   @db.Decimal(10, 2) // buying price
+  originalQuantity         Int                       @db.Int
+  remainingQuantity        Int                       @db.Int
+  comment                  String?                   @db.VarChar(255)
+  receiptNumber            String?                   @db.VarChar(45)
+  mode                     Int                       @default(1) @db.TinyInt // 1: cash 2: transfer
+  product                  Product                   @relation(fields: [productId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  createdAt                DateTime                  @default(now())
+  updatedAt                DateTime                  @updatedAt
   invoiceItemProductStocks InvoiceItemProductStock[]
-  createdById Int? @db.Int
-  updatedById Int? @db.Int
-  createdBy User? @relation("ProductStockCreatedBy", fields: [createdById], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  updatedBy User? @relation("ProductStockUpdatedBy", fields: [updatedById], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  createdById              Int?                      @db.Int
+  updatedById              Int?                      @db.Int
+  createdBy                User?                     @relation("ProductStockCreatedBy", fields: [createdById], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  updatedBy                User?                     @relation("ProductStockUpdatedBy", fields: [updatedById], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
   @@index([createdAt])
   @@index([remainingQuantity])
   @@index([createdById])
@@ -96,43 +99,45 @@ model ProductStock {
 }
 
 model Customer {
-  id Int @id @default(autoincrement())
-  customerName String @db.VarChar(255)
-  trn String? @db.VarChar(255)
-  phone String @db.VarChar(255) @unique
-  address String? @db.VarChar(255)
-  imagePath String? @db.VarChar(255)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  balance Int? @db.Int @default(0)
-  invoices Invoice[]
+  id           Int                   @id @default(autoincrement())
+  customerName String                @db.VarChar(255)
+  trn          String?               @db.VarChar(255)
+  phone        String                @unique @db.VarChar(255)
+  address      String?               @db.VarChar(255)
+  imagePath    String?               @db.VarChar(255)
+  createdAt    DateTime              @default(now())
+  updatedAt    DateTime              @updatedAt
+  balance      Int?                  @default(0) @db.Int
+  invoices     Invoice[]
   transactions CustomerTransaction[]
-  createdById Int? @db.Int
-  updatedById Int? @db.Int
-  createdBy User? @relation("CustomerCreatedBy", fields: [createdById], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  updatedBy User? @relation("CustomerUpdatedBy", fields: [updatedById], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  @@fulltext([customerName])
+  createdById  Int?                  @db.Int
+  updatedById  Int?                  @db.Int
+  createdBy    User?                 @relation("CustomerCreatedBy", fields: [createdById], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  updatedBy    User?                 @relation("CustomerUpdatedBy", fields: [updatedById], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
   @@index([createdById])
   @@index([updatedById])
+  @@fulltext([customerName])
 }
 
 model CustomerTransaction {
-  id Int @id @default(autoincrement())
-  customerId Int @db.Int
-  invoiceId Int? @db.Int
-  amount Int @db.Int
-  comment String? @db.VarChar(255)
-  typeId Int @db.TinyInt // 1: Payment, 2: Invoice, 3: Refund
-  mode Int @db.TinyInt @default(1) // 1: cash 2: transfer
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  customer Customer @relation(fields: [customerId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  invoice Invoice? @relation(fields: [invoiceId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  id              Int              @id @default(autoincrement())
+  customerId      Int              @db.Int
+  invoiceId       Int?             @db.Int
+  amount          Int              @db.Int
+  comment         String?          @db.VarChar(255)
+  typeId          Int              @db.TinyInt // 1: Payment, 2: Invoice, 3: Refund
+  mode            Int              @default(1) @db.TinyInt // 1: cash 2: transfer
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  customer        Customer         @relation(fields: [customerId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  invoice         Invoice?         @relation(fields: [invoiceId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   invoicePayments InvoicePayment[]
-  createdById Int? @db.Int
-  updatedById Int? @db.Int
-  createdBy User? @relation("CustomerTransactionCreatedBy", fields: [createdById], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  updatedBy User? @relation("CustomerTransactionUpdatedBy", fields: [updatedById], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  createdById     Int?             @db.Int
+  updatedById     Int?             @db.Int
+  createdBy       User?            @relation("CustomerTransactionCreatedBy", fields: [createdById], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  updatedBy       User?            @relation("CustomerTransactionUpdatedBy", fields: [updatedById], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
   @@index([createdAt])
   @@index([updatedAt])
   @@index([typeId])
@@ -141,35 +146,35 @@ model CustomerTransaction {
 }
 
 model Invoice {
-  id Int @id @default(autoincrement())
-  customerId Int? @db.Int
-  totalAmount Int @db.Int
-  totalAmountExcVat Int @db.Int
-  dueDate DateTime? @db.DateTime
-  statusId Int @db.Int // 1=Pending, 2=Paid, 3=Cancelled, 4=Refunded
-  comment String? @db.VarChar(255)
-  cancelledAt DateTime? @db.DateTime
-  refundedAt DateTime? @db.DateTime
-  driverName String? @db.VarChar(255)
-  vehicleName String? @db.VarChar(255)
-  vehicleRegistrationNumber String? @db.VarChar(255)
-  profit Decimal? @db.Decimal(10, 2) @default(0)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  customer Customer? @relation(fields: [customerId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  items InvoiceItem[]
-  payments InvoicePayment[]
-  status InvoiceStatus @relation(fields: [statusId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  transactions CustomerTransaction[]
-  createdById Int? @db.Int
-  updatedById Int? @db.Int
-  createdBy User? @relation("InvoiceCreatedBy", fields: [createdById], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  updatedBy User? @relation("InvoiceUpdatedBy", fields: [updatedById], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  vat Decimal? @db.Decimal(10,2) @default(0)
-  vatClearedAt DateTime? @db.DateTime
-  vatClearingMode Int? @db.TinyInt @default(0)  /// 1: cash 2: transfer Whether VAT to government was paid from cash or through bank transfer
-  vatRate Decimal? @db.Decimal(10,2) @default(0)
-  trn String? @db.VarChar(30)
+  id                        Int                   @id @default(autoincrement())
+  customerId                Int?                  @db.Int
+  totalAmount               Int                   @db.Int
+  totalAmountExcVat         Int                   @db.Int
+  dueDate                   DateTime?             @db.DateTime
+  statusId                  Int                   @db.Int // 1=Pending, 2=Paid, 3=Cancelled, 4=Refunded
+  comment                   String?               @db.VarChar(255)
+  cancelledAt               DateTime?             @db.DateTime
+  refundedAt                DateTime?             @db.DateTime
+  driverName                String?               @db.VarChar(255)
+  vehicleName               String?               @db.VarChar(255)
+  vehicleRegistrationNumber String?               @db.VarChar(255)
+  profit                    Decimal?              @default(0) @db.Decimal(10, 2)
+  createdAt                 DateTime              @default(now())
+  updatedAt                 DateTime              @updatedAt
+  customer                  Customer?             @relation(fields: [customerId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  items                     InvoiceItem[]
+  payments                  InvoicePayment[]
+  status                    InvoiceStatus         @relation(fields: [statusId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  transactions              CustomerTransaction[]
+  createdById               Int?                  @db.Int
+  updatedById               Int?                  @db.Int
+  createdBy                 User?                 @relation("InvoiceCreatedBy", fields: [createdById], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  updatedBy                 User?                 @relation("InvoiceUpdatedBy", fields: [updatedById], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  vat                       Decimal?              @default(0) @db.Decimal(10, 2)
+  vatClearedAt              DateTime?             @db.DateTime
+  vatClearingMode           Int?                  @default(0) @db.TinyInt /// 1: cash 2: transfer Whether VAT to government was paid from cash or through bank transfer
+  vatRate                   Decimal?              @default(0) @db.Decimal(10, 2)
+  trn                       String?               @db.VarChar(30)
 
   @@index([dueDate])
   @@index([createdAt])
@@ -181,148 +186,166 @@ model Invoice {
 }
 
 model InvoiceItem {
-  id Int @id @default(autoincrement())
-  invoiceId Int @db.Int
-  productId Int @db.Int
-  quantity Int @db.Int
-  price Int @db.Int // Selling price
-  subTotal Int @db.Int
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  invoice Invoice @relation(fields: [invoiceId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  product Product @relation(fields: [productId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  id            Int                       @id @default(autoincrement())
+  invoiceId     Int                       @db.Int
+  productId     Int                       @db.Int
+  quantity      Int                       @db.Int
+  price         Int                       @db.Int // Selling price
+  subTotal      Int                       @db.Int
+  createdAt     DateTime                  @default(now())
+  updatedAt     DateTime                  @updatedAt
+  invoice       Invoice                   @relation(fields: [invoiceId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  product       Product                   @relation(fields: [productId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   productStocks InvoiceItemProductStock[]
 }
 
 model InvoiceItemProductStock {
-  id Int @id @default(autoincrement())
-  invoiceItemId Int @db.Int
-  productStockId Int @db.Int
-  quantity Int @db.Int
-  createdAt DateTime @default(now())
-  invoiceItem InvoiceItem @relation(fields: [invoiceItemId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  productStock ProductStock @relation(fields: [productStockId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  @@index([createdAt])
+  id             Int          @id @default(autoincrement())
+  invoiceItemId  Int          @db.Int
+  productStockId Int          @db.Int
+  quantity       Int          @db.Int
+  createdAt      DateTime     @default(now())
+  invoiceItem    InvoiceItem  @relation(fields: [invoiceItemId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  productStock   ProductStock @relation(fields: [productStockId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
   @@unique([invoiceItemId, productStockId])
+  @@index([createdAt])
 }
 
 model InvoiceStatus {
-  id Int @id @default(autoincrement())
-  statusName String @db.VarChar(255)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  invoices Invoice[]
+  id         Int       @id @default(autoincrement())
+  statusName String    @db.VarChar(255)
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  invoices   Invoice[]
 }
 
 model InvoicePayment {
-  id Int @id @default(autoincrement())
-  invoiceId Int @db.Int
-  customerTransactionId Int? @db.Int
-  amount Int @db.Int
-  comment String? @db.VarChar(255)
-  mode Int @db.TinyInt @default(1) // 1: cash 2: transfer
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  invoice Invoice @relation(fields: [invoiceId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  customerPayment CustomerTransaction? @relation(fields: [customerTransactionId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  createdById Int? @db.Int
-  updatedById Int? @db.Int
-  createdBy User? @relation("InvoicePaymentCreatedBy", fields: [createdById], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  updatedBy User? @relation("InvoicePaymentUpdatedBy", fields: [updatedById], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  id                    Int                  @id @default(autoincrement())
+  invoiceId             Int                  @db.Int
+  customerTransactionId Int?                 @db.Int
+  amount                Int                  @db.Int
+  comment               String?              @db.VarChar(255)
+  mode                  Int                  @default(1) @db.TinyInt // 1: cash 2: transfer
+  createdAt             DateTime             @default(now())
+  updatedAt             DateTime             @updatedAt
+  invoice               Invoice              @relation(fields: [invoiceId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  customerPayment       CustomerTransaction? @relation(fields: [customerTransactionId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  createdById           Int?                 @db.Int
+  updatedById           Int?                 @db.Int
+  createdBy             User?                @relation("InvoicePaymentCreatedBy", fields: [createdById], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  updatedBy             User?                @relation("InvoicePaymentUpdatedBy", fields: [updatedById], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
   @@index([createdAt])
   @@index([updatedAt])
   @@index([createdById])
   @@index([updatedById])
- }
+}
 
 model User {
-  id Int @id @default(autoincrement())
-  fullName String? @db.VarChar(255)
-  username String @db.VarChar(255) @unique
-  password String @db.VarChar(255)
-  phone String? @db.VarChar(255)
-  address String? @db.VarChar(255)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  createdById Int? @db.Int
-  updatedById Int? @db.Int
-  createdProducts Product[] @relation("ProductCreatedBy")
-  updatedProducts Product[] @relation("ProductUpdatedBy")
-  createdPriceHistories PriceHistory[] @relation("PriceHistoryCreatedBy")
-  updatedPriceHistories PriceHistory[] @relation("PriceHistoryUpdatedBy")
-  createdProductStocks ProductStock[] @relation("ProductStockCreatedBy")
-  updatedProductStocks ProductStock[] @relation("ProductStockUpdatedBy")
-  createdCustomers Customer[] @relation("CustomerCreatedBy")
-  updatedCustomers Customer[] @relation("CustomerUpdatedBy")
-  createdCustomerTransactions CustomerTransaction[] @relation("CustomerTransactionCreatedBy")
-  updatedCustomerTransactions CustomerTransaction[] @relation("CustomerTransactionUpdatedBy")
-  createdInvoices Invoice[] @relation("InvoiceCreatedBy")
-  updatedInvoices Invoice[] @relation("InvoiceUpdatedBy")
-  createdInvoicePayments InvoicePayment[] @relation("InvoicePaymentCreatedBy")
-  updatedInvoicePayments InvoicePayment[] @relation("InvoicePaymentUpdatedBy")
-  createdExpenses Expense[] @relation("ExpenseCreatedBy")
-  updatedExpenses Expense[] @relation("ExpenseUpdatedBy")
-  createdMonthlyReports MonthlyReport[] @relation("MonthlyReportCreatedBy")
-  updatedMonthlyReports MonthlyReport[] @relation("MonthlyReportUpdatedBy")
-  createdDailyReports DailyReport[] @relation("DailyReportCreatedBy")
-  updatedDailyReports DailyReport[] @relation("DailyReportUpdatedBy")
-  createdCash Cash[] @relation("CashCreatedBy")
-  updatedCash Cash[] @relation("CashUpdatedBy")
-  createdCashOut CashOut[] @relation("CashOutCreatedBy")
-  updatedCashOut CashOut[] @relation("CashOutUpdatedBy")
+  id                                              Int                                      @id @default(autoincrement())
+  fullName                                        String?                                  @db.VarChar(255)
+  username                                        String                                   @unique @db.VarChar(255)
+  password                                        String                                   @db.VarChar(255)
+  phone                                           String?                                  @db.VarChar(255)
+  address                                         String?                                  @db.VarChar(255)
+  userType                                        Int                                      @default(1) @db.TinyInt
+  createdAt                                       DateTime                                 @default(now())
+  updatedAt                                       DateTime                                 @updatedAt
+  createdById                                     Int?                                     @db.Int
+  updatedById                                     Int?                                     @db.Int
+  createdProducts                                 Product[]                                @relation("ProductCreatedBy")
+  updatedProducts                                 Product[]                                @relation("ProductUpdatedBy")
+  createdPriceHistories                           PriceHistory[]                           @relation("PriceHistoryCreatedBy")
+  updatedPriceHistories                           PriceHistory[]                           @relation("PriceHistoryUpdatedBy")
+  createdProductStocks                            ProductStock[]                           @relation("ProductStockCreatedBy")
+  updatedProductStocks                            ProductStock[]                           @relation("ProductStockUpdatedBy")
+  createdCustomers                                Customer[]                               @relation("CustomerCreatedBy")
+  updatedCustomers                                Customer[]                               @relation("CustomerUpdatedBy")
+  createdCustomerTransactions                     CustomerTransaction[]                    @relation("CustomerTransactionCreatedBy")
+  updatedCustomerTransactions                     CustomerTransaction[]                    @relation("CustomerTransactionUpdatedBy")
+  createdInvoices                                 Invoice[]                                @relation("InvoiceCreatedBy")
+  updatedInvoices                                 Invoice[]                                @relation("InvoiceUpdatedBy")
+  createdInvoicePayments                          InvoicePayment[]                         @relation("InvoicePaymentCreatedBy")
+  updatedInvoicePayments                          InvoicePayment[]                         @relation("InvoicePaymentUpdatedBy")
+  createdExpenses                                 Expense[]                                @relation("ExpenseCreatedBy")
+  updatedExpenses                                 Expense[]                                @relation("ExpenseUpdatedBy")
+  createdMonthlyReports                           MonthlyReport[]                          @relation("MonthlyReportCreatedBy")
+  updatedMonthlyReports                           MonthlyReport[]                          @relation("MonthlyReportUpdatedBy")
+  createdDailyReports                             DailyReport[]                            @relation("DailyReportCreatedBy")
+  updatedDailyReports                             DailyReport[]                            @relation("DailyReportUpdatedBy")
+  createdCash                                     Cash[]                                   @relation("CashCreatedBy")
+  updatedCash                                     Cash[]                                   @relation("CashUpdatedBy")
+  createdCashOut                                  CashOut[]                                @relation("CashOutCreatedBy")
+  updatedCashOut                                  CashOut[]                                @relation("CashOutUpdatedBy")
+  createdTransportVehicles                        TransportVehicle[]                       @relation("TransportVehicleCreatedBy")
+  updatedTransportVehicles                        TransportVehicle[]                       @relation("TransportVehicleUpdatedBy")
+  createdTransportVehicleTransactions             TransportVehicleTransaction[]            @relation("TransportVehicleTransactionCreatedBy")
+  updatedTransportVehicleTransactions             TransportVehicleTransaction[]            @relation("TransportVehicleTransactionUpdatedBy")
+  TransportVehicleReservationCreatedBy            TransportVehicleReservation[]            @relation("TransportVehicleReservationCreatedBy")
+  TransportVehicleReservationUpdatedBy            TransportVehicleReservation[]            @relation("TransportVehicleReservationUpdatedBy")
+  TransportCustomerCreatedBy                      TransportCustomer[]                      @relation("TransportCustomerCreatedBy")
+  TransportCustomerUpdatedBy                      TransportCustomer[]                      @relation("TransportCustomerUpdatedBy")
+  TransportCustomerTransactionCreatedBy           TransportCustomerTransaction[]           @relation("TransportCustomerTransactionCreatedBy")
+  TransportCustomerTransactionUpdatedBy           TransportCustomerTransaction[]           @relation("TransportCustomerTransactionUpdatedBy")
+  TransportVehicleReservationRentalCycleCreatedBy TransportVehicleReservationRentalCycle[] @relation("TransportVehicleReservationRentalCycleCreatedBy")
+  TransportVehicleReservationRentalCycleUpdatedBy TransportVehicleReservationRentalCycle[] @relation("TransportVehicleReservationRentalCycleUpdatedBy")
 }
 
 model Expense {
-  id Int @id @default(autoincrement())
-  amount Int @db.Int
-  description String? @db.VarChar(255)
+  id          Int      @id @default(autoincrement())
+  amount      Int      @db.Int
+  description String?  @db.VarChar(255)
   expenseDate DateTime @db.DateTime
-  mode Int @db.TinyInt @default(1) // 1: cash 2: transfer
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  createdById Int? @db.Int
-  updatedById Int? @db.Int
-  createdBy User? @relation("ExpenseCreatedBy", fields: [createdById], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  updatedBy User? @relation("ExpenseUpdatedBy", fields: [updatedById], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  mode        Int      @default(1) @db.TinyInt // 1: cash 2: transfer
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  createdById Int?     @db.Int
+  updatedById Int?     @db.Int
+  createdBy   User?    @relation("ExpenseCreatedBy", fields: [createdById], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  updatedBy   User?    @relation("ExpenseUpdatedBy", fields: [updatedById], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
   @@index([createdById])
   @@index([updatedById])
 }
 
 // MonthlyReport is more of a monthly profit
 model MonthlyReport {
-  id Int @id @default(autoincrement())
-  monthYear String @db.VarChar(7)
-  sales Int @db.Int
-  expense Int @db.Int
-  profit Int @db.Int
-  description String? @db.VarChar(255)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  createdById Int? @db.Int
-  updatedById Int? @db.Int
-  createdBy User? @relation("MonthlyReportCreatedBy", fields: [createdById], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  updatedBy User? @relation("MonthlyReportUpdatedBy", fields: [updatedById], references: [id], onDelete: NoAction, onUpdate: NoAction)
- @@unique([monthYear])
+  id          Int      @id @default(autoincrement())
+  monthYear   String   @db.VarChar(7)
+  sales       Int      @db.Int
+  expense     Int      @db.Int
+  profit      Int      @db.Int
+  description String?  @db.VarChar(255)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  createdById Int?     @db.Int
+  updatedById Int?     @db.Int
+  createdBy   User?    @relation("MonthlyReportCreatedBy", fields: [createdById], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  updatedBy   User?    @relation("MonthlyReportUpdatedBy", fields: [updatedById], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@unique([monthYear])
 }
 
 // DailyReport is more of a daily cash register
 model DailyReport {
-  id Int @id @default(autoincrement())
-  reportDate DateTime @db.DateTime
-  openingBalance Int @db.Int
-  sales Int @db.Int
-  expense Int @db.Int
-  receiveCash Int @db.Int // Cash from any other source than selling services/merchandise eg Ali or Sabir
-  payCash Int @db.Int // Cash paid to any other source than buying services/merchandise eg Ali or Sabir
-  buyStock Int @db.Int
-  closingBalance Int @db.Int
-  description String? @db.VarChar(255)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  createdById Int? @db.Int
-  updatedById Int? @db.Int
-  createdBy User? @relation("DailyReportCreatedBy", fields: [createdById], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  updatedBy User? @relation("DailyReportUpdatedBy", fields: [updatedById], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  id             Int      @id @default(autoincrement())
+  reportDate     DateTime @db.DateTime
+  openingBalance Int      @db.Int
+  sales          Int      @db.Int
+  expense        Int      @db.Int
+  receiveCash    Int      @db.Int // Cash from any other source than selling services/merchandise eg Ali or Sabir
+  payCash        Int      @db.Int // Cash paid to any other source than buying services/merchandise eg Ali or Sabir
+  buyStock       Int      @db.Int
+  closingBalance Int      @db.Int
+  description    String?  @db.VarChar(255)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  createdById    Int?     @db.Int
+  updatedById    Int?     @db.Int
+  createdBy      User?    @relation("DailyReportCreatedBy", fields: [createdById], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  updatedBy      User?    @relation("DailyReportUpdatedBy", fields: [updatedById], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
   @@unique([reportDate])
   @@index([createdById])
   @@index([updatedById])
@@ -330,33 +353,224 @@ model DailyReport {
 
 // Cash in.
 model Cash {
-  id Int @id @default(autoincrement())
-  amount Int @db.Int
-  description String @db.VarChar(255)
-  cashDate DateTime @db.DateTime
-  mode Int @db.TinyInt @default(1) // 1: cash 2: transfer
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  createdById Int? @db.Int
-  updatedById Int? @db.Int
-  createdBy User? @relation("CashCreatedBy", fields: [createdById], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  updatedBy User? @relation("CashUpdatedBy", fields: [updatedById], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  id          Int      @id @default(autoincrement())
+  amount      Int      @db.Int
+  description String   @db.VarChar(255)
+  cashDate    DateTime @db.DateTime
+  mode        Int      @default(1) @db.TinyInt // 1: cash 2: transfer
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  createdById Int?     @db.Int
+  updatedById Int?     @db.Int
+  createdBy   User?    @relation("CashCreatedBy", fields: [createdById], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  updatedBy   User?    @relation("CashUpdatedBy", fields: [updatedById], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
   @@index([createdById])
   @@index([updatedById])
 }
 
 model CashOut {
-  id Int @id @default(autoincrement())
-  amount Int @db.Int
-  description String @db.VarChar(255)
-  cashDate DateTime @db.DateTime
-  mode Int @db.TinyInt @default(1) // 1: cash 2: transfer
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  createdById Int? @db.Int
-  updatedById Int? @db.Int
-  createdBy User? @relation("CashOutCreatedBy", fields: [createdById], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  updatedBy User? @relation("CashOutUpdatedBy", fields: [updatedById], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  id          Int      @id @default(autoincrement())
+  amount      Int      @db.Int
+  description String   @db.VarChar(255)
+  cashDate    DateTime @db.DateTime
+  mode        Int      @default(1) @db.TinyInt // 1: cash 2: transfer
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  createdById Int?     @db.Int
+  updatedById Int?     @db.Int
+  createdBy   User?    @relation("CashOutCreatedBy", fields: [createdById], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  updatedBy   User?    @relation("CashOutUpdatedBy", fields: [updatedById], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
   @@index([createdById])
   @@index([updatedById])
+}
+
+// Transport system
+model TransportVehicle {
+  id                   Int                            @id @default(autoincrement())
+  vehicleName          String                         @db.VarChar(255)
+  vehicleRegistration  String                         @db.VarChar(30)
+  model                String                         @db.VarChar(255)
+  buyDate              DateTime?                      @db.DateTime
+  createdAt            DateTime                       @default(now())
+  updatedAt            DateTime                       @updatedAt
+  createdById          Int?                           @db.Int
+  updatedById          Int?                           @db.Int
+  createdBy            User?                          @relation("TransportVehicleCreatedBy", fields: [createdById], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  updatedBy            User?                          @relation("TransportVehicleUpdatedBy", fields: [updatedById], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  transactions         TransportVehicleTransaction[]
+  reservations         TransportVehicleReservation[]
+  customerTransactions TransportCustomerTransaction[]
+
+  @@index([createdById])
+  @@index([updatedById])
+  @@fulltext([vehicleName])
+  @@fulltext([vehicleRegistration])
+}
+
+model TransportVehicleTransaction {
+  id                    Int                             @id @default(autoincrement())
+  vehicleId             Int                             @db.Int
+  customerTransactionId Int?                            @unique @db.Int
+  transactionTypeId     Int                             @db.Int
+  bankId                Int?                            @db.Int
+  amount                Int                             @db.Int
+  balance               Int                             @db.Int
+  comment               String?                         @db.VarChar(255)
+  deleted               DateTime?                       @db.DateTime
+  createdAt             DateTime                        @default(now())
+  updatedAt             DateTime                        @updatedAt
+  createdById           Int?                            @db.Int
+  updatedById           Int?                            @db.Int
+  createdBy             User?                           @relation("TransportVehicleTransactionCreatedBy", fields: [createdById], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  updatedBy             User?                           @relation("TransportVehicleTransactionUpdatedBy", fields: [updatedById], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  customerTransaction   TransportCustomerTransaction?   @relation("TransportCustomerToVehicleTransaction", fields: [customerTransactionId], references: [id])
+  transactionType       TransportVehicleTransactionType @relation(fields: [transactionTypeId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  vehicle               TransportVehicle                @relation(fields: [vehicleId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  bank                  TransportBank?                  @relation(fields: [bankId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@index([vehicleId])
+  @@index([customerTransactionId])
+  @@index([transactionTypeId])
+}
+
+model TransportVehicleTransactionType {
+  id           Int                           @id @default(autoincrement())
+  typeName     String                        @db.VarChar(255)
+  createdAt    DateTime                      @default(now())
+  updatedAt    DateTime                      @updatedAt
+  transactions TransportVehicleTransaction[]
+}
+
+model TransportBank {
+  id           Int                           @id @default(autoincrement())
+  bankName     String                        @db.VarChar(255)
+  address      String?                       @db.VarChar(255)
+  phone        String?                       @db.VarChar(255)
+  transactions TransportVehicleTransaction[]
+}
+
+model TransportVehicleReservation {
+  id               Int                                      @id @default(autoincrement())
+  vehicleId        Int                                      @db.Int
+  customerId       Int                                      @db.Int
+  reservationStart DateTime                                 @db.DateTime
+  reservationEnd   DateTime?                                @db.DateTime
+  monthlyRate      Int                                      @db.Int
+  comment          String?                                  @db.VarChar(255)
+  deleted          DateTime?                                @db.DateTime
+  createdAt        DateTime                                 @default(now())
+  updatedAt        DateTime                                 @updatedAt
+  createdById      Int?                                     @db.Int
+  updatedById      Int?                                     @db.Int
+  vehicle          TransportVehicle                         @relation(fields: [vehicleId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  customer         TransportCustomer                        @relation(fields: [customerId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  createdBy        User?                                    @relation("TransportVehicleReservationCreatedBy", fields: [createdById], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  updatedBy        User?                                    @relation("TransportVehicleReservationUpdatedBy", fields: [updatedById], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  rentalCycles     TransportVehicleReservationRentalCycle[]
+
+  @@index([vehicleId])
+  @@index([customerId])
+  @@index([reservationStart, reservationEnd])
+}
+
+model TransportVehicleReservationRentalCycle {
+  id                    Int                                             @id @default(autoincrement())
+  vehicleReservationId  Int                                             @db.Int
+  customerTransactionId Int                                             @unique @db.Int
+  customerId            Int                                             @db.Int
+  rentFrom              DateTime                                        @db.DateTime
+  rentTo                DateTime                                        @db.DateTime
+  amount                Int                                             @db.Int
+  comment               String?                                         @db.VarChar(255)
+  deleted               DateTime?                                       @db.DateTime
+  createdAt             DateTime                                        @default(now())
+  updatedAt             DateTime                                        @updatedAt
+  createdById           Int?                                            @db.Int
+  updatedById           Int?                                            @db.Int
+  vehicleReservation    TransportVehicleReservation                     @relation(fields: [vehicleReservationId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  customer              TransportCustomer                               @relation(fields: [customerId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  createdBy             User?                                           @relation("TransportVehicleReservationRentalCycleCreatedBy", fields: [createdById], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  updatedBy             User?                                           @relation("TransportVehicleReservationRentalCycleUpdatedBy", fields: [updatedById], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  rentalCyclePayments   TransportVehicleReservationRentalCyclePayment[]
+  customerTransactions  TransportCustomerTransaction[]
+
+  @@index([vehicleReservationId])
+  @@index([customerId])
+  @@index([rentFrom, rentTo])
+}
+
+model TransportVehicleReservationRentalCyclePayment {
+  id                              Int                                    @id @default(autoincrement())
+  vehicleReservationRentalCycleId Int                                    @db.Int
+  customerTransactionId           Int                                    @unique @db.Int
+  paymentDate                     DateTime                               @db.DateTime
+  amount                          Int                                    @db.Int
+  comment                         String?                                @db.VarChar(255)
+  deleted                         DateTime?                              @db.DateTime
+  createdAt                       DateTime                               @default(now())
+  updatedAt                       DateTime                               @updatedAt
+  vehicleReservationRentalCycle   TransportVehicleReservationRentalCycle @relation(fields: [vehicleReservationRentalCycleId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  customerTransaction             TransportCustomerTransaction           @relation("TransportCustomerToRentalCyclePayment", fields: [customerTransactionId], references: [id])
+
+  @@index([vehicleReservationRentalCycleId])
+}
+
+model TransportCustomer {
+  id            Int                                      @id @default(autoincrement())
+  customerName  String                                   @db.VarChar(255)
+  contact1      String?                                  @db.VarChar(255)
+  contact1Phone String?                                  @db.VarChar(255)
+  contact2      String?                                  @db.VarChar(255)
+  contact2Phone String?                                  @db.VarChar(255)
+  phone         String?                                  @db.VarChar(255)
+  address       String?                                  @db.VarChar(255)
+  createdAt     DateTime                                 @default(now())
+  updatedAt     DateTime                                 @updatedAt
+  createdById   Int?                                     @db.Int
+  updatedById   Int?                                     @db.Int
+  createdBy     User?                                    @relation("TransportCustomerCreatedBy", fields: [createdById], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  updatedBy     User?                                    @relation("TransportCustomerUpdatedBy", fields: [updatedById], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  rentalCycles  TransportVehicleReservationRentalCycle[]
+  transactions  TransportCustomerTransaction[]
+  reservations  TransportVehicleReservation[]
+
+  @@index([phone])
+  @@fulltext([customerName])
+}
+
+model TransportCustomerTransaction {
+  id                            Int                                            @id @default(autoincrement())
+  customerId                    Int                                            @db.Int
+  vehicleId                     Int                                            @db.Int
+  customerTransactionTypeId     Int                                            @db.Int
+  amount                        Int                                            @db.Int
+  balance                       Int                                            @db.Int
+  comment                       String?                                        @db.VarChar(255)
+  deleted                       DateTime?                                      @db.DateTime
+  createdAt                     DateTime                                       @default(now())
+  updatedAt                     DateTime                                       @updatedAt
+  createdById                   Int?                                           @db.Int
+  updatedById                   Int?                                           @db.Int
+  customer                      TransportCustomer                              @relation(fields: [customerId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  vehicle                       TransportVehicle                               @relation(fields: [vehicleId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  createdBy                     User?                                          @relation("TransportCustomerTransactionCreatedBy", fields: [createdById], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  updatedBy                     User?                                          @relation("TransportCustomerTransactionUpdatedBy", fields: [updatedById], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  transactionType               TransportCustomerTransactionType               @relation(fields: [customerTransactionTypeId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  vehicleTransaction            TransportVehicleTransaction?                   @relation("TransportCustomerToVehicleTransaction")
+  rentalCycle                   TransportVehicleReservationRentalCycle?        @relation(fields: [id], references: [customerTransactionId], onDelete: NoAction, onUpdate: NoAction)
+  reservationRentalCyclePayment TransportVehicleReservationRentalCyclePayment? @relation("TransportCustomerToRentalCyclePayment")
+
+  @@index([customerId])
+  @@index([vehicleId])
+  @@index([customerTransactionTypeId])
+}
+
+model TransportCustomerTransactionType {
+  id           Int                            @id @default(autoincrement())
+  typeName     String                         @db.VarChar(255)
+  createdAt    DateTime                       @default(now())
+  updatedAt    DateTime                       @updatedAt
+  transactions TransportCustomerTransaction[]
 }

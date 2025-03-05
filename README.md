@@ -50,7 +50,7 @@ Note: all of the above has been taken care of through [post-receive](.server/pos
 ## Mysql
 
 ```
-CREATE USER 'lucky'@'%' IDENTIFIED BY 'EeheLcKcaVlD1qq*/yetIpseeeIese';
+CREATE USER 'lucky'@'%' IDENTIFIED BY '<password>';
 ```
 
 ```
@@ -66,8 +66,10 @@ FLUSH PRIVILEGES;
 See your [Github repo](https://github.com/hussainTuri/dropbox-backups)
 
 
-## deploy 
+## development & deploy 
 
 1. Make code changes and commit
-
-2. Use npm script `npm run deploy`
+2. Make sure to run `npm run bump-version-patch`, `npm run bump-version-minor` or `npm run bump-version-major` to update package.json file with new version.
+3. Commit version bump changes
+4. Use npm script `npm run deploy`
+5. Money++

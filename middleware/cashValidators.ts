@@ -1,5 +1,5 @@
 import { Cash } from '@prisma/client';
-import { Request, Response, NextFunction, query } from 'express';
+import { Request, Response, NextFunction } from 'express';
 import { response } from '../lib/response';
 import { createCashSchema, updateCashSchema } from '../lib/validators/';
 import { TransactionModeEnum } from '../lib/enums';

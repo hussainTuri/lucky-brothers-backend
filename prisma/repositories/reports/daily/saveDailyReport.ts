@@ -1,7 +1,5 @@
-import { PrismaClient } from '@prisma/client';
 import type { DailyReport } from '@prisma/client';
-
-const prisma = new PrismaClient();
+import prisma from '../../../../middleware/prisma';
 
 export const saveDailyReport = async (entry: DailyReport): Promise<DailyReport | null> => {
   return await saveDailyReportEntry(entry);

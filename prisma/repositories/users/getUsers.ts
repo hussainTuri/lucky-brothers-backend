@@ -1,15 +1,13 @@
-import { PrismaClient, type User } from '@prisma/client';
+import type { User } from '@prisma/client';
 import { getCache, setCache } from '../../../lib/utils';
 import { CacheKeys } from '../../../lib/constants';
-const prisma = new PrismaClient();
+import prisma from '../../../middleware/prisma';
 
 export const getUsers = async () => {
   const cachedUsers = getCache<User[]>(CacheKeys.USERS.key);
   if (cachedUsers) {
-    // console.log('[CACHE HIT] getUsers');
     return exclude(cachedUsers, ['password']);
   }
-  // console.log('[CACHE MISS] getUsers');
 
   const users = await prisma.user.findMany();
 

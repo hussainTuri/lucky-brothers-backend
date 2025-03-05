@@ -1,7 +1,5 @@
-import { PrismaClient } from '@prisma/client';
 import { QueryOptions, QuerySort } from '../../../../types';
-
-const prisma = new PrismaClient();
+import prisma from '../../../../middleware/prisma';
 
 export const getDailyReports = async (options: QueryOptions, sort?: QuerySort) => {
   let orderBy = 'id desc';

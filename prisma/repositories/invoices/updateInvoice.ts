@@ -1,23 +1,9 @@
-import { PrismaClient } from '@prisma/client';
 import type { Invoice as PrismaInvoice, InvoiceItem } from '@prisma/client';
 import { InvoicePayload, InvoiceWithRelations } from '../../../types';
 import { updateInvoiceStatus, updateProfit } from './common';
 import { addToStock, removeFromStock } from '../products';
 import { updateCustomerBalance } from '../customers/common';
-
-const prisma = new PrismaClient();
-// const prisma = new PrismaClient({
-//   log: [
-//     {
-//       emit: 'event',
-//       level: 'query',
-//     },
-//   ],
-// });
-// prisma.$on('query', async (e: Prisma.QueryEvent) => {
-//   console.log(`${e.query} ${e.params} duration: ${e.duration / 100}s`);
-//   // console.log(`${e.query} duration: ${e.duration/100} s`);
-// });
+import prisma from '../../../middleware/prisma';
 
 export const updateInvoice = async (payload: InvoicePayload): Promise<PrismaInvoice | null> => {
   const { invoice, items, updatedById } = payload;
