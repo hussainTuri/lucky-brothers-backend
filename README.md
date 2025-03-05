@@ -50,7 +50,7 @@ Note: all of the above has been taken care of through [post-receive](.server/pos
 ## Mysql
 
 ```
-CREATE USER 'lucky'@'%' IDENTIFIED BY 'EeheLcKcaVlD1qq*/yetIpseeeIese';
+CREATE USER 'lucky'@'%' IDENTIFIED BY '<password>';
 ```
 
 ```
