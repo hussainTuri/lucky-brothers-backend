@@ -67,6 +67,7 @@ export const getVehicleTransactions = async (
     bank: banks.find((bank) => bank.id === entry.bankId)?.bankName,
     totalAmount: entry._sum.amount,
   }));
+  loans.sort((a, b) => (a.bank as string).localeCompare(b.bank as string));
 
   // Get sum of paid bank installments
   const banksTotalInstallmentsSum = await prisma.transportVehicleTransaction.aggregate({
@@ -92,6 +93,7 @@ export const getVehicleTransactions = async (
     bank: banks.find((bank) => bank.id === entry.bankId)?.bankName,
     totalAmount: entry._sum.amount,
   }));
+  installments.sort((a, b) => (a.bank as string).localeCompare(b.bank as string));
 
   // Get sum of expenses
   const expenses = await prisma.transportVehicleTransaction.aggregate({
