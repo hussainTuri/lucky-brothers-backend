@@ -40,8 +40,11 @@ export const getVehicleTransactions = async (
     }),
   ]);
 
+  // Get banks to be used in loans
+  const banks = await prisma.transportBank.findMany();
+
   // Get sum of bank loan amounts
-  const bankLoanAmounts = await prisma.transportVehicleTransaction.aggregate({
+  const banksTotalLoanAmount = await prisma.transportVehicleTransaction.aggregate({
     where: {
       vehicleId: vehicleId,
       transactionTypeId: TransportVehicleTransactionTypes.BankLoan,
@@ -50,8 +53,23 @@ export const getVehicleTransactions = async (
     _sum: { amount: true },
   });
 
+  // Get sum of bank loan amounts group by bank
+  const bankLoanAmounts = await prisma.transportVehicleTransaction.groupBy({
+    by: ['bankId'], // Group by bankId
+    where: {
+      vehicleId: vehicleId,
+      transactionTypeId: TransportVehicleTransactionTypes.BankLoan,
+      deleted: null,
+    },
+    _sum: { amount: true },
+  });
+  const loans = bankLoanAmounts.map((entry) => ({
+    bank: banks.find((bank) => bank.id === entry.bankId)?.bankName,
+    totalAmount: entry._sum.amount,
+  }));
+
   // Get sum of paid bank installments
-  const bankInstallments = await prisma.transportVehicleTransaction.aggregate({
+  const banksTotalInstallmentsSum = await prisma.transportVehicleTransaction.aggregate({
     where: {
       vehicleId: vehicleId,
       transactionTypeId: TransportVehicleTransactionTypes.BankInstallment,
@@ -59,6 +77,21 @@ export const getVehicleTransactions = async (
     },
     _sum: { amount: true },
   });
+
+  // Get sum of bank loan amounts group by bank
+  const bankInstallments = await prisma.transportVehicleTransaction.groupBy({
+    by: ['bankId'], // Group by bankId
+    where: {
+      vehicleId: vehicleId,
+      transactionTypeId: TransportVehicleTransactionTypes.BankInstallment,
+      deleted: null,
+    },
+    _sum: { amount: true },
+  });
+  const installments = bankInstallments.map((entry) => ({
+    bank: banks.find((bank) => bank.id === entry.bankId)?.bankName,
+    totalAmount: entry._sum.amount,
+  }));
 
   // Get sum of expenses
   const expenses = await prisma.transportVehicleTransaction.aggregate({
@@ -81,16 +114,18 @@ export const getVehicleTransactions = async (
   });
 
   const total =
-    (bankLoanAmounts._sum.amount ?? 0) +
-    (bankInstallments._sum.amount ?? 0) +
+    (banksTotalLoanAmount._sum.amount ?? 0) +
+    (banksTotalInstallmentsSum._sum.amount ?? 0) +
     (expenses._sum.amount ?? 0) +
     (customerPayments._sum.amount ?? 0);
 
   return {
     transactions,
     totalCount,
-    bankLoanAmounts: bankLoanAmounts._sum.amount ?? 0,
-    bankInstallments: bankInstallments._sum.amount ?? 0,
+    banksLoanSum: banksTotalLoanAmount._sum.amount ?? 0,
+    banksInstallmentsSum: banksTotalInstallmentsSum._sum.amount ?? 0,
+    loans,
+    installments,
     expenses: expenses._sum.amount ?? 0,
     customerPayments: customerPayments._sum.amount ?? 0,
     balance: total,

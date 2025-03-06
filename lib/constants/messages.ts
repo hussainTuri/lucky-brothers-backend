@@ -40,4 +40,6 @@ export const messages = {
   VEHICLE_TRANSACTION_NOT_FOUND: 'ٹرانزیکشن نہیں ملا',
   TRANSPORT_CUSTOMER_TRANSACTION_AND_CUSTOMER_ID_REQUIRED: 'کسٹمر ٹرانزیکشن اور کسٹمر آئی ڈی درکار ہے۔',
   TRANSPORT_CUSTOMER_TRANSACTION_DELETE_NOT_ALLOWED: 'ٹرانزیکشن کو ہٹانے کی اجازت نہیں ہے۔',
+  VEHICLE_BANK_LOAN_NOT_FOUND: 'ہمیں اس بینک کے لیے قرض کا کوئی ریکارڈ نہیں مل سکا۔ اس لیے آپ اس کے لیے قسط شامل نہیں کر سکتے۔',
+  VEHICLE_BANK_PAYMENT_EXCEEDS_BALANCE: 'بینک کی ادائیگی بقیہ سے زیادہ ہے',
 };

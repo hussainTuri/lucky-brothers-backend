@@ -3,3 +3,4 @@ export * from './saveTransaction';
 export * from './updateTransaction';
 export * from './deleteTransaction';
 export * from './common';
+export * from './getVehicleLoanAmountsByBank';

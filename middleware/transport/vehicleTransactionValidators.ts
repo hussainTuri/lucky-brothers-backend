@@ -6,16 +6,21 @@ import {
   updateVehicleTransactionSchema,
 } from '../../lib/validators/transport';
 import { messages } from '../../lib/constants';
-import { getVehicleTransaction, getVehicleTransactionByVehicle } from '../../prisma/repositories/transport/vehicles/transactions/common';
+import {
+  getVehicleTransaction,
+  getVehicleTransactionByVehicle,
+} from '../../prisma/repositories/transport/vehicles/transactions/common';
 import { TransportVehicleTransactionTypes } from '../../lib/enums/transportVehicle';
+import { getVehicleLoanAmountsByBank } from '../../prisma/repositories/transport';
 
 const extractVehicleTransactionData = (payload: Partial<TransportVehicleTransaction>) => {
   let amount = payload?.amount ?? null;
   if (amount !== null) {
     if (
-      [TransportVehicleTransactionTypes.BankLoan, TransportVehicleTransactionTypes.Expense].includes(
-        payload?.transactionTypeId ?? 0,
-      )
+      [
+        TransportVehicleTransactionTypes.BankLoan,
+        TransportVehicleTransactionTypes.Expense,
+      ].includes(payload?.transactionTypeId ?? 0)
     ) {
       amount = -Math.abs(amount);
     }
@@ -58,6 +63,25 @@ export const validateCreateVehicleTransaction = async (
     resp.message = error.details[0].message || '';
     resp.success = false;
     return res.status(400).json(resp);
+  }
+
+  // If installment then:
+  // 1. check that there is actually a loan from the bank in payload
+  // 2. check that the new amount doesn't exceed the loan amount
+  if (req.body.transactionTypeId === TransportVehicleTransactionTypes.BankInstallment) {
+    const loanAmounts = await getVehicleLoanAmountsByBank(req.body.vehicleId, req.body.bankId);
+    if (loanAmounts.loanAmount < 1) {
+      resp.message = messages.VEHICLE_BANK_LOAN_NOT_FOUND;
+      resp.success = false;
+      return res.status(400).json(resp);
+    }
+
+    const newPaidAmount = loanAmounts.paidAmount + req.body.amount;
+    if (loanAmounts.loanAmount < newPaidAmount) {
+      resp.message = messages.VEHICLE_BANK_PAYMENT_EXCEEDS_BALANCE;
+      resp.success = false;
+      return res.status(400).json(resp);
+    }
   }
 
   next();
