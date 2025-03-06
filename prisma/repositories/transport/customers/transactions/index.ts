@@ -6,3 +6,4 @@ export * from './getPreviousTransaction';
 export * from './updateTransaction';
 export * from './getCustomerBalanceForTransaction';
 export * from './getCustomerTransaction';
+export * from './getCustomerTransactionByCycleAndType';

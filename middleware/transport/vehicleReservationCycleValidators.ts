@@ -15,8 +15,6 @@ import {
 const extractReservationCycleData = (payload: Partial<TransportVehicleReservationRentalCycle>) => {
   return {
     vehicleReservationId: payload?.vehicleReservationId ?? null,
-    vehicleId: (payload as any)?.vehicleId ?? null,
-    customerTransactionId: payload?.customerTransactionId ?? null,
     customerId: payload?.customerId ?? null,
     rentFrom: payload?.rentFrom ? new Date(payload.rentFrom) : null,
     rentTo: payload?.rentTo ? new Date(payload?.rentTo) : null,
