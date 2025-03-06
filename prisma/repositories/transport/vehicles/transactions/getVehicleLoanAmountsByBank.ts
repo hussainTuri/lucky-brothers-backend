@@ -6,14 +6,14 @@ export const getVehicleLoanAmountsByBank = async (vehicleId: number, bankId: num
   const [loan, paid] = await Promise.all([
     await prisma.$queryRaw<{ totalAmount: number | null }[]>`
     SELECT SUM(ABS(amount)) AS totalAmount
-    FROM transportVehicleTransaction
+    FROM TransportVehicleTransaction
     WHERE vehicleId = ${vehicleId}
     AND bankId = ${bankId}
     AND deleted IS NULL
     AND transactionTypeId = ${TransportVehicleTransactionTypes.BankLoan}`,
     await prisma.$queryRaw<{ totalAmount: number | null }[]>`
   SELECT SUM(ABS(amount)) AS totalAmount
-  FROM transportVehicleTransaction
+  FROM TransportVehicleTransaction
   WHERE vehicleId = ${vehicleId}
   AND bankId = ${bankId}
   AND deleted IS NULL

@@ -1,6 +1,6 @@
 {
   "name": "lucky-brothers-backend",
-  "version": "3.0.1",
+  "version": "3.0.2",
   "private": true,
   "scripts": {
     "bump-version-patch": "npm version patch --no-git-tag-version",
