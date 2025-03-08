@@ -30,7 +30,7 @@ export const updateTransportCustomerTransactionWithBalances = async (
 
     // 2. Update balance in all transactions after this transaction
     let balance = entry.balance;
-    const transactions = await getTransportCustomerTransactionsAfterId(entry.vehicleId, entry.id, tx);
+    const transactions = await getTransportCustomerTransactionsAfterId(entry.customerId, entry.id, tx);
 
     transactions.forEach((transaction) => {
       transaction.balance = balance + transaction.amount;
