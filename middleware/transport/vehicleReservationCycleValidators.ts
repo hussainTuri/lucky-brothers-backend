@@ -96,11 +96,11 @@ export const validateUpdateReservationCycle = async (
     resp.success = false;
     return res.status(400).json(resp);
   }
-  if (paidAmount === req.body.amount) {
-    resp.message = messages.RESERVATION_CYCLE_AMOUNT_FULLY_PAID;
-    resp.success = false;
-    return res.status(400).json(resp);
-  }
+  // if (paidAmount === req.body.amount) {
+  //   resp.message = messages.RESERVATION_CYCLE_AMOUNT_FULLY_PAID;
+  //   resp.success = false;
+  //   return res.status(400).json(resp);
+  // }
 
   // Check that start and end dates are in the same month as before. This check also
   // covers the case where user choose one month for start date but another month for end date.
