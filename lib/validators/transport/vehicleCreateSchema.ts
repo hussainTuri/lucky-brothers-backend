@@ -5,6 +5,7 @@ export const createVehicleSchema = Joi.object({
   vehicleRegistration: Joi.string().max(255).required(),
   model: Joi.string().max(255).required(),
   buyDate: Joi.date().optional().allow(null).allow(''),
+  transport: Joi.string().max(255).optional().allow(null).allow(''),
 });
 
 export const createVehicleReservationSchema = Joi.object({

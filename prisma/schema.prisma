@@ -393,6 +393,7 @@ model TransportVehicle {
   vehicleRegistration  String                         @db.VarChar(30)
   model                String                         @db.VarChar(255)
   buyDate              DateTime?                      @db.DateTime
+  transport            String?                        @db.VarChar(255) // Transport through which vehicle is bought
   createdAt            DateTime                       @default(now())
   updatedAt            DateTime                       @updatedAt
   createdById          Int?                           @db.Int

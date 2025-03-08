@@ -17,6 +17,7 @@ const updateVehicleEntry = async (entry: TransportVehicle): Promise<TransportVeh
         vehicleRegistration: entry.vehicleRegistration,
         model: entry.model,
         buyDate: entry.buyDate,
+        transport: entry.transport,
       },
     });
 
