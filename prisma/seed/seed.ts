@@ -1,7 +1,7 @@
 import { PrismaClient, Prisma, Product, InvoiceItem } from '@prisma/client';
-import { seedCustomers } from './customer';
-import { seedProducts } from './products';
-import { seedInvoices } from './invoice';
+// import { seedCustomers } from './customer';
+// import { seedProducts } from './products';
+// import { seedInvoices } from './invoice';
 
 const prisma = new PrismaClient();
 export const maxRecords = {
@@ -14,9 +14,9 @@ const seedDatabase = async () => {
   try {
     console.log('Database seeding started...');
 
-    await seedCustomers();
-    await seedProducts();
-    await seedInvoices();
+    // await seedCustomers();
+    // await seedProducts();
+    // await seedInvoices();
 
     console.log('Database seeded successfully!');
   } catch (error) {
