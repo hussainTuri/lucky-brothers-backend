@@ -26,14 +26,9 @@ export const getVehicle = async (id: number | string) => {
             },
           },
         },
-        orderBy: [
-          {
-            reservationEnd: 'desc',
-          },
-          {
-            reservationStart: 'desc',
-          },
-        ],
+        orderBy: {
+          id: 'desc',
+        },
       },
     },
   });

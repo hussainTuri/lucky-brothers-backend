@@ -20,7 +20,7 @@ const saveVehicleReservationCycleEntry = async (
         vehicleReservation: true,
       },
     });
-    console.log('entryCreated', entryCreated);
+
     // 2. save a customer transaction
     // const reservation = await getVehicleReservation(entry.vehicleReservationId);
     const customerTransaction = {

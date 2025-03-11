@@ -5,12 +5,13 @@ import {
   createVehicleReservationCycleSchema,
   updateVehicleReservationCycleSchema,
 } from '../../lib/validators/transport';
-import { messages } from '../../lib/constants';
+import { DUBAI_TZ, messages } from '../../lib/constants';
 import {
   checkIfReservationCycleByMonthExists,
   getReservationCycle,
   getReservationCyclePaidAmount,
 } from '../../prisma/repositories/transport/vehicles/reservationCycles';
+import { DateTime } from 'luxon';
 
 const extractReservationCycleData = (payload: Partial<TransportVehicleReservationRentalCycle>) => {
   return {
@@ -54,9 +55,10 @@ export const validateCreateReservationCycle = async (
     resp.success = false;
     return res.status(400).json(resp);
   }
-
+  const rentFrom = DateTime.fromJSDate(req.body.rentFrom, {zone: 'utc'}).setZone(DUBAI_TZ);
+  const rentTo = DateTime.fromJSDate(req.body.rentTo, {zone: 'utc'}).setZone(DUBAI_TZ);
   // rentFrom and rentTo should be in the same month
-  if (req.body.rentFrom.getMonth() !== req.body.rentTo.getMonth()) {
+  if (rentFrom.month !== rentTo.month) {
     resp.message = messages.RESERVATION_CYCLE_DATES_SHOULD_BE_IN_SAME_MONTH;
     resp.success = false;
     return res.status(400).json(resp);
