@@ -1,7 +1,7 @@
 import { TransportVehicleTransaction } from '@prisma/client';
 import { OmitPrismaClient } from '../../../../../types';
 import prisma from '../../../../../middleware/prisma';
-
+import { TransportVehicleTransactionTypes } from '../../../../../lib/enums';
 
 export const getVehicleTransaction = async (transactionId: number) => {
   if (!transactionId) {
@@ -119,6 +119,10 @@ export const getBalanceForTransaction = async (
   tx: OmitPrismaClient,
 ) => {
   const lastTransaction = await getPreviousTransaction(entry.vehicleId, entry.id, tx);
+
+  if(entry.transactionTypeId === TransportVehicleTransactionTypes.BankInstallment) {
+    return lastTransaction? lastTransaction.balance : 0;
+  }
 
   if (lastTransaction) {
     return lastTransaction.balance + entry.amount;
