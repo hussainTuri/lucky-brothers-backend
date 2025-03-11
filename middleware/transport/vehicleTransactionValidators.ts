@@ -69,18 +69,25 @@ export const validateCreateVehicleTransaction = async (
   // 1. check that there is actually a loan from the bank in payload
   // 2. check that the new amount doesn't exceed the loan amount
   if (req.body.transactionTypeId === TransportVehicleTransactionTypes.BankInstallment) {
-    const loanAmounts = await getVehicleLoanAmountsByBank(req.body.vehicleId, req.body.bankId);
-    if (loanAmounts.loanAmount < 1) {
-      resp.message = messages.VEHICLE_BANK_LOAN_NOT_FOUND;
-      resp.success = false;
-      return res.status(400).json(resp);
-    }
+    try {
+      const loanAmounts = await getVehicleLoanAmountsByBank(req.body.vehicleId, req.body.bankId);
+      if (loanAmounts.loanAmount < 1) {
+        resp.message = messages.VEHICLE_BANK_LOAN_NOT_FOUND;
+        resp.success = false;
+        return res.status(400).json(resp);
+      }
 
-    const newPaidAmount = loanAmounts.paidAmount + req.body.amount;
-    if (loanAmounts.loanAmount < newPaidAmount) {
-      resp.message = messages.VEHICLE_BANK_PAYMENT_EXCEEDS_BALANCE;
+      const newPaidAmount = loanAmounts.paidAmount + req.body.amount;
+      if (loanAmounts.loanAmount < newPaidAmount) {
+        resp.message = messages.VEHICLE_BANK_PAYMENT_EXCEEDS_BALANCE;
+        resp.success = false;
+        return res.status(400).json(resp);
+      }
+    } catch (error) {
+      console.error('DB Error', error);
       resp.success = false;
-      return res.status(400).json(resp);
+      resp.message = messages.INTERNAL_SERVER_ERROR;
+      return res.status(500).json(resp);
     }
   }
 
@@ -115,6 +122,25 @@ export const validateUpdateVehicleTransaction = async (
       resp.message = messages.VEHICLE_TRANSACTION_OF_TYPE_CUSTOMER_PAYMENT_UPDATE_NOT_ALLOWED;
       resp.success = false;
       return res.status(400).json(resp);
+    }
+
+    // If installment then:
+    // 1. check that there is actually a loan from the bank in payload
+    // 2. check that the new amount doesn't exceed the loan amount
+    if (req.body.transactionTypeId === TransportVehicleTransactionTypes.BankInstallment) {
+      const loanAmounts = await getVehicleLoanAmountsByBank(req.body.vehicleId, req.body.bankId, [req.body.id]);
+      if (loanAmounts.loanAmount < 1) {
+        resp.message = messages.VEHICLE_BANK_LOAN_NOT_FOUND;
+        resp.success = false;
+        return res.status(400).json(resp);
+      }
+
+      const newPaidAmount = loanAmounts.paidAmount + req.body.amount;
+      if (loanAmounts.loanAmount < newPaidAmount) {
+        resp.message = messages.VEHICLE_BANK_PAYMENT_EXCEEDS_BALANCE;
+        resp.success = false;
+        return res.status(400).json(resp);
+      }
     }
   } catch (error) {
     console.error('DB Error', error);

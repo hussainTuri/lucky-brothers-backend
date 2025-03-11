@@ -1,6 +1,7 @@
 import { TransportVehicleTransaction } from '@prisma/client';
 import { getBalanceForTransaction, getTransactionsAfterId, updateTransaction } from './common';
 import prisma from '../../../../../middleware/prisma';
+import { TransportVehicleTransactionTypes } from '../../../../../lib/enums';
 
 export const updateVehicleTransaction = async (
   entry: TransportVehicleTransaction,
@@ -16,6 +17,9 @@ export const updateVehicleTransaction = async (
 
     transactions.forEach((transaction) => {
       transaction.balance = balance + transaction.amount;
+      if (transaction.transactionTypeId === TransportVehicleTransactionTypes.BankInstallment) {
+        transaction.balance = balance;
+      }
       balance = transaction.balance;
     });
     for (const transaction of transactions) {
