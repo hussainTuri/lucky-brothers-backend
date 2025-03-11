@@ -1,5 +1,11 @@
 import prisma from '../../../../../middleware/prisma';
 
+/**
+ *
+ * @param vehicleReservationId
+ * @param month is a javascript Date object month - Not Luxon DateTime
+ * @returns
+ */
 export const checkIfReservationCycleByMonthExists = async (
   vehicleReservationId: number,
   month: Date,
