@@ -117,7 +117,7 @@ export const getVehicleTransactions = async (
 
   const total =
     (banksTotalLoanAmount._sum.amount ?? 0) +
-    (banksTotalInstallmentsSum._sum.amount ?? 0) +
+    // (banksTotalInstallmentsSum._sum.amount ?? 0) +
     (expenses._sum.amount ?? 0) +
     (customerPayments._sum.amount ?? 0);
 
