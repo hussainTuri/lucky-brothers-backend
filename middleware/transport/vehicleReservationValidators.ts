@@ -84,6 +84,14 @@ export const validateUpdateVehicleReservation = async (
     return res.status(400).json(resp);
   }
 
+  // If it involves a customer change, then only allow it if the reservation has no rental cycles. Otherwise you will need to tackle payments, rents and so.
+  const existingReservation = await getReservation(req.body.id);
+  if(existingReservation.customerId !== req.body.customerId && existingReservation.rentalCycles.length > 0) {
+    resp.message = messages.RESERVATION_CUSTOMER_CHANGE_NOT_ALLOWED;
+    resp.success = false;
+    return res.status(400).json(resp);
+  }
+
   next();
 };
 
