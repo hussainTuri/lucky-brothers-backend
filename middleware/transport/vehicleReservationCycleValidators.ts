@@ -5,13 +5,12 @@ import {
   createVehicleReservationCycleSchema,
   updateVehicleReservationCycleSchema,
 } from '../../lib/validators/transport';
-import { DUBAI_TZ, messages } from '../../lib/constants';
+import { messages } from '../../lib/constants';
 import {
   checkIfReservationCycleByMonthExists,
   getReservationCycle,
   getReservationCyclePaidAmount,
 } from '../../prisma/repositories/transport/vehicles/reservationCycles';
-import { DateTime } from 'luxon';
 
 const extractReservationCycleData = (payload: Partial<TransportVehicleReservationRentalCycle>) => {
   return {
@@ -55,10 +54,9 @@ export const validateCreateReservationCycle = async (
     resp.success = false;
     return res.status(400).json(resp);
   }
-  const rentFrom = DateTime.fromJSDate(req.body.rentFrom, {zone: 'utc'}).setZone(DUBAI_TZ);
-  const rentTo = DateTime.fromJSDate(req.body.rentTo, {zone: 'utc'}).setZone(DUBAI_TZ);
+
   // rentFrom and rentTo should be in the same month
-  if (rentFrom.month !== rentTo.month) {
+  if (req.body.rentFrom.getUTCMonth() !== req.body.rentTo.getUTCMonth()) {
     resp.message = messages.RESERVATION_CYCLE_DATES_SHOULD_BE_IN_SAME_MONTH;
     resp.success = false;
     return res.status(400).json(resp);
@@ -108,8 +106,8 @@ export const validateUpdateReservationCycle = async (
   // covers the case where user choose one month for start date but another month for end date.
   const cycle = await getReservationCycle(req.body.id);
   if (
-    cycle.rentFrom.getMonth() !== req.body.rentFrom.getMonth() ||
-    cycle.rentTo.getMonth() !== req.body.rentTo.getMonth()
+    cycle.rentFrom.getUTCMonth() !== req.body.rentFrom.getUTCMonth() ||
+    cycle.rentTo.getUTCMonth() !== req.body.rentTo.getUTCMonth()
   ) {
     resp.message = messages.RESERVATION_CYCLE_DATES_SHOULD_BE_IN_SAME_MONTH_AS_BEFORE;
     resp.success = false;
