@@ -82,7 +82,7 @@ export const saveCustomerTransaction = async (
 ) => {
   const balance = await getCustomerTransactionCurrentBalance(entry.customerId!, tx);
   entry.balance = balance + (entry?.amount ?? 0);
-  console.log('entry', entry);
+
   const entryCreated = await tx.transportCustomerTransaction.create({
     data: entry as TransportCustomerTransaction,
   });
