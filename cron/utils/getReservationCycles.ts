@@ -4,7 +4,7 @@ import {
 } from '@prisma/client';
 import { DateTime } from 'luxon';
 
-// All the months data has been added manually up until Feb, 2025
+// All the months data has been added manually up until Feb, 2025, so we start with march 2025
 const includeMonthsAfterInclusive = '2025-03-01';
 // Prisma always stores dates in UTC format, that means we are only dealing UTC on backend
 export const getReservationCyclesObjects = (

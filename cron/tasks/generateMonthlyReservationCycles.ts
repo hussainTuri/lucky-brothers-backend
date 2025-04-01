@@ -20,7 +20,7 @@ const runGenerateMonthlyReservationCyclesTask = async (dryRun = true) => {
     // 2. For reach reservation, build periods and map them to a cycle row object
     const tableDataReservationToBeAdded = []; // cycles that wil be added at the end of this script execution
     const tableDataReservationsAlreadyExisted = []; // This should be empty under normal circumstances
-    const tableDataReservationsWithoutCycles = []; // Reservation whose start and end dates doesn't generate any cycles anymore
+    // const tableDataReservationsWithoutCycles = []; // Reservation whose start and end dates doesn't generate any cycles anymore
     for (const reservation of reservations) {
       const tableReservation = {} as any;
       tableReservation.id = reservation.id;
@@ -32,8 +32,7 @@ const runGenerateMonthlyReservationCyclesTask = async (dryRun = true) => {
 
       const cycles = getReservationCyclesObjects(reservation);
       if (cycles.length === 0) {
-        // console.log('No cycles found for reservation:', reservation.id);
-        tableDataReservationsWithoutCycles.push({ ...tableReservation, CycleToAdd: 'None' });
+        // tableDataReservationsWithoutCycles.push({ ...tableReservation, CycleToAdd: 'None' });
         continue;
       }
 
@@ -63,8 +62,8 @@ const runGenerateMonthlyReservationCyclesTask = async (dryRun = true) => {
       }
     }
 
-    console.log('Following reservations have no cycles generated');
-    console.table(tableDataReservationsWithoutCycles);
+    // console.log('Following reservations have no cycles generated, probably because end period for the reservation is before march 2025. We only consider cycles starting with march 2025');
+    // console.table(tableDataReservationsWithoutCycles);
 
     console.log('Following cycles already existed');
     console.table(tableDataReservationsAlreadyExisted);
@@ -79,4 +78,4 @@ const runGenerateMonthlyReservationCyclesTask = async (dryRun = true) => {
 };
 
 // Execute the task when the script runs
-runGenerateMonthlyReservationCyclesTask(true);
+runGenerateMonthlyReservationCyclesTask(false);
