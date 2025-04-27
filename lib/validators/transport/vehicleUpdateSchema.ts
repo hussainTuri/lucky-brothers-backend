@@ -7,6 +7,7 @@ export const updateVehicleSchema = createVehicleSchema.keys({
 
 export const updateVehicleReservationSchema = createVehicleReservationSchema.keys({
   id: Joi.number().integer().positive().required(),
+  mulkiyaFilePath: Joi.string().optional().allow(null).allow(''),
 });
 
 export const updateVehicleReservationCycleSchema = Joi.object({

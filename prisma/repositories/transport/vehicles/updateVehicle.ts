@@ -18,6 +18,7 @@ const updateVehicleEntry = async (entry: TransportVehicle): Promise<TransportVeh
         model: entry.model,
         buyDate: entry.buyDate,
         transport: entry.transport,
+        mulkiyaFilePath: entry.mulkiyaFilePath,
       },
     });
 

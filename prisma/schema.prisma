@@ -394,6 +394,7 @@ model TransportVehicle {
   model                String                         @db.VarChar(255)
   buyDate              DateTime?                      @db.DateTime
   transport            String?                        @db.VarChar(255) // Transport through which vehicle is bought
+  mulkiyaFilePath      String?                        @db.VarChar(255)
   createdAt            DateTime                       @default(now())
   updatedAt            DateTime                       @updatedAt
   createdById          Int?                           @db.Int

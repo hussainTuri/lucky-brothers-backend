@@ -10,6 +10,7 @@ const extractVehicleData = (payload: Partial<TransportVehicle>) => {
     model: payload.model ?? null,
     buyDate: payload.buyDate ? new Date(payload.buyDate) : null,
     transport: payload.transport ?? null,
+    mulkiyaFilePath: payload.mulkiyaFilePath ?? null,
   };
 };
 
