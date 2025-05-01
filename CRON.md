@@ -11,7 +11,9 @@ This project uses **cron jobs** to automate database backups, reservation cycle 
 
 ### 🛠 Cron Job Command:
 
-0 14,23 \* \* \* /bin/bash /home/webuser/scripts/dropbox-backup/db/main.sh /home/webuser/scripts/dropbox-backup/db/saalmo.musaffah.config.sh >> /home/webuser/scripts/dropbox-backup/db/saalmo.musaffah.cron.log 2>&1
+```
+0 14,23 * * * /bin/bash /home/webuser/scripts/dropbox-backup/db/main.sh /home/webuser/scripts/dropbox-backup/db/saalmo.musaffah.config.sh >> /home/webuser/scripts/dropbox-backup/db/saalmo.musaffah.cron.log 2>&1
+```
 
 ✅ **Logs are stored in `saalmo.musaffah.cron.log`**
 
@@ -24,7 +26,9 @@ This project uses **cron jobs** to automate database backups, reservation cycle 
 
 ### 🛠 Cron Job Command:
 
-5 0 _/14 _ \* /bin/rm -f /home/webuser/scripts/dropbox-backup/db/saalmo.musaffah.cron.log
+```
+5 0 */14 * * /bin/rm -f /home/webuser/scripts/dropbox-backup/db/saalmo.musaffah.cron.log
+```
 
 ✅ **Prevents log files from consuming too much space.**
 
@@ -38,10 +42,27 @@ This project uses **cron jobs** to automate database backups, reservation cycle 
 ### 🛠 Cron Job Command:
 
 ```bash
-0 4 1 * * cd /var/www/lucky-brothers-backend/cron/tasks && npx ts-node generateMonthlyReservationCycles.ts >> cron.log 2>&1
+0 4 1 * * /var/www/lucky-brothers-backend/cron/tasks/run-reservations.sh
 ```
 
 ✅ **Logs are written to `cron.log`**
+✅ Uses a wrapper script to ensure the correct Node.js environment is loaded via NVM.
+
+### 📄 run-reservations.sh
+
+```
+#!/bin/bash
+export PATH=/home/webuser/.nvm/versions/node/v20.11.0/bin:$PATH
+cd /var/www/lucky-brothers-backend/cron/tasks
+npx ts-node generateMonthlyReservationCycles.ts >> cron.log 2>&1
+```
+
+📌 Make sure the script is executable:
+
+```
+chmod +x /var/www/lucky-brothers-backend/cron/tasks/run-reservations.sh
+
+```
 
 ---
 

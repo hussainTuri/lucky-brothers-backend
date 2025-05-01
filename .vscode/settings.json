@@ -6,6 +6,7 @@
     "prettier.requireConfig": true,
     "prettier.useEditorConfig": true,
     "cSpell.words": [
-        "checkperiod"
+        "checkperiod",
+        "mulkiya"
     ]
 }
