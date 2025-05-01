@@ -10,6 +10,9 @@ echo "Script started."
 git --work-tree=/var/www/lucky-brothers-backend-stage --git-dir=/home/webuser/repositories/lucky-brothers-backend-stage.git checkout -f
 cd /var/www/lucky-brothers-backend-stage
 
+echo "Set cron script executable"
+chmod +x cron/tasks/run-reservations.sh
+
 echo "Running npm ci..."
 npm ci
 

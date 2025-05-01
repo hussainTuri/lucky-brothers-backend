@@ -10,14 +10,14 @@ echo "Script started."
 git --work-tree=/var/www/lucky-brothers-backend --git-dir=/home/webuser/repositories/lucky-brothers-backend.git checkout -f
 cd /var/www/lucky-brothers-backend
 
+echo "Set cron script executable"
+chmod +x cron/tasks/run-reservations.sh
+
 echo "Running npm ci..."
 npm ci
 
 echo "Running npm run build..."
 npm run build
-
-echo "Set cron script executable"
-chmod +x cron/tasks/run-reservations.sh
 
 echo "Stopping PM2..."
 pm2 stop lucky-brothers-backend
