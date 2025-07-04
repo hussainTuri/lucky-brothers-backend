@@ -26,6 +26,9 @@ const updateStockEntry = async (entry: ProductStock): Promise<ProductStock | nul
         receiptNumber: entry.receiptNumber,
         updatedById: entry.updatedById,
         mode: entry.mode,
+        vat: entry.vat,
+        vatRate: entry.vatRate,
+        pricePerItemIncVat: entry.pricePerItemIncVat,
       },
     });
 

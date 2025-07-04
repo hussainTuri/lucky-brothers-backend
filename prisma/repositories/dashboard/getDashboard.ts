@@ -4,7 +4,7 @@ import prisma from '../../../middleware/prisma';
 export const getDashboard = async () => {
   // current stock value
   const stockValueRs = await prisma.$queryRawUnsafe(
-    `SELECT sum(pricePerItem * remainingQuantity) AS stockValue FROM ProductStock`,
+    `SELECT sum(pricePerItem * remainingQuantity) AS stockValue FROM ProductStock`, // We didn't use pricePerItemIncVat here because sale tax and purchase tax cancel each other out
   );
   const stockValue = (stockValueRs as any).length ? +(stockValueRs as any)[0].stockValue : 0;
 

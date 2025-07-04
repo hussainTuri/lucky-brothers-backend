@@ -17,7 +17,6 @@ export const getProducts = async () => {
       createdAt: true,
       createdById: true,
       sellingPrice: true,
-
       priceHistory: true,
       productStocks: true,
     },

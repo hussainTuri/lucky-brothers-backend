@@ -3,15 +3,20 @@ import { Request, Response, NextFunction } from 'express';
 import { response } from '../lib/response';
 import { createProductStockSchema, updateProductStockSchema } from '../lib/validators/';
 import { TransactionModeEnum } from '../lib/enums';
+import { VAT_RATE } from '../lib/constants/vat';
 
 const extractStockData = (payload: Partial<ProductStock>) => {
   return {
     productId: payload.productId ?? null,
     originalQuantity: payload.originalQuantity ?? null,
-    pricePerItem: payload.pricePerItem ?? null,
+    pricePerItem: payload.pricePerItem ?? 0,
     comment: payload.comment ?? null,
     receiptNumber: payload.receiptNumber ?? null,
     mode: payload.mode ?? TransactionModeEnum.Cash,
+    vat: payload.vat ?? '0',
+    vatRate: VAT_RATE,
+    pricePerItemIncVat: payload.pricePerItemIncVat ?? '0',
+    // pricePerItemIncVat: Math.round((Number(payload.pricePerItem ?? 0)) + parseFloat(String(payload.vatRate ?? '0')))
   };
 };
 

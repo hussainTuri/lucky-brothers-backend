@@ -58,7 +58,7 @@ export const getPendingDailyReports = async () => {
 
   const stocks = (await prisma.$queryRawUnsafe(`SELECT
     DATE_FORMAT(createdAt, '%Y-%m-%d') AS reportDate,
-    SUM(originalQuantity * pricePerItem) AS totalAmount
+    SUM((originalQuantity * pricePerItem) + vat) AS totalAmount
     FROM
       ProductStock
     WHERE mode = ${TransactionModeEnum.Cash}
