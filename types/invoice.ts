@@ -21,6 +21,7 @@ export interface QueryOptions {
   endDate?: Date | string;
   date?: Date | string;
   vehicleRegistrationNumber: string;
+  customerName?: string; // added for dashboard customer name filter
 }
 
 export type SortOrder = 'asc' | 'desc';
@@ -31,6 +32,12 @@ export interface QuerySort {
   monthYear?: SortOrder;
   cashDate?: SortOrder;
   reportDate?: SortOrder;
+  customerName?: SortOrder; // existing addition
+  dueAmount?: SortOrder; // added for dashboard due sorting
+  // dashboard specific
+  month?: SortOrder;
+  vehicleName?: SortOrder;
+  vehicleRegistration?: SortOrder;
 }
 
 export interface InvoicePayload {
