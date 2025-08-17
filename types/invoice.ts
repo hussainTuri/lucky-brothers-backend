@@ -38,6 +38,7 @@ export interface QuerySort {
   month?: SortOrder;
   vehicleName?: SortOrder;
   vehicleRegistration?: SortOrder;
+  balance?: SortOrder; // added for vehicles balance sorting
 }
 
 export interface InvoicePayload {
