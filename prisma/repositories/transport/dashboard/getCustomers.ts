@@ -36,16 +36,32 @@ export async function getTransportCustomersDashboard(
     ? { customerName: { contains: options.customerName, mode: 'insensitive' as const } }
     : undefined;
 
-  const [customers, totalCount] = await Promise.all([
-    prisma.transportCustomer.findMany({
+  const isDueSort = !!sort?.dueAmount;
+  const skip = options?.skip ?? 0;
+  const take = options?.take ?? 50;
+
+  let customers: { id: number; customerName: string }[] = [];
+  let totalCount = 0;
+
+  if (isDueSort) {
+    // When sorting by computed dueAmount, fetch all matching customers, then sort and slice in-memory
+    customers = await prisma.transportCustomer.findMany({
       where,
-      orderBy: baseOrderBy,
-      skip: options?.skip ?? 0,
-      take: options?.take ?? 50,
       select: { id: true, customerName: true },
-    }),
-    prisma.transportCustomer.count({ where }),
-  ]);
+    });
+    totalCount = await prisma.transportCustomer.count({ where });
+  } else {
+    [customers, totalCount] = await Promise.all([
+      prisma.transportCustomer.findMany({
+        where,
+        orderBy: baseOrderBy,
+        skip,
+        take,
+        select: { id: true, customerName: true },
+      }),
+      prisma.transportCustomer.count({ where }),
+    ]);
+  }
 
   const customerIds = customers.map((c) => c.id);
   if (customerIds.length === 0) {
@@ -114,7 +130,7 @@ export async function getTransportCustomersDashboard(
   const totalPaidAmount = paidTotalAgg._sum.amount ?? 0;
   const totalDueAmount = totalRentAmount - totalPaidAmount;
 
-  const rows: TransportDashboardCustomerRow[] = customers.map((c) => {
+  let rows = customers.map((c) => {
     const totalRent = rentMap.get(c.id) ?? 0;
     const paidAmount = paidMap.get(c.id) ?? 0;
     const dueAmount = totalRent - paidAmount;
@@ -125,13 +141,15 @@ export async function getTransportCustomersDashboard(
       totalRent,
       paidAmount,
       dueAmount,
-    };
+    } as TransportDashboardCustomerRow;
   });
 
   // If requested, sort by dueAmount in-memory (post aggregation)
-  if (sort?.dueAmount) {
-    const dir = sort.dueAmount === 'asc' ? 1 : -1;
+  if (isDueSort) {
+    const dir = sort!.dueAmount === 'asc' ? 1 : -1;
     rows.sort((a, b) => (a.dueAmount - b.dueAmount) * dir);
+    // Apply paging on the sorted full set
+    rows = rows.slice(skip, skip + take);
   }
 
   return {
