@@ -11,6 +11,7 @@ import reportRoutes from './reports';
 import cashRoutes from './cash';
 import cashOutRoutes from './cashOut';
 import transportRoutes from './transport/';
+import vatRoutes from './vat';
 
 router.use('/products', productRoutes);
 router.use('/customers', customerRoutes);
@@ -23,4 +24,5 @@ router.use('/cash', cashRoutes);
 router.use('/cashOut', cashOutRoutes);
 router.use('/reports', reportRoutes);
 router.use('/transport', transportRoutes);
+router.use('/vat', vatRoutes);
 export default router;
