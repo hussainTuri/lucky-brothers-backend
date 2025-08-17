@@ -7,6 +7,7 @@ export const getCustomers = async (options: QueryOptions, sort?: QuerySort) => {
       orderBy: {
         ...(sort?.id && { id: sort?.id || 'desc' }),
         ...(sort?.createdAt && { createdAt: sort?.createdAt }),
+        ...(sort?.customerName && { customerName: sort?.customerName }),
       },
       skip: options?.skip || 0,
       take: options?.take || 1000,
