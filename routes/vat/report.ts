@@ -42,7 +42,7 @@ export const getVatReport = async (req: Request, res: Response, next: NextFuncti
 
     const salesVat = Number(salesAgg._sum.vat || 0);
     const purchaseVat = Number(purchaseAgg._sum.vat || 0);
-    const dueVat = salesVat - purchaseVat;
+    const dueVat = purchaseVat - salesVat;
 
     resp.data = { salesVat, purchaseVat, dueVat };
     return res.json(resp);
