@@ -6,12 +6,6 @@ export const createVehicleSchema = Joi.object({
   model: Joi.string().max(255).required(),
   buyDate: Joi.date().optional().allow(null).allow(''),
   transport: Joi.string().max(255).optional().allow(null).allow(''),
-  mulkiyaRegistrationExpiry: Joi.date()
-    .optional()
-    .allow(null)
-    .allow('')
-    .greater('now')
-    .messages({ 'date.greater': 'Mulkiya registration expiry must be in the future' }),
 });
 
 export const createVehicleReservationSchema = Joi.object({

@@ -11,9 +11,8 @@ const extractVehicleData = (payload: Partial<TransportVehicle>) => {
     buyDate: payload.buyDate ? new Date(payload.buyDate) : null,
     transport: payload.transport ?? null,
     mulkiyaFilePath: payload.mulkiyaFilePath ?? null,
-    // Casting payload to any for newly added field until Prisma types regenerated
-    mulkiyaRegistrationExpiry: (payload as any).mulkiyaRegistrationExpiry
-      ? new Date((payload as any).mulkiyaRegistrationExpiry)
+    mulkiyaRegistrationExpiry: payload?.mulkiyaRegistrationExpiry
+      ? new Date(payload.mulkiyaRegistrationExpiry)
       : null,
   };
 };
