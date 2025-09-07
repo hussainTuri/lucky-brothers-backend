@@ -19,6 +19,9 @@ const updateVehicleEntry = async (entry: TransportVehicle): Promise<TransportVeh
         buyDate: entry.buyDate,
         transport: entry.transport,
         mulkiyaFilePath: entry.mulkiyaFilePath,
+        ...(entry.mulkiyaRegistrationExpiry !== undefined && {
+          mulkiyaRegistrationExpiry: entry.mulkiyaRegistrationExpiry || null,
+        }),
       },
     });
 
