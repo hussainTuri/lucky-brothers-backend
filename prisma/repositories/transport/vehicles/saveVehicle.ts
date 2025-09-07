@@ -8,8 +8,12 @@ export const saveVehicle= async (entry: TransportVehicle): Promise<TransportVehi
 const saveVehicleEntry = async (entry: TransportVehicle): Promise<TransportVehicle | null> => {
   return prisma.$transaction(async (tx) => {
     // 1 save vehicle
+    const data: any = { ...entry };
+    if (entry.mulkiyaRegistrationExpiry !== undefined) {
+      data.mulkiyaRegistrationExpiry = entry.mulkiyaRegistrationExpiry || null;
+    }
     const entryCreated = await tx.transportVehicle.create({
-      data: entry,
+      data,
     });
 
     return entryCreated;
